@@ -1,0 +1,160 @@
+.container {
+  height: 100vh;
+
+  display: grid;
+
+  grid-template-areas: 'logoWhite content';
+}
+
+.logoContainer {
+  background-color: var(--green);
+
+  grid-area: logoWhite;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  max-width: 100%;
+  max-height: 100vh;
+
+  width: 15rem;
+}
+
+.content {
+  display: flex;
+
+  grid-area: content;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.logoMobile {
+  display: none;
+}
+
+.formContainer h1 {
+  margin-bottom: 2rem;
+  font-size: 3rem;
+}
+
+.formContainer form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+input {
+  font-size: 1rem;
+  color: var(--text-input);
+  
+  background: var(--white);
+
+  padding: 0.75rem 1rem;
+
+  height: 3rem;
+  width: 22.5rem;
+  max-width: 100%;
+
+  border: none;
+  box-shadow: 0px 50px 70px -20px rgba(0, 0, 0, 0.15);
+  border-radius: 0.5rem;
+}
+
+.loginBtn {
+  height: 3rem;
+  width: 22.5rem;
+  max-width: 100%;
+
+  background-color: var(--green);
+  
+  color: var(--white);
+  font-weight: bold;
+  font-size: 1rem;
+
+  border: none;
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+
+  transition: 0.3s background;
+}
+
+.loginBtn:hover {
+  background-color: var(--green-dark);
+}
+
+.forgotPassword {
+  margin: 0 auto;  
+}
+
+.forgotPassword a {
+  color: var(--green);
+  text-decoration: none;
+
+  transition: 0.3s text-decoration;
+}
+
+.forgotPassword a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    grid-template-areas: 'content';
+    
+    min-height: 100vh;
+    height: fit-content;
+    padding: 2rem;
+  }
+
+  .logoContainer {
+    display: none;
+  }
+
+  .content {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .formContainer {
+    width: calc(100% - 2rem);
+  }
+
+  .formContainer h1 {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  .logoMobile {
+    display: block;
+
+    width: 5rem;
+    margin-bottom: 1rem;
+  }
+
+  .logoContainerMobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  input, .loginBtn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    width: 100%;
+  }
+}

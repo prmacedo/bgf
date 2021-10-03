@@ -2,7 +2,11 @@
 
 :root {
   --green: #13A538;
+  --green-dark: rgb(14, 133, 44);
   --background: #F1F7F9;
+  --white: #FFF;
+  --text: #252525;
+  --text-input: #737373;
 }
 
 * {
@@ -14,4 +18,5 @@
 body {
   font-family: 'Roboto', sans-serif;
   background-color: var(--background);
+  color: var(--text);
 }
