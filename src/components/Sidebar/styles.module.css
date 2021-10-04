@@ -1,5 +1,5 @@
 #sidebarId {
-  position: relative;
+  position: fixed;
   
   background-color: var(--green);
   color: var(--white);
@@ -13,7 +13,7 @@
 
 .sidebar {  
   height: 100vh;
-  max-width: 20%;
+  width: 20%;
 
   padding: 2rem; 
 }
@@ -97,7 +97,7 @@
 
 .hidden {
   height: 100vh;
-  max-width: 3.25rem;
+  width: 3.25rem;
   
   padding: 2rem 0;
 }
