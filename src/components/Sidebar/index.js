@@ -7,9 +7,10 @@ import { FiMenu, FiUser, FiBriefcase, FiClipboard, FiSettings, FiLogOut } from '
 import styles from './styles.module.css';
 
 import logo from '../../assets/BGF2.png';
+import { useHiddenSidebar } from '../../context/HiddenSidebar';
 
 export default function Sidebar() {
-  const [isHidden, setIsHidden] = useState(false);
+  const { isHidden, setIsHidden } = useHiddenSidebar();
 
   return(
     <aside id={styles.sidebarId} className={isHidden ? styles.hidden : (styles.sidebar)}>
