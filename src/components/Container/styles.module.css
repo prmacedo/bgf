@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+}
+
+#contentId {
+  flex: 1;
+  padding: 2rem;
+
+  transition: 0.3s;
+}
+
+.content {
+  margin-left: 20%;
+}
+
+.hidden {
+  margin-left: 3.25rem;
+}
