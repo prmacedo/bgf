@@ -57,21 +57,8 @@
   text-align: center;
 }
 
-input {
-  font-size: 1rem;
-  color: var(--text-input);
-  
-  background: var(--white);
-
-  padding: 0.75rem 1rem;
-
-  height: 3rem;
+.inputGroup input {
   width: 22.5rem;
-  max-width: 100%;
-
-  border: none;
-  box-shadow: 0px 50px 70px -20px rgba(0, 0, 0, 0.15);
-  border-radius: 0.5rem;
 }
 
 .loginBtn {
@@ -157,7 +144,7 @@ input {
     justify-content: center;
   }
 
-  input, .loginBtn {
+  .inputGroup input, .loginBtn {
     width: 100%;
   }
 }
