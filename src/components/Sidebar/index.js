@@ -30,7 +30,7 @@ export default function Sidebar() {
       </div>
 
       <div className={styles.menu}>
-        <Link to="/" className={styles.menuItem}>
+        <Link to="/clients" className={styles.menuItem}>
           <FiUser />
           <span>Clientes</span>
         </Link>
@@ -40,12 +40,12 @@ export default function Sidebar() {
           <span>Cessionários</span>
         </Link>
         
-        <Link to="/" className={styles.menuItem}>
+        <Link to="/managers" className={styles.menuItem}>
           <FiClipboard />
           <span>Gerentes</span>
         </Link>
         
-        <Link to="/" className={styles.menuItem}>
+        <Link to="/settings" className={styles.menuItem}>
           <FiSettings />
           <span>Configurações</span>
         </Link>
