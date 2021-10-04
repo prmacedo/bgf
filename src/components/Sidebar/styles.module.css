@@ -1,17 +1,21 @@
-.sidebar {
+#sidebarId {
   position: relative;
   
   background-color: var(--green);
   color: var(--white);
-  
-  height: 100vh;
-  max-width: 20%;
-  
-  padding: 2rem;
 
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  transition: 0.3s;
+}
+
+.sidebar {  
+  height: 100vh;
+  max-width: 20%;
+
+  padding: 2rem; 
 }
 
 .menuBtn {
@@ -89,4 +93,35 @@
 
 .menuItem:hover {
   margin-left: 1.5rem;
-} 
+}
+
+.hidden {
+  height: 100vh;
+  max-width: 3.25rem;
+  
+  padding: 2rem 0;
+}
+
+.menuBtn {
+  right: 0.875rem;
+}
+
+.hidden :is(.logo, .title, .menuItem span) {
+  display: none;
+}
+
+.hidden .menu {
+  margin-top: 1rem;
+  gap: 0;
+}
+
+.hidden .menuItem {
+  padding: 1rem;
+}
+
+.hidden .menuItem:hover {
+  margin-left: 0;
+
+  background-color: var(--green-dark);
+}
+

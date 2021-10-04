@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -11,16 +11,8 @@ import logo from '../../assets/BGF2.png';
 export default function Sidebar() {
   const [isHidden, setIsHidden] = useState(false);
 
-  useEffect(()=>{
-    toggleActiveClasses();
-  }, [isHidden]);
-
-  function toggleActiveClasses() {
-    
-  }
-
   return(
-    <aside className={styles.sidebar}>
+    <aside id={styles.sidebarId} className={isHidden ? styles.hidden : (styles.sidebar)}>
       <div
         className={styles.menuBtn}
         onClick={() => { setIsHidden(!isHidden) }}  
