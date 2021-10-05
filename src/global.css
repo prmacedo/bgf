@@ -7,6 +7,7 @@
   --white: #FFF;
   --text: #252525;
   --text-input: #737373;
+  --disabled: #DBDCE0;
   --red: #F24848;
   --red-dark: #d43434;
   --line: #DCDCDC;
@@ -38,6 +39,10 @@ input {
   border: none;
   box-shadow: 0px 50px 70px -20px rgba(0, 0, 0, 0.15);
   border-radius: 0.5rem;
+}
+
+input:disabled {
+  background-color: var(--disabled);
 }
 
 h1, h2, h3, h4, h5, h6 {
