@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import ClientsLists from './pages/Client/ClientsList';
 import ManagersList from './pages/Manager/ManagersList';
-import Settings from './pages/Settings/Settings';
+import Settings from './pages/Settings';
 
 export default function Routes() {
   return(
