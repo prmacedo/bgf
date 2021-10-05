@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { FiEdit2, FiSettings } from 'react-icons/fi';
-import { useState } from 'react/cjs/react.development';
 
 import Container from '../../components/Container';
 
