@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { FiSearch, FiClipboard, FiUserPlus } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 import Container from '../../../components/Container';
 
@@ -38,7 +39,7 @@ export default function ManagerList() {
           </form>
 
           <div className={styles.btnGroup}>            
-            <button type="button" className={styles.btn}><FiUserPlus /></button>
+            <Link to="/addManager" className={styles.btn}><FiUserPlus /></Link>
           </div>
         </div>
         

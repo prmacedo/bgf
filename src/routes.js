@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import ClientsLists from './pages/Client/ClientsList';
 import ManagersList from './pages/Manager/ManagersList';
+import AddManager from './pages/Manager/AddManager';
 import Settings from './pages/Settings';
 
 export default function Routes() {
@@ -15,6 +16,7 @@ export default function Routes() {
         <Route component={ForgotPassword} path="/forgotPassword" />
         <Route component={ClientsLists} path="/clients" />
         <Route component={ManagersList} path="/managers" />
+        <Route component={AddManager} path="/addManager" />
         <Route component={Settings} path="/settings" />
       </Switch>
     </BrowserRouter>
