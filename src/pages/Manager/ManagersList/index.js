@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { FiSearch, FiClipboard, FiUserPlus } from 'react-icons/fi';
+import { FiSearch, FiClipboard, FiUserPlus, FiEye } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import Container from '../../../components/Container';
@@ -50,6 +50,7 @@ export default function ManagerList() {
                 <th>Nome</th>
                 <th>Cargo</th>
                 <th>Status</th>
+                <th></th>
               </tr>
             </thead>
 
@@ -58,12 +59,14 @@ export default function ManagerList() {
                 <td>Manoel Augusto</td>
                 <td>Gerente</td>
                 <td>Ativo</td>
+                <td className={styles.eyeLink}><Link to="/manager" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
 
               <tr>
                 <td>Flávia Carneiro</td>
                 <td>Administrador</td>
                 <td>Inativo</td>
+                <td className={styles.eyeLink}><Link to="/manager" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
             </tbody>
           </table>

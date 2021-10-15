@@ -9,6 +9,7 @@
 
 .header h1 svg {
   margin-right: 1rem;
+  font-size: 1.5rem;
 }
 
 /* Barra de pesquisa e ferramentas */
@@ -53,10 +54,19 @@
 
 .tableContainer tr {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr) 0.2fr;
   text-align: center;
 
   padding: 1rem 0;
+}
+
+.tableContainer .eyeLink {
+  display: flex;
+  align-self: center;
+}
+
+.tableContainer .eyeLink a {
+  display: flex;
 }
 
 .tableContainer tbody tr {
