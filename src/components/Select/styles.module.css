@@ -1,6 +1,10 @@
+.select {
+  border-radius: 0.5rem;
+}
+
 .select > div:first-of-type {
   height: 3rem;
-
+  
   border: none;
   box-shadow: 0px 50px 70px -20px rgba(0, 0, 0, 0.15);
   border-radius: 0.5rem;
@@ -18,4 +22,8 @@
 .select > div:first-of-type > div:first-of-type > div:nth-of-type(2) {
   padding: 0 1rem;
   margin: 0;
+}
+
+.disabledSelect > div:first-of-type {
+  background-color: var(--disabled);
 }
