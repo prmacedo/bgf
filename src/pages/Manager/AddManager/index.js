@@ -52,6 +52,7 @@ export default function AddManager() {
               <label htmlFor="type">Cargo</label>
               <Select 
                 options={options}
+                id="type"
                 name="type"
                 placeholder="Escolha o cargo"
                 onChange={(evt) => setType(evt.value)}
