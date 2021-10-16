@@ -13,7 +13,7 @@
 
 .sidebar {  
   height: 100vh;
-  width: 20%;
+  width: 20vw;
 
   padding: 2rem; 
 }
@@ -117,6 +117,10 @@
 
 .hidden .menuItem {
   padding: 1rem;
+}
+
+.hidden .menuItem svg {
+  font-size: 1.5rem;
 }
 
 .hidden .menuItem:hover {
