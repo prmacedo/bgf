@@ -35,7 +35,7 @@ export default function Sidebar() {
           <span>Clientes</span>
         </Link>
         
-        <Link to="/" className={styles.menuItem}>
+        <Link to="/assignees" className={styles.menuItem}>
           <FiBriefcase />
           <span>Cessionários</span>
         </Link>
