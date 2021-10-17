@@ -1,0 +1,355 @@
+.header {
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.header h1 {
+  font-weight: 500;
+}
+
+.header h1 svg {
+  margin-right: 1rem;
+  font-size: 1.5rem;
+}
+
+/* Barra de ferramentas */
+.toolsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  margin-bottom: 1.5rem;
+}
+
+.toolsRow .options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.main h2, .formContainer h3 {
+  color: var(--text-input);
+}
+
+/* Formulário */
+.detailsInputs {
+  display: grid;
+  grid-template-columns: 33.33333% 8.33333%;
+  gap: 1rem;
+  align-items: flex-end;
+
+  padding: 0.5rem 0 2rem;
+}
+
+#name, #partnerName {grid-area: name;}
+#nacionality, #partnerNacionality {grid-area: nacionality;}
+#gender, #partnerGender {grid-area: gender;}
+#maritalState, #partnerMaritalState {grid-area: maritalState;}
+#profession, #partnerProfession {grid-area: profession;}
+#rg, #partnerRG {grid-area: rg;}
+#cpf, #partnerCPF {grid-area: cpf;}
+
+.formContainer form .clientInputs {
+  display: grid;
+  gap: 1rem;
+  
+  grid-template-areas: 
+  'name name nacionality gender'
+  'profession rg cpf maritalState';
+  
+  grid-template-columns: repeat(4, 1fr);
+  
+  padding: 0.5rem 0 2rem;
+}
+
+.formContainer form .contactInputs {
+  display: grid;
+  gap: 1rem;
+  
+  grid-template-columns: 2fr 1fr;
+  
+  padding: 0.5rem 0 2rem;
+}
+
+.formContainer form .addressInputsEditing .cepGroup {
+  display: grid;
+  grid-template-columns: 41.66666% 25%;
+  gap: 1rem;
+
+  align-items: flex-end;
+
+  padding: 0.5rem 0 1rem;
+}
+
+.addressInputsEditing .cepBtn {
+  color: var(--green);
+  font-weight: 600;
+  font-size: 1rem;
+
+  padding: 0 3rem;
+  height: 3rem;
+  
+  background-color: transparent;
+  border: 2px solid var(--green);
+  
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.addressInputsEditing .cepBtn:hover {
+  color: var(--white);
+  background-color: var(--green);
+}
+
+#street, #adminStreet {grid-area: street;}
+#city, #adminCity {grid-area: city;}
+#uf, #adminUF {grid-area: uf;}
+#district, #adminDistrict {grid-area: district;}
+#complement, #adminComplement {grid-area: complement;}
+#cep, #adminCEP {grid-area: cep;}
+
+.addressGroup #cep.hide,
+.addressGroup #adminCEP.hide,
+.addressInputs .cepGroup.hide {
+  display: none;
+}
+
+.formContainer form .addressInputsEditing,
+.formContainer form .addressInputs {
+  padding-bottom: 2rem;
+}
+
+.formContainer form .addressInputs .addressGroup {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas: 
+    'cep cep cep cep cep city city city city city uf uf'
+    'street street street street street street street district district district district district'
+    'complement complement complement complement complement complement complement complement complement complement complement complement';
+}
+
+.formContainer form .addressInputsEditing .addressGroup {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas: 
+    'street street street street street city city city city city uf uf'
+    'district district district district district complement complement complement complement complement complement complement';
+}
+
+.btnGroup {
+  grid-area: btnGroup;
+
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btnGroup.hide {
+  display: none;
+}
+
+.submitBtn {
+  width: 20rem;
+  max-width: 100%;
+
+  padding: 1rem 0;
+
+  font-size: 1rem;
+  color: var(--white);
+  font-weight: 600;
+  background-color: var(--green);
+
+  border: none;
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.submitBtn:hover {
+  background-color: var(--green-dark);
+}
+
+.submitLabel {
+  width: 20rem;
+  max-width: 100%;
+
+  padding: 1rem 0;
+
+  font-size: 1rem;
+  color: var(--white);
+  font-weight: 500;
+  background-color: var(--green);
+  text-align: center;
+
+  border: none;
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.submitInput {
+  display: none;
+}
+
+.cancelBtn {
+  width: 20rem;
+  max-width: 100%;
+
+  padding: 1rem 0;
+
+  font-size: 1rem;
+  color: var(--red);
+  font-weight: 600;
+  
+  border-radius: 0.5rem;
+  border: 2px solid var(--red);
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.cancelBtn:hover {
+  color: var(--white);
+  background-color: var(--red);
+}
+
+/* Uso geral */
+.inputGroup {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup small.hide {
+  display: none;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--green);
+  
+  font-size: 1.5rem;
+  color: var(--white);
+
+  width: 3rem;
+  height: 3rem;
+
+  border: none;
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: var(--green-dark);
+}
+
+.btn img, .btn svg {
+  height: 1.25rem;
+}
+
+.redBtn {
+  background-color: var(--red);
+}
+
+.redBtn:hover {
+  background-color: var(--red-dark);
+}
+
+.invalidField {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
+.outlineBtn {
+  color: var(--green);
+  font-weight: 600;
+  font-size: 1rem;
+
+  height: 3rem;
+  
+  background-color: transparent;
+  border: 2px solid var(--green);
+  
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.outlineBtn:hover {
+  color: var(--white);
+  background-color: var(--green);
+}
+
+.outlineBtn:disabled {
+  pointer-events: none;
+  color: var(--disabled);
+  border: 2px solid var(--disabled);
+}
+
+.options .outlineBtn {
+  padding: 0 2rem;
+}
+
+.detailsInputs .outlineBtn {
+  width: 3rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detailsInputs .outlineBtn svg {
+  font-size: 1.5rem;
+}
+
+/* Modal */
+.modalContainer.hide {
+  display: none;
+}
+
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.modal {
+  background-color: var(--white);
+  padding: 2rem 3rem;
+  border-radius: 0.5rem;
+}
+
+.modal .modalContent {
+  margin: 1rem 0 2rem;
+}
+
+.modal .modalGroupBtn {
+  display: flex;
+  gap: 1rem;
+}
