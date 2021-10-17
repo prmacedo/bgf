@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import ClientsLists from './pages/Client/ClientsList';
+import AddClient from './pages/Client/AddClient';
 import AssigneeList from './pages/Assignee/AssigneeList';
 import AddAssignee from './pages/Assignee/AddAssignee';
 import EditAssignee from './pages/Assignee/EditAssignee';
@@ -19,6 +20,7 @@ export default function Routes() {
         <Route component={Login} path="/" exact />
         <Route component={ForgotPassword} path="/forgotPassword" />
         <Route component={ClientsLists} path="/clients" />
+        <Route component={AddClient} path="/addClient" />
         <Route component={AssigneeList} path="/assignees" />
         <Route component={AddAssignee} path="/addAssignee" />
         <Route component={EditAssignee} path="/assignee" />
