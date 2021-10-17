@@ -81,7 +81,7 @@
 
 .tableContainer tr {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr) 0.2fr;
   text-align: center;
 
   padding: 1rem 0;
@@ -93,6 +93,19 @@
 
 .tableContainer tbody tr:last-of-type {
   border-bottom: 0;
+}
+
+.tableContainer .eyeLink {
+  display: flex;
+  align-self: center;
+}
+
+.tableContainer .eyeLink svg {
+  color: var(--text);
+}
+
+.tableContainer .eyeLink a {
+  display: flex;
 }
 
 /* Uso geral */

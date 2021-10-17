@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { FiFilter, FiSearch, FiUpload, FiUser, FiUserPlus } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { FiFilter, FiSearch, FiUpload, FiUser, FiUserPlus, FiEye } from 'react-icons/fi';
 
 import Container from '../../../components/Container';
 
@@ -54,7 +55,7 @@ export default function ClientsList() {
               <FiFilter />
             </button>
             <button type="button" className={styles.btn}><FiUpload /></button>
-            <button type="button" className={styles.btn}><FiUserPlus /></button>
+            <Link to="/addClient" className={styles.btn}><FiUserPlus /></Link>
           </div>
         </div>
 
@@ -117,6 +118,7 @@ export default function ClientsList() {
                 <th>Projetos</th>
                 <th>Status</th>
                 <th>Nº de anexos</th>
+                <th></th>
               </tr>
             </thead>
 
@@ -126,6 +128,7 @@ export default function ClientsList() {
                 <td>Projeto 01</td>
                 <td>Prospecção/Precificação</td>
                 <td>5</td>
+                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
 
               <tr>
@@ -133,6 +136,7 @@ export default function ClientsList() {
                 <td>Projeto 01</td>
                 <td>Prospecção/Precificação</td>
                 <td>5</td>
+                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
 
               <tr>
@@ -140,6 +144,7 @@ export default function ClientsList() {
                 <td>Projeto 01</td>
                 <td>Prospecção/Precificação</td>
                 <td>5</td>
+                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
 
               <tr>
@@ -147,6 +152,7 @@ export default function ClientsList() {
                 <td>Projeto 01</td>
                 <td>Prospecção/Precificação</td>
                 <td>5</td>
+                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
 
               <tr>
@@ -154,6 +160,7 @@ export default function ClientsList() {
                 <td>Projeto 01</td>
                 <td>Prospecção/Precificação</td>
                 <td>5</td>
+                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
 
               <tr>
@@ -161,6 +168,7 @@ export default function ClientsList() {
                 <td>Projeto 01</td>
                 <td>Prospecção/Precificação</td>
                 <td>5</td>
+                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
 
               <tr>
@@ -168,6 +176,7 @@ export default function ClientsList() {
                 <td>Projeto 01</td>
                 <td>Prospecção/Precificação</td>
                 <td>5</td>
+                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
 
               <tr>
@@ -175,6 +184,7 @@ export default function ClientsList() {
                 <td>Projeto 01</td>
                 <td>Prospecção/Precificação</td>
                 <td>5</td>
+                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
 
               <tr>
@@ -182,6 +192,7 @@ export default function ClientsList() {
                 <td>Projeto 01</td>
                 <td>Prospecção/Precificação</td>
                 <td>5</td>
+                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
               </tr>
             </tbody>
           </table>
