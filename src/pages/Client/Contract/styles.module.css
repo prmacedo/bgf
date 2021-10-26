@@ -1,0 +1,114 @@
+/* Header */
+.header {
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.header h1 {
+  font-weight: 500;
+}
+
+.header h1 svg {
+  margin-right: 1rem;
+  font-size: 1.5rem;
+}
+
+/* Main */
+.main h2 {
+  margin-bottom: 0.5rem;
+}
+
+.main form > div {
+  margin-bottom: 1rem;
+}
+
+
+#optionGroup {grid-area: option;}
+#fundGroup {grid-area: fund;}
+#precatoryGroup {grid-area: precatory;}
+#processGroup {grid-area: process;}
+#courtGroup {grid-area: court;}
+#percentageGroup {grid-area: percentage;}
+#proposalValueGroup {grid-area: proposalValue;}
+
+#proposalInputs {
+  display: grid;
+  grid-template-areas: 
+    'fund fund fund fund court court court court option option option option'
+    'process process process process precatory precatory precatory precatory percentage percentage proposalValue proposalValue';
+  gap: 1rem;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+#contractInputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+
+/* Input Group */
+.inputGroup {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup small.hide {
+  display: none;
+}
+
+/* Btn Group */
+.btnGroup {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+
+  margin-top: 2rem;
+}
+
+/* Botões */
+.btn {
+  width: 20rem;
+  max-width: 100%;
+  
+  padding: 1rem 0;
+  
+  font-size: 1rem;
+  color: var(--white);
+  font-weight: 600;
+  
+  border: none;
+
+  cursor: pointer;
+  
+  transition: 0.3s;
+}
+
+.btnGreen {
+  background-color: var(--green);
+  text-align: center;
+
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.btnGreen:hover {
+  background-color: var(--green-dark);
+}
+
+.btnRed {
+  color: var(--red);
+  text-decoration: none;
+  text-align: center;
+  
+  border-radius: 0.5rem;  
+  border: 2px solid var(--red);
+}
+
+.btnRed:hover {
+  font-weight: 500;
+  color: var(--white);
+  background-color: var(--red);
+}
