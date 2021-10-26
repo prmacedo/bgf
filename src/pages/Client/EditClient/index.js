@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { FiEdit2, FiUser, FiPlus, FiTrash2 } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { FiEdit2, FiUser, FiPlus, FiTrash2, FiDownload, FiXCircle } from 'react-icons/fi';
 
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
@@ -83,6 +84,10 @@ export default function EditClient() {
     { value: 'M', label: 'Masculino' }
   ];
 
+  function toggleHiddenModal(id) {
+    document.querySelector(`#${id}`).classList.toggle(styles.hide);
+  }
+
   function handleEditClient(evt) {
     evt.preventDefault();
 
@@ -134,6 +139,14 @@ export default function EditClient() {
     setShowProjectModal(false);
   }
 
+  function downloadAttachment(attachment) {
+    // Implementar lógica
+  }
+
+  function deleteAttachment(attachment) {
+    // Implementar lógica
+  }
+
   return (
     <>
       <Container>
@@ -147,29 +160,77 @@ export default function EditClient() {
         <main className={styles.main}>
           <div className={styles.toolsRow}>
             <div className={styles.options}>
-              <button
+              <Link
+                to="/proposal"
                 type="button"
-                className={styles.outlineBtn}
-                disabled={isEditing}
+                className={`${styles.outlineBtn} ${isEditing ? styles.disabled : null}`}
               >
                 Gerar Proposta
-              </button>
+              </Link>
 
-              <button
+              <Link
+                to="/contract"
                 type="button"
-                className={styles.outlineBtn}
-                disabled={isEditing}
+                className={`${styles.outlineBtn} ${isEditing ? styles.disabled : null}`}
               >
                 Gerar Contrato
-              </button>
+              </Link>
 
-              <button
-                type="button"
-                className={styles.outlineBtn}
-                disabled={isEditing}
-              >
-                Anexos
-              </button>
+              <div className={styles.attachmentContainer}>
+                <button
+                  type="button"
+                  className={styles.outlineBtn}
+                  disabled={isEditing}
+                  onClick={() => toggleHiddenModal('attachmentModal')}
+                >
+                  Anexos
+                </button>
+
+                <div id="attachmentModal" className={`${styles.attachmentContent} ${styles.hide}`}>
+                  <div className={styles.attachmentHeader}>
+                    <h3>Anexos</h3>
+                    <span
+                      className={styles.closeBtn}
+                      onClick={() => toggleHiddenModal('attachmentModal')}
+                    >
+                      <FiXCircle />
+                    </span>
+                  </div>
+
+                  <div className={styles.attachmentList}>
+                    <div className={styles.attachmentItem}>
+                      <span>Nome do anexo</span>
+
+                      <div className={styles.attachmentBtns}>
+                        <button
+                          type="button"
+                          className={styles.btn}
+                          onClick={() => downloadAttachment('id')}
+                        >
+                          <FiDownload/>
+                        </button>
+                        <button
+                          type="button"
+                          className={`${styles.btn} ${styles.redBtn}`}
+                          onClick={() => deleteAttachment('id')}
+                        >
+                          <FiTrash2/>
+                        </button>
+                      </div>
+                    </div>
+                  </div>  
+
+                  <div className={styles.newAttachmentBtn}>
+                    <form action="">
+                      <input type="file" name="file" id="file" className={styles.hide} />
+                      <label htmlFor="file" className={styles.outlineLabel}>
+                        Anexar novo arquivo
+                      </label>
+
+                    </form>
+                  </div>                
+                </div>
+              </div>
 
             </div>
 
