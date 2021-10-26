@@ -6,6 +6,9 @@ import ForgotPassword from './pages/ForgotPassword';
 import ClientsLists from './pages/Client/ClientsList';
 import AddClient from './pages/Client/AddClient';
 import EditClient from './pages/Client/EditClient';
+import Proposal from './pages/Client/Proposal';
+import Contract from './pages/Client/Contract';
+import ContractRevision from './pages/Client/ContractRevision';
 import AssigneeList from './pages/Assignee/AssigneeList';
 import AddAssignee from './pages/Assignee/AddAssignee';
 import EditAssignee from './pages/Assignee/EditAssignee';
@@ -23,6 +26,9 @@ export default function Routes() {
         <Route component={ClientsLists} path="/clients" />
         <Route component={AddClient} path="/addClient" />
         <Route component={EditClient} path="/client" />
+        <Route component={Proposal} path="/proposal" />
+        <Route component={Contract} path="/contract" exact />
+        <Route component={ContractRevision} path="/contract/revision" />
         <Route component={AssigneeList} path="/assignees" />
         <Route component={AddAssignee} path="/addAssignee" />
         <Route component={EditAssignee} path="/assignee" />
