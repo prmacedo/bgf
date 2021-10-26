@@ -1,0 +1,322 @@
+/* Header */
+.header {
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.header h1 {
+  font-weight: 500;
+}
+
+.header h1 svg {
+  margin-right: 1rem;
+  font-size: 1.5rem;
+}
+
+/* Main */
+.main {
+  max-width: 100%;
+}
+
+.main h2 {
+  margin-bottom: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.main h2 svg {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.main h2 svg:hover {
+  color: var(--green);
+}
+
+.main form > div {
+  margin-bottom: 1rem;
+}
+
+/* Tools row */
+.toolsRow {
+  margin-bottom: 1rem;
+}
+
+.toolsRow > button {
+  width: 15rem;
+  
+}
+.toolsRow > .btnRow {
+  display: flex;
+  gap: 1rem;
+}
+
+.toolsRow > .btnRow .btn {
+  width: 15rem;
+}
+
+/* Formulário parte do Cliente */
+#nameID {grid-area: name;}
+#nacionalityID {grid-area: nacionality;}
+#genderID {grid-area: gender;}
+#maritalStateID {grid-area: maritalState;}
+#professionID {grid-area: profession;}
+#rgID {grid-area: rg;}
+#cpfID {grid-area: cpf;}
+#emailID {grid-area: email;}
+#telID {grid-area: tel;}
+#cepID {grid-area: cep;}
+#streetID {grid-area: street;}
+#cityID {grid-area: city;}
+#ufID {grid-area: uf;}
+#districtID {grid-area: district;}
+#complementID {grid-area: complement;}
+
+#clientInputs {
+  display: grid;
+  grid-template-areas: 
+    'name name maritalState gender'
+    'nacionality rg cpf profession'
+    'email tel city uf'
+    'cep street district complement';
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Formulário parte do parceiro do Cliente */
+#partnerNameID {grid-area: partnerName;}
+#partnerNacionalityID {grid-area: partnerNacionality;}
+#partnerGenderID {grid-area: partnerGender;}
+#partnerMaritalStateID {grid-area: partnerMaritalState;}
+#partnerProfessionID {grid-area: partnerProfession;}
+#partnerRGID {grid-area: partnerRG;}
+#partnerCPFID {grid-area: partnerCPF;}
+#partnerEmailID {grid-area: partnerEmail;}
+#partnerTelID {grid-area: partnerTel;}
+#partnerCEPID {grid-area: partnerCEP;}
+#partnerStreetID {grid-area: partnerStreet;}
+#partnerCityID {grid-area: partnerCity;}
+#partnerUFID {grid-area: partnerUF;}
+#partnerDistrictID {grid-area: partnerDistrict;}
+#partnerComplementID {grid-area: partnerComplement;}
+
+#partnerInputs {
+  display: grid;
+  grid-template-areas: 
+    'partnerName partnerName partnerMaritalState partnerGender'
+    'partnerNacionality partnerRG partnerCPF partnerProfession'
+    'partnerEmail partnerTel partnerCity partnerUF'
+    'partnerCEP partnerStreet partnerDistrict partnerComplement';
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Formulário parte do cessionário */
+#assigneeNameID {grid-area: assigneeName;}
+#assigneeCNPJID {grid-area: assigneeCNPJ;}
+#assigneeEmailID {grid-area: assigneeEmail;}
+#assigneeTelID {grid-area: assigneeTel;}
+#assigneeCEPID {grid-area: assigneeCEP;}
+#assigneeStreetID {grid-area: assigneeStreet;}
+#assigneeCityID {grid-area: assigneeCity;}
+#assigneeUFID {grid-area: assigneeUF;}
+#assigneeDistrictID {grid-area: assigneeDistrict;}
+#assigneeComplementID {grid-area: assigneeComplement;}
+
+#assigneeInputs {
+  display: grid;
+  grid-template-areas: 
+    'assigneeName assigneeCNPJ assigneeEmail assigneeTel'
+    'assigneeNacionality assigneeRG assigneeCPF assigneeProfession'
+    'assigneeCEP assigneeCity assigneeDistrict assigneeUF'
+    'assigneeStreet assigneeStreet assigneeComplement assigneeComplement';
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Formulário parte da administradora do cessionário */
+#adminGroupID {grid-area: adminGroup;}
+#adminNameID {grid-area: adminName;}
+#adminCNPJID {grid-area: adminCNPJ;}
+#adminCEPID {grid-area: adminCEP;}
+#adminStreetID {grid-area: adminStreet;}
+#adminCityID {grid-area: adminCity;}
+#adminUFID {grid-area: adminUF;}
+#adminDistrictID {grid-area: adminDistrict;}
+#adminComplementID {grid-area: adminComplement;}
+
+#assigneeAdminInputs {
+  display: grid;
+  grid-template-areas: 
+    'adminName adminCNPJ adminCity adminUF'
+    'adminCEP adminStreet adminDistrict adminComplement';
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Formulário parte do contrato */
+#fundID {grid-area: fund;}
+#optionID {grid-area: option;}
+#courtID {grid-area: court;}
+#processID {grid-area: process;}
+#precatoryID {grid-area: precatory;}
+#percentageID {grid-area: percentage;}
+#proposalValueID {grid-area: proposalValue;}
+#entityID {grid-area: entity;}
+#farmCourtID {grid-area: farmCourt;}
+#precatoryValueID {grid-area: precatoryValue;}
+#attorneyFeeID {grid-area: attorneyFee;}
+#placeID {grid-area: place;}
+#dateID {grid-area: date;}
+
+#contractInputs {
+  display: grid;
+  grid-template-areas: 
+    'entity entity entity entity farmCourt farmCourt farmCourt farmCourt precatoryValue precatoryValue precatoryValue precatoryValue'
+    'fund fund fund fund court court court court option option option option'
+    'process process process process precatory precatory precatory precatory place place place place'
+    'percentage percentage percentage proposalValue proposalValue proposalValue attorneyFee attorneyFee attorneyFee date date date';
+  gap: 1rem;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+/* Input Group */
+.inputGroup {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Btn Group */
+.btnGroup {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+
+  margin-top: 2rem;
+}
+
+/* Botões */
+.btn {
+  max-width: 100%;
+  
+  padding: 1rem 0;
+  
+  font-size: 1rem;
+  color: var(--white);
+  font-weight: 600;
+  
+  border: none;
+
+  cursor: pointer;
+  
+  transition: 0.3s;
+}
+
+.btn:disabled {
+  background-color: var(--disabled);
+  color: var(--white)!important;
+}
+
+a.btn.disabled {
+  border-color: var(--disabled);
+  color: var(--disabled);
+  pointer-events: none;
+}
+
+.btnGreen {
+  background-color: var(--green);
+  text-align: center;
+
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.btnGreen:hover {
+  background-color: var(--green-dark);
+}
+
+.btnOutlineGreen {
+  color: var(--green);
+  text-decoration: none;
+  text-align: center;
+  
+  border-radius: 0.5rem;  
+  border: 2px solid var(--green);
+}
+
+.btnOutlineGreen:hover {
+  color: var(--white);
+  background-color: var(--green);
+}
+
+.btnRed {
+  color: var(--red);
+  text-decoration: none;
+  text-align: center;
+  
+  border-radius: 0.5rem;  
+  border: 2px solid var(--red);
+}
+
+.btnRed:hover {
+  color: var(--white);
+  background-color: var(--red);
+}
+
+.btn:disabled, .outlineBtn:disabled, a.outlineBtn.disabled {
+  pointer-events: none;
+  color: var(--disabled);
+  border: 2px solid var(--disabled);
+}
+
+/* Modal */
+.modalContainer.hide {
+  display: none;
+}
+
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.modal {
+  background-color: var(--white);
+  padding: 2rem 3rem;
+  border-radius: 0.5rem;
+}
+
+.modal .modalContent {
+  margin: 1rem 0 2rem;
+}
+
+.modal .modalGroupBtn {
+  display: flex;
+  gap: 1rem;
+}
+
+.modal .modalGroupBtn .btn {
+  width: 100%;
+}
+
+/* Gerais */
+.hide {
+  display: none!important;
+}
+
+#clientGroup, #partnerGroup, #assigneeGroup, #adminGroup, #contractGroup {
+  max-width: 100%;
+}
