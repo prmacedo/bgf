@@ -88,12 +88,12 @@ export default function Proposal() {
                 />
               </div>
               <div id={styles.fundGroup} className={styles.inputGroup}>
-                <label htmlFor="fund">Nome do fundo</label>
+                <label htmlFor="fund">Cessionário</label>
                 <input
                   type="text"
                   id="fund"
                   name="fund"
-                  placeholder="Digite o nome do fundo"
+                  placeholder="Escolha o Cessionário"
                   value={fund}
                   onChange={(evt) => setFund(evt.target.value)}  
                 />
