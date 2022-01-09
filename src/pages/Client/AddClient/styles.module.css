@@ -56,34 +56,6 @@
   padding: 0.5rem 0 2rem;
 }
 
-.formContainer form .addressInputs .cepGroup {
-  display: grid;
-  grid-template-columns: 41.66666% 25%;
-  gap: 1rem;
-
-  align-items: flex-end;
-
-  padding: 0.5rem 0 1rem;
-}
-
-.formContainer form .addressInputs {
-  padding-bottom: 2rem;
-}
-
-#street, #partnerStreet {grid-area: street;}
-#city, #partnerCity {grid-area: city;}
-#uf, #partnerUF {grid-area: uf;}
-#district, #partnerDistrict {grid-area: district;}
-#complement, #partnerComplement {grid-area: complement;}
-
-.formContainer form .addressInputs .addressGroup {
-  display: grid;
-  gap: 1rem;
-  grid-template-areas: 
-    'street street street street street city city city city city uf uf'
-    'district district district district district complement complement complement complement complement complement complement';
-}
-
 .outlineBtn {
   color: var(--green);
   font-weight: 600;
@@ -111,10 +83,6 @@
 
 .detailsInputs .outlineBtn svg {
   font-size: 1.5rem;
-}
-
-.addressInputs .outlineBtn {
-  padding: 0 3rem;
 }
 
 .outlineBtn:hover {

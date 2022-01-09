@@ -8,6 +8,7 @@ import Container from '../../../components/Container';
 import Select from '../../../components/Select';
 
 import styles from './styles.module.css';
+import AddressForm from '../../../components/AddressForm';
 
 export default function AddClient() {
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -82,11 +83,11 @@ export default function AddClient() {
   ];
 
   const maritalStates = [
-    { value: 'Solteiro(a)', label: 'Solteiro(a)' },
-    { value: 'Casado(a)', label: 'Casado(a)' },
-    { value: 'Separado(a)', label: 'Separado(a)' },
-    { value: 'Divorciado(a)', label: 'Divorciado(a)' },
-    { value: 'Viúvo(a)', label: 'Viúvo(a)' }
+    { value: 'single', label: 'Solteiro(a)' },
+    { value: 'married', label: 'Casado(a)' },
+    { value: 'separated', label: 'Separado(a)' },
+    { value: 'divorced', label: 'Divorciado(a)' },
+    { value: 'widowed', label: 'Viúvo(a)' }
   ];
 
   const genders = [
@@ -129,7 +130,19 @@ export default function AddClient() {
   }
 
   function handleAddClientSubmit(evt) {
-    // evt.preventDefault();
+    evt.preventDefault();    
+    console.log(cep)
+    console.log(street)
+    console.log(city)
+    console.log(uf)
+    console.log(district)
+    console.log(complement)
+    console.log(partnerCEP)
+    console.log(partnerStreet)
+    console.log(partnerCity)
+    console.log(partnerUF)
+    console.log(partnerDistrict)
+    console.log(partnerComplement)
   }
   
   function handleAddNewProject(evt) {
@@ -291,7 +304,23 @@ export default function AddClient() {
                 </div>
               </div>
 
-              <h3>Endereço</h3>
+              <AddressForm 
+                title={'Endereço'}
+                cep={cep}
+                setCEP={setCEP}
+                street={street}
+                setStreet={setStreet}
+                city={city}
+                setCity={setCity}
+                uf={uf}
+                setUF={setUF}
+                district={district}
+                setDistrict={setDistrict}
+                complement={complement}
+                setComplement={setComplement}
+              />
+
+              {/* <h3>Endereço</h3>
 
               <div className={styles.addressInputs}>
                 <div className={styles.cepGroup}>
@@ -373,7 +402,7 @@ export default function AddClient() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className={styles.btnGroup}>
                 <Link to="/clients" className={styles.cancelBtn}>Cancelar</Link>
@@ -511,7 +540,23 @@ export default function AddClient() {
                 </div>
               </div>
 
-              <h3>Endereço</h3>
+              <AddressForm 
+                title={'Endereço do cônjuge'}
+                cep={partnerCEP}
+                setCEP={setPartnerCEP}
+                street={partnerStreet}
+                setStreet={setPartnerStreet}
+                city={partnerCity}
+                setCity={setPartnerCity}
+                uf={partnerUF}
+                setUF={setPartnerUF}
+                district={partnerDistrict}
+                setDistrict={setPartnerDistrict}
+                complement={partnerComplement}
+                setComplement={setPartnerComplement}
+              />
+
+              {/* <h3>Endereço</h3>
 
               <div className={styles.addressInputs}>
                 <div className={styles.cepGroup}>
@@ -591,7 +636,7 @@ export default function AddClient() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className={styles.btnGroup}>
                 <button

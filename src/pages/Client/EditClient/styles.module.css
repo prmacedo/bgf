@@ -189,68 +189,6 @@
   padding: 0.5rem 0 2rem;
 }
 
-.formContainer form .addressInputsEditing .cepGroup {
-  display: grid;
-  grid-template-columns: 41.66666% 25%;
-  gap: 1rem;
-
-  align-items: flex-end;
-
-  padding: 0.5rem 0 1rem;
-}
-
-.addressInputsEditing .cepBtn {
-  color: var(--green);
-  font-weight: 600;
-  font-size: 1rem;
-
-  padding: 0 3rem;
-  height: 3rem;
-  
-  background-color: transparent;
-  border: 2px solid var(--green);
-  
-  border-radius: 0.5rem;
-
-  cursor: pointer;
-
-  transition: 0.3s;
-}
-
-.addressInputsEditing .cepBtn:hover {
-  color: var(--white);
-  background-color: var(--green);
-}
-
-#street, #adminStreet {grid-area: street;}
-#city, #adminCity {grid-area: city;}
-#uf, #adminUF {grid-area: uf;}
-#district, #adminDistrict {grid-area: district;}
-#complement, #adminComplement {grid-area: complement;}
-#cep, #adminCEP {grid-area: cep;}
-
-.formContainer form .addressInputsEditing,
-.formContainer form .addressInputs {
-  padding-bottom: 2rem;
-}
-
-.formContainer form .addressInputs .addressGroup {
-  display: grid;
-  gap: 1rem;
-  grid-template-areas: 
-    'cep cep cep cep cep city city city city city uf uf'
-    'street street street street street street street district district district district district'
-    'complement complement complement complement complement complement complement complement complement complement complement complement';
-}
-
-.formContainer form .addressInputsEditing .addressGroup {
-  display: grid;
-  gap: 1rem;
-  grid-template-areas: 
-    'street street street street street city city city city city uf uf'
-    'district district district district district complement complement complement complement complement complement complement';
-}
-
 .btnGroup {
   grid-area: btnGroup;
 

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { FiEdit2, FiBriefcase, FiTrash2 } from 'react-icons/fi';
 
 import Container from '../../../components/Container';
-import Select from '../../../components/Select';
+import AddressForm from '../../../components/AddressForm';
 
 import styles from './styles.module.css';
 
@@ -231,7 +231,24 @@ export default function EditAssignee() {
                 </div>
               </div>
 
-              <h3>Endereço do Cessionário</h3>
+              <AddressForm
+                title={'Endereço do Cessionário'}
+                cep={cep}
+                setCEP={setCEP}
+                street={street}
+                setStreet={setStreet}
+                city={city}
+                setCity={setCity}
+                uf={uf}
+                setUF={setUF}
+                district={district}
+                setDistrict={setDistrict}
+                complement={complement}
+                setComplement={setComplement}
+                disabled={!isEditing}
+              />
+
+              {/* <h3>Endereço do Cessionário</h3>
               
               <div className={isEditing ? styles.addressInputsEditing : styles.addressInputs}>
                 <div className={`${styles.cepGroup} ${isEditing ? null : styles.hide}`}>
@@ -329,7 +346,7 @@ export default function EditAssignee() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <h2>Dados da Instituição Administradora do Cessionário</h2>
 
@@ -365,7 +382,24 @@ export default function EditAssignee() {
                 </div>
               </div>
 
-              <h3>Endereço da Instituição Administradora</h3>
+              <AddressForm
+                title={'Endereço da Instituição Administradora'}
+                cep={adminCEP}
+                setCEP={setAdminCEP}
+                street={adminStreet}
+                setStreet={setAdminStreet}
+                city={adminCity}
+                setCity={setAdminCity}
+                uf={adminUF}
+                setUF={setAdminUF}
+                district={adminDistrict}
+                setDistrict={setAdminDistrict}
+                complement={adminComplement}
+                setComplement={setAdminComplement}
+                disabled={!isEditing}
+              />
+
+              {/* <h3>Endereço da Instituição Administradora</h3>
 
               <div className={isEditing ? styles.addressInputsEditing : styles.addressInputs}>
                 <div className={`${styles.cepGroup} ${isEditing ? null : styles.hide}`}>
@@ -463,7 +497,7 @@ export default function EditAssignee() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
               
               <div className={`${styles.btnGroup} ${isEditing ? null : styles.hide}`}>
                 <button
