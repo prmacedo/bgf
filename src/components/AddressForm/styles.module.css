@@ -1,4 +1,4 @@
-.addressInputs .cepGroup {
+.addressInputsEditing .cepGroup {
   display: grid;
   grid-template-columns: 41.66666% 25%;
   gap: 1rem;
@@ -8,29 +8,12 @@
   padding: 0.5rem 0 1rem;
 }
 
-.addressInputs {
-  padding-bottom: 2rem;
-}
-
-#street {grid-area: street;}
-#city {grid-area: city;}
-#uf {grid-area: uf;}
-#district {grid-area: district;}
-#complement {grid-area: complement;}
-
-.addressInputs .addressGroup {
-  display: grid;
-  gap: 1rem;
-  grid-template-areas: 
-    'street street street street street city city city city city uf uf'
-    'district district district district district complement complement complement complement complement complement complement';
-}
-
-.outlineBtn {
+.addressInputsEditing .cepBtn {
   color: var(--green);
   font-weight: 600;
   font-size: 1rem;
 
+  padding: 0 3rem;
   height: 3rem;
   
   background-color: transparent;
@@ -43,13 +26,43 @@
   transition: 0.3s;
 }
 
-.addressInputs .outlineBtn {
-  padding: 0 3rem;
-}
-
-.outlineBtn:hover {
+.addressInputsEditing .cepBtn:hover {
   color: var(--white);
   background-color: var(--green);
+}
+
+#street {grid-area: street;}
+#city {grid-area: city;}
+#uf {grid-area: uf;}
+#district {grid-area: district;}
+#complement {grid-area: complement;}
+#cep {grid-area: cep;}
+
+.addressInputsEditing,
+.addressInputs {
+  padding-bottom: 2rem;
+}
+
+.addressInputs .addressGroup {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas: 
+    'cep cep cep cep cep city city city city city uf uf'
+    'street street street street street street street district district district district district'
+    'complement complement complement complement complement complement complement complement complement complement complement complement';
+}
+
+.addressInputsEditing .addressGroup {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas: 
+    'street street street street street city city city city city uf uf'
+    'district district district district district complement complement complement complement complement complement complement';
+}
+
+/* Gerais */
+.hide {
+  display: none!important;
 }
 
 .inputGroup {
@@ -57,29 +70,4 @@
   flex: 1;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: var(--green);
-  
-  font-size: 1.5rem;
-  color: var(--white);
-
-  width: 3rem;
-  height: 3rem;
-
-  border: none;
-  border-radius: 0.5rem;
-
-  cursor: pointer;
-
-  transition: 0.3s;
-}
-
-.btn:hover {
-  background-color: var(--green-dark);
 }

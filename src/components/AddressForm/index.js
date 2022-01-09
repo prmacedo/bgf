@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import styles from './styles.module.css';
 
-export default function AddressForm({ title, cep, setCEP, street, setStreet, city, setCity, uf, setUF, district, setDistrict, complement, setComplement }) {  
+export default function AddressForm({ title, cep, setCEP, street, setStreet, city, setCity, uf, setUF, district, setDistrict, complement, setComplement, disabled = false }) {  
   const ufs = [
     { value: "AC", label: "AC" },
     { value: "AL", label: "AL" },
@@ -65,22 +65,24 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
     <>
       <h3>{ title }</h3>
 
-      <div className={styles.addressInputs}>
-        <div className={styles.cepGroup}>
-          <div id={styles.cep} className={styles.inputGroup}>
+      <div className={!disabled ? styles.addressInputsEditing : styles.addressInputs}>
+        <div className={`${styles.cepGroup} ${!disabled ? null : styles.hide}`}>
+          <div id={styles.cepSearch} className={styles.inputGroup}>
             <label htmlFor="cep">CEP</label>
             <input
               type="text"
               name="cep"
+              id="cep"
               value={cep}
               onChange={(evt) => setCEP(evt.target.value)}
+              disabled={disabled}
               placeholder="Digite o CEP"
             />
           </div>
 
           <button
             type="button"
-            className={styles.outlineBtn}
+            className={styles.cepBtn}
             onClick={() => handleSearchCEP()}
           >
             Buscar pelo CEP
@@ -88,6 +90,19 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
         </div>
 
         <div className={styles.addressGroup}>
+          <div id={styles.cep} className={`${styles.inputGroup} ${!disabled ? styles.hide : null}`}>
+            <label htmlFor="cep">CEP</label>
+            <input
+              type="text"
+              name="cep"
+              id="cep"
+              value={cep}
+              onChange={(evt) => setCEP(evt.target.value)}
+              disabled={disabled}
+              placeholder="Digite o CEP"
+            />
+          </div>
+
           <div id={styles.street} className={styles.inputGroup}>
             <label htmlFor="street">Logradouro</label>
             <input
@@ -96,6 +111,7 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
               value={street}
               onChange={(evt) => setStreet(evt.target.value)}
               placeholder="Digite o Logradouro"
+              disabled={disabled}
             />
           </div>
 
@@ -107,6 +123,7 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
               value={city}
               onChange={(evt) => setCity(evt.target.value)}
               placeholder="Digite a cidade"
+              disabled={disabled}
             />
           </div>
 
@@ -120,6 +137,7 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
               value={uf}
               onChange={(evt) => setUF(evt.value)}
               type="cep"
+              disabled={disabled}
             />
           </div>
 
@@ -131,6 +149,7 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
               value={district}
               onChange={(evt) => setDistrict(evt.target.value)}
               placeholder="Digite o bairro"
+              disabled={disabled}
             />
           </div>
 
@@ -142,6 +161,7 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
               value={complement}
               onChange={(evt) => setComplement(evt.target.value)}
               placeholder="Digite o complemento"
+              disabled={disabled}
             />
           </div>
         </div>
