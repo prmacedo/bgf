@@ -29,7 +29,7 @@
 #name, #partnerName {grid-area: name;}
 #nacionality, #partnerNacionality {grid-area: nacionality;}
 #gender, #partnerGender {grid-area: gender;}
-#maritalState, #partnerMaritalState {grid-area: maritalState;}
+#maritalState, #marriageRegime {grid-area: maritalState;}
 #profession, #partnerProfession {grid-area: profession;}
 #rg, #partnerRG {grid-area: rg;}
 #cpf, #partnerCPF {grid-area: cpf;}
@@ -54,34 +54,6 @@
   grid-template-columns: 2fr 1fr;
   
   padding: 0.5rem 0 2rem;
-}
-
-.formContainer form .addressInputs .cepGroup {
-  display: grid;
-  grid-template-columns: 41.66666% 25%;
-  gap: 1rem;
-
-  align-items: flex-end;
-
-  padding: 0.5rem 0 1rem;
-}
-
-.formContainer form .addressInputs {
-  padding-bottom: 2rem;
-}
-
-#street, #partnerStreet {grid-area: street;}
-#city, #partnerCity {grid-area: city;}
-#uf, #partnerUF {grid-area: uf;}
-#district, #partnerDistrict {grid-area: district;}
-#complement, #partnerComplement {grid-area: complement;}
-
-.formContainer form .addressInputs .addressGroup {
-  display: grid;
-  gap: 1rem;
-  grid-template-areas: 
-    'street street street street street city city city city city uf uf'
-    'district district district district district complement complement complement complement complement complement complement';
 }
 
 .outlineBtn {
@@ -111,10 +83,6 @@
 
 .detailsInputs .outlineBtn svg {
   font-size: 1.5rem;
-}
-
-.addressInputs .outlineBtn {
-  padding: 0 3rem;
 }
 
 .outlineBtn:hover {

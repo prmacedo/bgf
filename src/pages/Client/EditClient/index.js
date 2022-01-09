@@ -5,6 +5,7 @@ import { FiEdit2, FiUser, FiPlus, FiTrash2, FiDownload, FiXCircle } from 'react-
 
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
+import AddressForm from '../../../components/AddressForm';
 
 import styles from './styles.module.css';
 
@@ -425,7 +426,24 @@ export default function EditClient() {
                 </div>
               </div>
 
-              <h3>Endereço</h3>
+              <AddressForm
+                title={'Endereço'}
+                cep={cep}
+                setCEP={setCEP}
+                street={street}
+                setStreet={setStreet}
+                city={city}
+                setCity={setCity}
+                uf={uf}
+                setUF={setUF}
+                district={district}
+                setDistrict={setDistrict}
+                complement={complement}
+                setComplement={setComplement}
+                disabled={!isEditing}
+              />
+
+              {/* <h3>Endereço</h3>
 
               <div className={isEditing ? styles.addressInputsEditing : styles.addressInputs}>
                 <div className={`${styles.cepGroup} ${isEditing ? null : styles.hide}`}>
@@ -529,7 +547,7 @@ export default function EditClient() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className={`${styles.btnGroup} ${isEditing ? null : styles.hide}`}>
                 <button

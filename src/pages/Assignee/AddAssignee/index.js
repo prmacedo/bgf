@@ -4,7 +4,7 @@ import { FiBriefcase } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import Container from '../../../components/Container';
-import Select from '../../../components/Select';
+import AddressForm from '../../../components/AddressForm';
 
 import styles from './styles.module.css';
 
@@ -40,7 +40,19 @@ export default function AddAssignee() {
   }
 
   function handleAddManagerSubmit(evt) {
-    // evt.preventDefault();
+    evt.preventDefault();
+    console.log(cep)
+    console.log(street)
+    console.log(city)
+    console.log(uf)
+    console.log(district)
+    console.log(complement)
+    console.log(adminCEP)
+    console.log(adminStreet)
+    console.log(adminCity)
+    console.log(adminUF)
+    console.log(adminDistrict)
+    console.log(adminComplement)
   }
 
   const options = [
@@ -136,7 +148,23 @@ export default function AddAssignee() {
               </div>
             </div>
 
-            <h3>Endereço do Cessionário</h3>
+            <AddressForm
+              title={'Endereço do Cessionário'}
+              cep={cep}
+              setCEP={setCEP}
+              street={street}
+              setStreet={setStreet}
+              city={city}
+              setCity={setCity}
+              uf={uf}
+              setUF={setUF}
+              district={district}
+              setDistrict={setDistrict}
+              complement={complement}
+              setComplement={setComplement}
+            />
+
+            {/* <h3>Endereço do Cessionário</h3>
 
             <div className={styles.addressInputs}>
               <div className={styles.cepGroup}>
@@ -216,7 +244,7 @@ export default function AddAssignee() {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <h2>Dados da Instituição Administradora do Cessionário</h2>
 
@@ -246,7 +274,23 @@ export default function AddAssignee() {
               </div>
             </div>
 
-            <h3>Endereço da Instituição Administradora</h3>
+            <AddressForm
+              title={'Endereço da Instituição Administradora'}
+              cep={adminCEP}
+              setCEP={setAdminCEP}
+              street={adminStreet}
+              setStreet={setAdminStreet}
+              city={adminCity}
+              setCity={setAdminCity}
+              uf={adminUF}
+              setUF={setAdminUF}
+              district={adminDistrict}
+              setDistrict={setAdminDistrict}
+              complement={adminComplement}
+              setComplement={setAdminComplement}
+            />
+
+            {/* <h3>Endereço da Instituição Administradora</h3>
 
             <div className={styles.addressInputs}>
               <div className={styles.cepGroup}>
@@ -326,7 +370,7 @@ export default function AddAssignee() {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
                     
             <div className={styles.btnGroup}>
               <Link to="/managers" className={styles.cancelBtn}>Cancelar</Link>

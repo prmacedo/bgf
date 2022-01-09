@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 
 import { FiPlus, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
 
 import styles from './styles.module.css';
+import AddressForm from '../../../components/AddressForm';
 
 export default function AddClient() {
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -36,7 +38,7 @@ export default function AddClient() {
   const [partnerName, setPartnerName] = useState('');
   const [partnerNacionality, setPartnerNacionality] = useState('');
   const [partnerGender, setPartnerGender] = useState('');
-  const [partnerMaritalState, setPartnerMaritalState] = useState('');
+  const [marriageRegime, setMarriageRegime] = useState('');
   const [partnerProfession, setPartnerProfession] = useState('');
   const [partnerCPF, setPartnerCPF] = useState('');
   const [partnerRG, setPartnerRG] = useState('');
@@ -93,8 +95,34 @@ export default function AddClient() {
     { value: 'M', label: 'Masculino' }
   ];
 
-  function handleSearchCEP() {
+  const marriageRegimes = [
+    { value: 'Separação de bens', label: 'Separação de bens' },
+    { value: 'Comunhão Parcial', label: 'Comunhão Parcial' },
+    { value: 'Comunhão Total', label: 'Comunhão Total' }
+  ]
+
+  async function handleSearchCEP() {
     // Chamar API de CEP
+    const formatedCEP = cep.replace('.', '').replace('-', '');
+
+    if (formatedCEP.length === 8) {
+      const response = await axios.get(`https://viacep.com.br/ws/${formatedCEP}/json/`);
+  
+      if (response.data.erro) {
+        console.log(response);      
+      }
+  
+      const { data } = response;
+  
+      setCity(data.localidade);
+      setUF(data.uf);
+      setDistrict(data.bairro);
+      setStreet(data.logradouro);
+      setComplement(data.complemento);      
+    } else {
+      console.log("CEP inválido");
+    }
+
   }
 
   function handleShowPartnerInputs() {
@@ -102,7 +130,19 @@ export default function AddClient() {
   }
 
   function handleAddClientSubmit(evt) {
-    // evt.preventDefault();
+    evt.preventDefault();    
+    console.log(cep)
+    console.log(street)
+    console.log(city)
+    console.log(uf)
+    console.log(district)
+    console.log(complement)
+    console.log(partnerCEP)
+    console.log(partnerStreet)
+    console.log(partnerCity)
+    console.log(partnerUF)
+    console.log(partnerDistrict)
+    console.log(partnerComplement)
   }
   
   function handleAddNewProject(evt) {
@@ -133,7 +173,8 @@ export default function AddClient() {
                     options={projects}
                     id="project"
                     name="project"
-                    placeholder="Selecione o projeto"
+                    value={project}
+                    placeholder="Selecione o projeto"                    
                     onChange={(evt) => setProject(evt.value)}
                   />
                 </div>
@@ -181,6 +222,7 @@ export default function AddClient() {
                     id="gender"
                     name="gender"
                     placeholder="Selecione o sexo"
+                    value={gender}
                     onChange={(evt) => setGender(evt.value)}
                   />
                 </div>
@@ -192,6 +234,7 @@ export default function AddClient() {
                     id="maritalState"
                     name="maritalState"
                     placeholder="Selecione o estado civil"
+                    value={maritalState}
                     onChange={(evt) => setMaritalState(evt.value)}
                   />
                 </div>
@@ -261,7 +304,23 @@ export default function AddClient() {
                 </div>
               </div>
 
-              <h3>Endereço</h3>
+              <AddressForm 
+                title={'Endereço'}
+                cep={cep}
+                setCEP={setCEP}
+                street={street}
+                setStreet={setStreet}
+                city={city}
+                setCity={setCity}
+                uf={uf}
+                setUF={setUF}
+                district={district}
+                setDistrict={setDistrict}
+                complement={complement}
+                setComplement={setComplement}
+              />
+
+              {/* <h3>Endereço</h3>
 
               <div className={styles.addressInputs}>
                 <div className={styles.cepGroup}>
@@ -315,7 +374,9 @@ export default function AddClient() {
                       id="uf"
                       name="uf"
                       placeholder="--"
+                      value={uf}
                       onChange={(evt) => setUF(evt.value)}
+                      type="cep"
                     />
                   </div>
 
@@ -341,7 +402,7 @@ export default function AddClient() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className={styles.btnGroup}>
                 <Link to="/clients" className={styles.cancelBtn}>Cancelar</Link>
@@ -397,18 +458,20 @@ export default function AddClient() {
                     id="partnerGender"
                     name="partnerGender"
                     placeholder="Selecione o sexo"
+                    value={partnerGender}
                     onChange={(evt) => setPartnerGender(evt.value)}
                   />
                 </div>
 
-                <div id={styles.partnerMaritalState} className={styles.inputGroup}>
-                  <label htmlFor="partnerMaritalState">Estado Civil</label>
+                <div id={styles.marriageRegime} className={styles.inputGroup}>
+                  <label htmlFor="marriageRegime">Regime de Casamento</label>
                   <Select
-                    options={maritalStates}
-                    id="partnerMaritalState"
-                    name="partnerMaritalState"
-                    placeholder="Selecione o estado civil"
-                    onChange={(evt) => setPartnerMaritalState(evt.value)}
+                    options={marriageRegimes}
+                    id="marriageRegime"
+                    name="marriageRegime"
+                    placeholder="Selecione o regime de casamento"
+                    value={marriageRegime}
+                    onChange={(evt) => setMarriageRegime(evt.value)}
                   />
                 </div>
 
@@ -477,7 +540,23 @@ export default function AddClient() {
                 </div>
               </div>
 
-              <h3>Endereço</h3>
+              <AddressForm 
+                title={'Endereço do cônjuge'}
+                cep={partnerCEP}
+                setCEP={setPartnerCEP}
+                street={partnerStreet}
+                setStreet={setPartnerStreet}
+                city={partnerCity}
+                setCity={setPartnerCity}
+                uf={partnerUF}
+                setUF={setPartnerUF}
+                district={partnerDistrict}
+                setDistrict={setPartnerDistrict}
+                complement={partnerComplement}
+                setComplement={setPartnerComplement}
+              />
+
+              {/* <h3>Endereço</h3>
 
               <div className={styles.addressInputs}>
                 <div className={styles.cepGroup}>
@@ -557,7 +636,7 @@ export default function AddClient() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className={styles.btnGroup}>
                 <button

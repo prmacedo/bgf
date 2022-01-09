@@ -1,0 +1,73 @@
+.addressInputsEditing .cepGroup {
+  display: grid;
+  grid-template-columns: 41.66666% 25%;
+  gap: 1rem;
+
+  align-items: flex-end;
+
+  padding: 0.5rem 0 1rem;
+}
+
+.addressInputsEditing .cepBtn {
+  color: var(--green);
+  font-weight: 600;
+  font-size: 1rem;
+
+  padding: 0 3rem;
+  height: 3rem;
+  
+  background-color: transparent;
+  border: 2px solid var(--green);
+  
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.addressInputsEditing .cepBtn:hover {
+  color: var(--white);
+  background-color: var(--green);
+}
+
+#street {grid-area: street;}
+#city {grid-area: city;}
+#uf {grid-area: uf;}
+#district {grid-area: district;}
+#complement {grid-area: complement;}
+#cep {grid-area: cep;}
+
+.addressInputsEditing,
+.addressInputs {
+  padding-bottom: 2rem;
+}
+
+.addressInputs .addressGroup {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas: 
+    'cep cep cep cep cep city city city city city uf uf'
+    'street street street street street street street district district district district district'
+    'complement complement complement complement complement complement complement complement complement complement complement complement';
+}
+
+.addressInputsEditing .addressGroup {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas: 
+    'street street street street street city city city city city uf uf'
+    'district district district district district complement complement complement complement complement complement complement';
+}
+
+/* Gerais */
+.hide {
+  display: none!important;
+}
+
+.inputGroup {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+}

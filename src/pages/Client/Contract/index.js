@@ -51,12 +51,12 @@ export default function Contract() {
 
             <div id={styles.proposalInputs}>                          
               <div id={styles.fundGroup} className={styles.inputGroup}>
-                <label htmlFor="fund">Nome do fundo</label>
+                <label htmlFor="fund">Cessionário</label>
                 <input
                   type="text"
                   id="fund"
                   name="fund"
-                  placeholder="Digite o nome do fundo"
+                  placeholder="Escolha o cessionário"
                   value={fund}
                   onChange={(evt) => setFund(evt.target.value)}
                 />
