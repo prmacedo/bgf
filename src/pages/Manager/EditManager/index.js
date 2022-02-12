@@ -8,6 +8,10 @@ import Select from '../../../components/Select';
 import styles from './styles.module.css';
 
 import cancelEdit from '../../../assets/icons/cancel-edit.svg';
+import { useEffect } from 'react';
+import API_URL from '../../../config/api';
+import { useHistory, useParams } from 'react-router-dom';
+import { useUserData } from '../../../context/UserData';
 
 export default function EditManager() {
   const [isEditing, setIsEditing] = useState(false);
@@ -23,9 +27,14 @@ export default function EditManager() {
   const [tel, setTel] = useState('');
   const [active, setActive] = useState('');
 
+  const { id } = useParams();
+  const { headers } = useUserData();
+
+  const history = useHistory();
+
   const options = [
-    { value: 1, label: "Administrador" },
-    { value: 2, label: "Gerente" }
+    { value: "admin", label: "Administrador" },
+    { value: "manager", label: "Gerente" }
   ];
 
   function handleEditSettings(evt) {
@@ -43,12 +52,7 @@ export default function EditManager() {
 
     setActive(!active);
     setShowToggleActiveModal(false)
-  }
-
-
-  function handleConfirmDeletion() {
-    setShowDeleteModal(false);
-  }
+  }  
   
   function handleConfirmEdition() {
     setShowEditModal(false);
@@ -86,6 +90,72 @@ export default function EditManager() {
     }
   }
 
+  async function handleSubmit() {
+    const data = {
+      name,
+      type: type.value,
+      email,
+      telephone: tel
+    };
+
+    try {
+      const response = await API_URL.patch(`/user/${id}`, data , { headers });    
+
+      setShowSaveEditModal(false);
+      setIsEditing(false);      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleActiveSubmit() {
+    const data = {
+      active: !active
+    };
+
+    try {
+      const response = await API_URL.patch(`/user/${id}`, data, { headers });
+
+      setShowToggleActiveModal(false);
+      setActive(!active);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleConfirmDeletion() {
+    try {
+      const response = await API_URL.delete(`/user/${id}`, { headers });
+
+      setShowDeleteModal(false);
+
+      history.goBack();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getManager() {
+    try {
+      const response = await API_URL.get(`/user/${id}`, { headers });
+      const { data } = response;
+
+      const typeObj = options.find(option => option.value === data.type);
+      
+      setName(data.name);
+      setType(typeObj);
+      setEmail(data.email);
+      setTel(data.telephone);
+      setActive(data.active);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getManager()
+  }, []);
+
   return (
     <>
       <Container>
@@ -108,7 +178,7 @@ export default function EditManager() {
               >
                 {active ? 'Inativar' : 'Ativar'} usuário
               </button>
-              <input type="submit" value="submit" id="toggleActiveBtn" className={styles.submitInput} />
+              {/* <input type="submit" value="submit" id="toggleActiveBtn" className={styles.submitInput} /> */}
             </form>
 
             <div className={styles.btnGroup}>
@@ -167,10 +237,11 @@ export default function EditManager() {
                   options={options}
                   name="type"
                   id="type"
-                  onChange={(evt) => setType(evt.value)}
+                  onChange={(evt) => setType(options.find(option => option.value === evt.value))}
                   placeholder="Escolha o cargo"
                   disabled={!isEditing}
-                  />
+                  value={type}
+                />
                 <small className={styles.hide}>Selecione umas das opções</small>
               </div>
 
@@ -218,8 +289,6 @@ export default function EditManager() {
                 >
                   Salvar alterações
                 </button>
-
-                <input type="submit" value="submit" id="submitBtn" className={styles.submitInput} />
               </div>
             </form>
           </div>
@@ -233,7 +302,7 @@ export default function EditManager() {
           <div className={styles.modalContent}>
             <span>Tem certeza que deseja excluir o registro?</span>
             <br />
-            <span>Ao confirmar, todos os dados do usuário Manoel Augusto serão removidos do sistema.</span>
+            <span>Ao confirmar, todos os dados do usuário { name } serão removidos do sistema.</span>
           </div>
 
           <div className={styles.modalGroupBtn}>
@@ -261,7 +330,7 @@ export default function EditManager() {
           <h2>Deseja editar o registro?</h2>
 
           <div className={styles.modalContent}>
-            <span>Prossiga para editar as informações do usuário Manoel Augusto.</span>
+            <span>Prossiga para editar as informações do usuário { name }.</span>
           </div>
 
           <div className={styles.modalGroupBtn}>
@@ -289,7 +358,7 @@ export default function EditManager() {
           <h2>Sair do modo de edição</h2>
 
           <div className={styles.modalContent}>
-            <span>Ao confirmar, você sairá do modo de edição para dos dados de Manoel Augusto.</span>
+            <span>Ao confirmar, você sairá do modo de edição dos dados de { name }.</span>
           </div>
 
           <div className={styles.modalGroupBtn}>
@@ -317,7 +386,7 @@ export default function EditManager() {
           <h2>Confirmar alteração</h2>
 
           <div className={styles.modalContent}>
-            <span>Ao confirmar, os dados de Manoel Augusto serão atualizados no sistema.</span>
+            <span>Ao confirmar, os dados de { name } serão atualizados no sistema.</span>
           </div>
 
           <div className={styles.modalGroupBtn}>
@@ -329,9 +398,13 @@ export default function EditManager() {
               Cancelar
             </button>
 
-            <label htmlFor="submitBtn" className={styles.submitLabel}>
+            <button 
+              type='button'
+              className={styles.submitBtn}
+              onClick={() => handleSubmit()}
+            >
               Confirmar
-            </label>
+            </button>
           </div>
         </div>
       </div>
@@ -341,7 +414,7 @@ export default function EditManager() {
           <h2>{active ? 'Inativar' : 'Ativar'} usuário</h2>
 
           <div className={styles.modalContent}>
-            <span>Ao confirmar, o usuário Manoel Augusto será {active ? 'inativado' : 'ativado'}.</span>
+            <span>Ao confirmar, o usuário { name } será {active ? 'inativado' : 'ativado'}.</span>
           </div>
 
           <div className={styles.modalGroupBtn}>
@@ -353,9 +426,13 @@ export default function EditManager() {
               Cancelar
             </button>
 
-            <label htmlFor="toggleActiveBtn" className={styles.submitLabel}>
+            <button
+              type='button'
+              className={styles.submitBtn}
+              onClick={() => handleActiveSubmit()}
+            >
               Confirmar
-            </label>
+            </button>
           </div>
         </div>
       </div>

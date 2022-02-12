@@ -37,7 +37,6 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
   ];
 
   async function handleSearchCEP() {
-    // Chamar API de CEP
     const formatedCEP = cep.replace('.', '').replace('-', '');
 
     if (formatedCEP.length === 8) {
@@ -47,14 +46,11 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
         const { data } = response;
   
         setCity(data.localidade);
-        setUF(data.uf);
+        setUF(ufs.find(uf => uf.value === data.uf));
         setDistrict(data.bairro);
         setStreet(data.logradouro);
         setComplement(data.complemento);
       } 
-
-      console.log(response);
-
     } else {
       console.log("CEP inválido");
     }
@@ -135,7 +131,7 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
               name="uf"
               placeholder="--"
               value={uf}
-              onChange={(evt) => setUF(evt.value)}
+              onChange={(evt) => setUF(ufs.find(uf => uf.value === evt.value))}
               type="cep"
               disabled={disabled}
             />

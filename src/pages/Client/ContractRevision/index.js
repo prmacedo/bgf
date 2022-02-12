@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
 import { FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
+import API_URL from '../../../config/api';
+import { useUserData } from '../../../context/UserData';
 
 import styles from './styles.module.css';
 
 export default function ContractRevision() {
   const [isEditing, setIsEditing] = useState(false);
 
+  const { documentId } = useParams();
+  const { headers } = useUserData();
+
   // Client
+  const [clientId, setClientId] = useState(0);
+
   const [name, setName] = useState('');  
   const [cpf, setCPF] = useState('');  
   const [maritalState, setMaritalState] = useState('');  
@@ -31,6 +38,8 @@ export default function ContractRevision() {
 
 
   // Client's partner (if exists)
+  const [partnerId, setPartnerId] = useState(0);
+
   const [partnerName, setPartnerName] = useState('');
   const [partnerCPF, setPartnerCPF] = useState('');
   const [partnerMaritalState, setPartnerMaritalState] = useState('');
@@ -50,6 +59,8 @@ export default function ContractRevision() {
   
 
   // Assignee
+  const [assigneeId, setAssigneeId] = useState(0);
+
   const [assigneeName, setAssigneeName] = useState('');
   const [assigneeCNPJ, setAssigneeCNPJ] = useState('');
   const [assigneeEmail, setAssigneeEmail] = useState('');
@@ -62,6 +73,8 @@ export default function ContractRevision() {
   const [assigneeComplement, setAssigneeComplement] = useState('');
 
   // Assignee's administration
+  const [adminId, setAdminId] = useState(0);
+
   const [adminName, setAdminName] = useState('');
   const [adminCNPJ, setAdminCNPJ] = useState('');
   const [adminCEP, setAdminCEP] = useState('');
@@ -77,13 +90,13 @@ export default function ContractRevision() {
   const [precatoryValue, setPrecatoryValue] = useState('');
   const [attorneyFee, setAttorneyFee] = useState(0);
   const [place, setPlace] = useState('');
-  const [date, setDate] = useState(new Date());
-  const [fund, setFund] = useState('');
+  const [date, setDate] = useState();
   const [court, setCourt] = useState('');
   const [option, setOption] = useState('');
   const [process, setProcess] = useState('');
   const [precatory, setPrecatory] = useState('');
   const [percentage, setPercentage] = useState(0);
+  const [liquidValue, setLiquidValue] = useState(0);
   const [proposalValue, setProposalValue] = useState(0);
 
   const options = [
@@ -129,6 +142,12 @@ export default function ContractRevision() {
     { value: 'widowed', label: 'Viúvo(a)' }
   ];
 
+  const marriageRegimes = [
+    { value: 'separation', label: 'Separação de bens' },
+    { value: 'partial', label: 'Comunhão Parcial' },
+    { value: 'total', label: 'Comunhão Total' }
+  ];
+
   const genders = [
     { value: 'F', label: 'Feminino' },
     { value: 'M', label: 'Masculino' }
@@ -156,11 +175,231 @@ export default function ContractRevision() {
     document.querySelector(`#${id}`).classList.toggle(styles.hide);
   }
   
-  function handleSaveEdition() {
+  async function handleSaveEdition() {
     toggleHiddenModal('confirmSaveEdition');
+    
     // Salvar alterações
+    const dataDoc = {
+      court,
+      type: option.value,
+      precatory,
+      process,
+      percentage,
+      liquidValue,
+      proposalValue,
+      entity,
+      farmCourt,
+      precatoryValue,
+      attorneyFee,
+      place,
+      contractDate: new Date(date),
+    }
+
+    const dataClient = {
+      name,
+      nationality: nacionality,
+      gender: gender.value,
+      rg,
+      cpf,
+      profession,
+      telephone: tel,
+      email,
+      cep,
+      city,
+      street,
+      uf: uf.value,
+      district,
+      complement,
+      maritalStatus: maritalState.value,
+    }
+
+    const dataPartner = {
+      name: partnerName,
+      nationality: partnerNacionality,
+      gender: partnerGender.value,
+      rg: partnerRG,
+      cpf: partnerCPF,
+      profession: partnerProfession,
+      telephone: partnerTel,
+      email: partnerEmail,
+      cep: partnerCEP,
+      city: partnerCity,
+      street: partnerStreet,
+      uf: partnerUF.value,
+      district: partnerDistrict,
+      complement: partnerComplement,
+      marriageRegime: partnerMaritalState.value,
+    }
+
+    const dataAssignee = {
+      name: assigneeName,
+      cnpj: assigneeCNPJ,
+      email: assigneeEmail,
+      telephone: assigneeTel,
+      cep: assigneeCEP,
+      city: assigneeCity,
+      street: assigneeStreet,
+      uf: assigneeUF.value,
+      district: assigneeDistrict,
+      complement: assigneeComplement,
+    }
+
+    const dataAdmin = {
+      name: adminName,
+      cnpj: adminCNPJ,
+      cep: adminCEP,
+      city: adminCity,
+      street: adminStreet,
+      uf: adminUF.value,
+      district: adminDistrict,
+      complement: adminComplement,
+    }    
+
+
+    try {
+      const responseDoc = await API_URL.patch(`/document/${documentId}`, dataDoc, { headers });
+      const responseClient = await API_URL.patch(`/client/${clientId}`, dataClient, { headers });
+      
+      if (maritalState.value === 'married') {
+        const responsePartner = await API_URL.patch(`/partner/${partnerId}`, dataPartner, { headers });
+        console.log(responsePartner);        
+      }
+
+      const responseAssignee = await API_URL.patch(`/assignee/${assigneeId}`, dataAssignee, { headers });
+      const responseAdmin = await API_URL.patch(`/admin/${adminId}`, dataAdmin, { headers });
+
+      console.log(responseDoc);
+      console.log(responseClient);
+      console.log(responseAssignee);
+      console.log(responseAdmin);
+    } catch (error) {
+      console.log(error);
+    }
+
     setIsEditing(false);
   }
+
+  function setClientData(client) {
+    setClientId(client.id);
+
+    setName(client.name);
+    setCPF(client.cpf);
+    setMaritalState(maritalStates.find(maritalState => maritalState.value === client.maritalStatus));
+    setNacionality(client.nationality);
+    setGender(genders.find(gender => gender.value === client.gender));
+    setEmail(client.email);
+    setTel(client.telephone);
+
+    setRG(client.rg);
+    setProfession(client.profession);
+    setCEP(client.cep);
+    setCity(client.city);
+    setUF(ufs.find(uf => uf.value === client.uf));
+    setStreet(client.street);
+    setDistrict(client.district);
+    setComplement(client.complement);
+  }
+
+  function setPartnerData(partner) {
+    console.log(marriageRegimes.find(marriageRegime => marriageRegime.value === partner.marriageRegime));
+    setPartnerId(partner.id);
+
+    setPartnerName(partner.name);
+    setPartnerCPF(partner.cpf);
+    setPartnerMaritalState(marriageRegimes.find(marriageRegime => marriageRegime.value === partner.marriageRegime));
+    setPartnerNacionality(partner.nationality);
+    setPartnerGender(genders.find(gender => gender.value === partner.gender));
+    setPartnerEmail(partner.email);
+    setPartnerTel(partner.telephone);
+
+    setPartnerRG(partner.rg);
+    setPartnerProfession(partner.profession);
+    setPartnerCEP(partner.cep);
+    setPartnerCity(partner.city);
+    setPartnerUF(ufs.find(uf => uf.value === partner.uf));
+    setPartnerStreet(partner.street);
+    setPartnerDistrict(partner.district);
+    setPartnerComplement(partner.complement);
+  }
+
+  function setAssigneeData(assignee) {
+    setAssigneeId(assignee.id);
+
+    setAssigneeName(assignee.name);
+    setAssigneeCNPJ(assignee.cnpj);
+    setAssigneeEmail(assignee.email);
+    setAssigneeTel(assignee.telephone);
+    setAssigneeCEP(assignee.cep);
+    setAssigneeCity(assignee.city);
+    setAssigneeUF(ufs.find(uf => uf.value === assignee.uf));
+    setAssigneeStreet(assignee.street);
+    setAssigneeDistrict(assignee.district);
+    setAssigneeComplement(assignee.complement);
+  }
+
+  function setContractData(contract) {
+    setEntity(contract.entity);
+    setFarmCourt(contract.farmCourt);
+    setPrecatoryValue(contract.precatoryValue);
+    setAttorneyFee(contract.attorneyFee);
+    setPlace(contract.place);
+    setDate(contract.contractDate.split("T")[0]);
+    setCourt(contract.court);
+    setOption(options.find(option => option.value === contract.type));
+    setProcess(contract.process);
+    setPrecatory(contract.precatory);
+    setPercentage(contract.percentage);
+    setLiquidValue(contract.liquidValue);
+    setProposalValue(contract.proposalValue);
+  }
+
+  function setAdminData(admin) {
+    setAdminId(admin.id);
+    setAdminName(admin.name);
+    setAdminCNPJ(admin.cnpj);
+    setAdminCEP(admin.cep);
+    setAdminCity(admin.city);
+    setAdminUF(ufs.find(uf => uf.value === admin.uf));
+    setAdminStreet(admin.street);
+    setAdminDistrict(admin.district);
+    setAdminComplement(admin.complement);
+  }
+
+  async function getAllData() {
+    try {
+      const response = await API_URL.get(`/contract/${documentId}`, { headers });
+
+      const { data } = response;
+
+      setClientData(data.client);
+
+      if (data.client.partner) {
+        setPartnerData(data.client.partner)
+      }
+
+      setAssigneeData(data.assignee);
+      setAdminData(data.assignee.admin);
+      setContractData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function generatePDF() {
+    alert('pdf');
+  }
+
+  function generateDOC() {
+    alert('doc');
+  }
+
+  useEffect(() => {
+    setProposalValue(liquidValue * percentage / 100);
+  }, [percentage]);
+
+  useEffect(() => {
+    getAllData();
+  }, []);
 
   return (
     <>
@@ -246,8 +485,9 @@ export default function ContractRevision() {
                     options={genders}
                     id="gender"
                     name="gender"
+                    value={gender}
                     placeholder="Selecione o sexo"
-                    onChange={(evt) => setGender(evt.value)}
+                    onChange={(evt) => setGender(genders.find(gender => gender.value === evt.value))}
                     disabled={!isEditing}
                   />
                 </div>
@@ -258,8 +498,9 @@ export default function ContractRevision() {
                     options={maritalStates}
                     id="maritalState"
                     name="maritalState"
+                    value={maritalState}
                     placeholder="Selecione o estado civil"
-                    onChange={(evt) => setMaritalState(evt.value)}
+                    onChange={(evt) => setMaritalState(maritalStates.find(maritalState => maritalState.value === evt.value))}
                     disabled={!isEditing}
                   />
                 </div>
@@ -372,7 +613,8 @@ export default function ContractRevision() {
                     id="uf"
                     name="uf"
                     placeholder="--"
-                    onChange={(evt) => setUF(evt.value)}
+                    value={uf}
+                    onChange={(evt) => setUF(ufs.find(uf => uf.value === evt.value))}
                     disabled={!isEditing}
                   />
                 </div>
@@ -404,7 +646,7 @@ export default function ContractRevision() {
             </div>
 
             {
-              maritalState === 'married' &&
+              maritalState.value === 'married' &&
               (
                 <div id={styles.partnerGroup}>
                   <h2>
@@ -447,20 +689,22 @@ export default function ContractRevision() {
                         id="partnerGender"
                         name="partnerGender"
                         placeholder="Selecione o sexo"
+                        value={partnerGender}
                         disabled={!isEditing}
-                        onChange={(evt) => setPartnerGender(evt.value)}
+                        onChange={(evt) => setPartnerGender(genders.find(gender => gender.value === evt.value))}
                       />
                     </div>
 
                     <div id={styles.partnerMaritalStateID} className={styles.inputGroup}>
-                      <label htmlFor="partnerMaritalState">Estado Civil</label>
+                      <label htmlFor="partnerMaritalState">Regime de Casamento</label>
                       <Select
-                        options={maritalStates}
+                        options={marriageRegimes}
                         id="partnerMaritalState"
                         name="partnerMaritalState"
-                        placeholder="Selecione o estado civil"
+                        placeholder="Selecione o regime"
                         disabled={!isEditing}
-                        onChange={(evt) => setPartnerMaritalState(evt.value)}
+                        value={partnerMaritalState}
+                        onChange={(evt) => setPartnerMaritalState(marriageRegimes.find(marriageRegime => marriageRegime.value === evt.value))}
                       />
                     </div>
 
@@ -573,7 +817,8 @@ export default function ContractRevision() {
                         name="partnerUF"
                         placeholder="--"
                         disabled={!isEditing}
-                        onChange={(evt) => setPartnerUF(evt.value)}
+                        value={partnerUF}
+                        onChange={(evt) => setPartnerUF(ufs.find(uf => uf.value === evt.value))}
                       />
                     </div>
 
@@ -712,7 +957,8 @@ export default function ContractRevision() {
                     name="assigneeUF"
                     disabled={!isEditing}
                     placeholder="--"
-                    onChange={(evt) => setAssigneeUF(evt.value)}
+                    value={assigneeUF}
+                    onChange={(evt) => setAssigneeUF(ufs.find(uf => uf.value === evt.value))}
                   />
                 </div>
 
@@ -817,12 +1063,13 @@ export default function ContractRevision() {
                 <div id={styles.adminUFID} className={styles.inputGroup}>
                   <label htmlFor="adminUF">UF</label>
                   <Select
-                    options={options}
+                    options={ufs}
                     id="adminUF"
                     name="adminUF"
                     disabled={!isEditing}
                     placeholder="--"
-                    onChange={(evt) => setAdminUF(evt.value)}
+                    value={adminUF}
+                    onChange={(evt) => setAdminUF(ufs.find(uf => uf.value === evt.value))}
                   />
                 </div>
 
@@ -860,19 +1107,6 @@ export default function ContractRevision() {
               </h2>
 
               <div id={styles.contractInputs}>
-                <div id={styles.fundID} className={styles.inputGroup}>
-                  <label htmlFor="fund">Nome do fundo</label>
-                  <input
-                    type="text"
-                    id="fund"
-                    name="fund"
-                    placeholder="Digite o nome do fundo"
-                    value={fund}
-                    onChange={(evt) => setFund(evt.target.value)}
-                    disabled={!isEditing}
-                  />
-                </div>
-
                 <div id={styles.optionID} className={styles.inputGroup}>
                   <label htmlFor="option">BRV ou BGF?</label>
                   <Select
@@ -880,7 +1114,8 @@ export default function ContractRevision() {
                     name="option"
                     options={options}
                     placeholder="Selecione uma opção"
-                    onChange={() => setOption()}
+                    onChange={(evt) => setOption(options.find(option => option.value === evt.value))}
+                    value={option}
                     disabled={!isEditing}
                   />
                 </div>
@@ -948,7 +1183,7 @@ export default function ContractRevision() {
                     placeholder="0,00"
                     value={proposalValue}
                     onChange={(evt) => setProposalValue(evt.target.value)}
-                    disabled={!isEditing}
+                    disabled
                   />
                 </div>
 
@@ -1044,6 +1279,7 @@ export default function ContractRevision() {
                 type="button"
                 className={`${styles.btn} ${styles.btnGreen}`}
                 disabled={isEditing}
+                onClick={() => generatePDF()}
               >
                 Gerar PDF
               </button>
@@ -1052,6 +1288,7 @@ export default function ContractRevision() {
                 type="button" 
                 className={`${styles.btn} ${styles.btnGreen}`}
                 disabled={isEditing}
+                onClick={() => generateDOC()}
               >
                 Gerar DOC
               </button>

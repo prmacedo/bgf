@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import API_URL from '../../../config/api';
+
 import { FiClipboard } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +9,7 @@ import Container from '../../../components/Container';
 import Select from '../../../components/Select';
 
 import styles from './styles.module.css';
+import { useUserData } from '../../../context/UserData';
 
 export default function AddManager() {
   const [name, setName] = useState('');
@@ -14,13 +17,38 @@ export default function AddManager() {
   const [email, setEmail] = useState('');
   const [tel, setTel] = useState('');
 
+  const { headers } = useUserData();
+
   const options = [
-    { value: 1, label: "Administrador" },
-    { value: 2, label: "Gerente" }
+    { value: "admin", label: "Administrador" },
+    { value: "manager", label: "Gerente" }
   ];
 
-  function handleAddManagerSubmit(evt) {
-    // evt.preventDefault();
+  function resetFields() {
+    setName('');
+    setType('');
+    setEmail('');
+    setTel('');
+  }
+
+  async function handleAddManagerSubmit(evt) {
+    evt.preventDefault();
+
+    const data = {
+      name,
+      type: type.value,
+      email,
+      telephone: tel
+    };
+
+    try {
+      const response = await API_URL.post('/user', data, { headers });
+
+      resetFields();
+    } catch(error) {
+      console.log(error);
+    }
+
   }
 
   return (
@@ -48,14 +76,14 @@ export default function AddManager() {
             </div>
 
             <div id={styles.type} className={styles.inputGroup}>
-              {/* Transformar em select */}
               <label htmlFor="type">Cargo</label>
               <Select 
                 options={options}
                 id="type"
                 name="type"
                 placeholder="Escolha o cargo"
-                onChange={(evt) => setType(evt.value)}
+                onChange={(evt) => setType(options.find(option => option.value === evt.value))}
+                value={type}
               />
               
             </div>

@@ -65,6 +65,10 @@
   align-self: center;
 }
 
+.tableContainer .eyeLink svg {
+  color: var(--text);
+}
+
 .tableContainer .eyeLink a {
   display: flex;
 }
@@ -75,6 +79,10 @@
 
 .tableContainer tbody tr:last-of-type {
   border-bottom: 0;
+}
+
+.emptyList {
+  padding: 1rem 1.25rem;
 }
 
 /* Uso geral */

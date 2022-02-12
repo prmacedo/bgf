@@ -1,12 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+import ProtectedRoute from './components/ProtectedRoute';
+
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import ClientsLists from './pages/Client/ClientsList';
 import AddClient from './pages/Client/AddClient';
 import EditClient from './pages/Client/EditClient';
 import Proposal from './pages/Client/Proposal';
+import EditProposal from './pages/Client/EditProposal';
 import Contract from './pages/Client/Contract';
 import ContractRevision from './pages/Client/ContractRevision';
 import AssigneeList from './pages/Assignee/AssigneeList';
@@ -22,20 +25,21 @@ export default function Routes() {
     <BrowserRouter>
       <Switch>
         <Route component={Login} path="/" exact />
-        <Route component={ForgotPassword} path="/forgotPassword" />
-        <Route component={ClientsLists} path="/clients" />
-        <Route component={AddClient} path="/addClient" />
-        <Route component={EditClient} path="/client" />
-        <Route component={Proposal} path="/proposal" />
-        <Route component={Contract} path="/contract" exact />
-        <Route component={ContractRevision} path="/contract/revision" />
-        <Route component={AssigneeList} path="/assignees" />
-        <Route component={AddAssignee} path="/addAssignee" />
-        <Route component={EditAssignee} path="/assignee" />
-        <Route component={ManagersList} path="/managers" />
-        <Route component={AddManager} path="/addManager" />
-        <Route component={EditManager} path="/manager" />
-        <Route component={Settings} path="/settings" />
+        <ProtectedRoute component={ForgotPassword} path="/forgotPassword" />
+        <ProtectedRoute component={ClientsLists} path="/clients" />
+        <ProtectedRoute component={AddClient} path="/addClient" />
+        <ProtectedRoute component={EditClient} path="/client/:id" exact />
+        <ProtectedRoute component={Proposal} path="/client/:id/new/proposal" />
+        <ProtectedRoute component={EditProposal} path="/client/:id/edit/proposal/:proposalId" />
+        <ProtectedRoute component={Contract} path="/client/:id/:action/contract/:documentId" exact />
+        <ProtectedRoute component={ContractRevision} path="/client/:id/contract/:documentId/revision" />
+        <ProtectedRoute component={AssigneeList} path="/assignees" />
+        <ProtectedRoute component={AddAssignee} path="/addAssignee" />
+        <ProtectedRoute component={EditAssignee} path="/assignee/:id" />
+        <ProtectedRoute component={ManagersList} path="/managers" />
+        <ProtectedRoute component={AddManager} path="/addManager" />
+        <ProtectedRoute component={EditManager} path="/manager/:id" />
+        <ProtectedRoute component={Settings} path="/settings" />
       </Switch>
     </BrowserRouter>
   )

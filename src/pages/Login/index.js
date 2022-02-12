@@ -3,6 +3,8 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 
+import API_URL from '../../config/api';
+
 import styles from './styles.module.css';
 
 import BGF1 from '../../assets/BGF1.png';
@@ -14,10 +16,20 @@ export default function Login() {
   
   const history = useHistory();
 
-  function handleLogin(evt) {
+  async function handleLogin(evt) {
     evt.preventDefault();
 
-    history.push('/clients');
+    try {
+      const response = await API_URL.post('/authenticate', {
+        email,
+        password
+      });
+
+      localStorage.setItem("user", JSON.stringify(response.data));
+      history.push('/clients');
+    } catch (error) {
+      console.log(error);
+    }      
   }
 
   return(

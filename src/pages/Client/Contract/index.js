@@ -1,39 +1,142 @@
 import React, { useEffect, useState } from 'react';
 
 import { FiUser, FiInfo } from 'react-icons/fi';
+import { useParams } from 'react-router-dom';
 import { Link, useHistory } from 'react-router-dom';
 
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
+import API_URL from '../../../config/api';
+import { useUserData } from '../../../context/UserData';
 
 import styles from './styles.module.css';
 
 export default function Contract() {
+  const { id, action, documentId } = useParams();
+
   const [option, setOption] = useState('');
-  const [fund, setFund] = useState('');
   const [precatory, setPrecatory] = useState('');
   const [process, setProcess] = useState('');
   const [court, setCourt] = useState('');
   const [percentage, setPercentage] = useState(0);
   const [proposalValue, setProposalValue] = useState(0);
 
+  const [liquidValue, setLiquidValue] = useState(0);
   const [entity, setEntity] = useState('');
   const [farmCourt, setFarmCourt] = useState('');
   const [precatoryValue, setPrecatoryValue] = useState('');
   const [attorneyFee, setAttorneyFee] = useState(0);
   const [place, setPlace] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState();
+
+  const [assigneeList, setAssigneeList] = useState([]);
+  const [assignee, setAssignee] = useState();
 
   const options = [
     { value: 'BRV', label: 'BRV' },
     { value: 'BGF', label: 'BGF' }
   ];
 
+  const { headers } = useUserData();
+
+  async function getAssignee() {
+    try {
+      const response = await API_URL.get('/assignees', { headers });
+
+      const assignees = response.data.map(assignee => (
+        {
+          value: assignee.id,
+          label: assignee.name
+        }
+      ));
+
+      console.log(response);
+      console.log(assignees);
+
+      setAssigneeList(assignees);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const history = useHistory();
 
-  function handleSubmitContractForm() {
-    history.push('/contract/revision');
+  async function handleSubmitContractForm() {
+    const data = {
+      type: option.value,
+      precatory,
+      process,
+      court,
+      percentage,
+      proposalValue,
+      assigneeId: assignee.value,
+      entity,
+      farmCourt,
+      precatoryValue: Number(precatoryValue),
+      attorneyFee: Number(attorneyFee),
+      place,
+      date: new Date(date)
+    }
+
+    console.log(data);
+
+    try {
+      const response = await API_URL.patch(`/document/${documentId}`, data, { headers });
+
+      history.push(`/client/${id}/contract/${documentId}/revision`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
+
+  async function getContract() {
+    try {
+      const response = await API_URL.get(`/document/${documentId}`, { headers });
+      const { data } = response;
+
+      const assigneeObj = {
+        value: data.assignee.id,
+        label: data.assignee.name
+      }
+      
+      setOption(options.find(option => option.value === data.type));
+      setPrecatory(data.precatory);
+      setProcess(data.process);
+      setCourt(data.court);
+      setLiquidValue(data.liquidValue);
+      setPercentage(data.percentage);
+      setProposalValue(data.proposalValue);
+      setAssignee(assigneeObj);
+
+      if (action === 'edit') {
+        setEntity(data.entity);
+        setFarmCourt(data.farmCourt);
+        setPrecatoryValue(data.precatoryValue);
+        setAttorneyFee(data.attorneyFee);
+        setPlace(data.place);
+        setDate(data.contractDate.split('T')[0]);
+      }
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    setProposalValue(liquidValue * percentage / 100); 
+  }, [percentage]);
+
+  useEffect(() => {
+    if (action !== 'edit' && action !== 'new') {
+      history.push(`/client/${id}`);
+    }
+    
+    getAssignee();
+    getContract();
+  }, []);
 
   return (
     <Container>
@@ -52,13 +155,13 @@ export default function Contract() {
             <div id={styles.proposalInputs}>                          
               <div id={styles.fundGroup} className={styles.inputGroup}>
                 <label htmlFor="fund">Cessionário</label>
-                <input
-                  type="text"
-                  id="fund"
-                  name="fund"
-                  placeholder="Escolha o cessionário"
-                  value={fund}
-                  onChange={(evt) => setFund(evt.target.value)}
+                <Select
+                  options={assigneeList}
+                  id="assignee"
+                  name="assignee"
+                  placeholder="Escolha o Cessionário"
+                  value={assignee}
+                  onChange={(evt) => setAssignee(assigneeList.find(assignee => assignee.value === evt.value))}
                 />
               </div>
               <div id={styles.optionGroup} className={styles.inputGroup}>
@@ -67,6 +170,7 @@ export default function Contract() {
                   id="option"
                   name="option"
                   options={options}
+                  value={option}
                   placeholder="Selecione uma opção"
                   onChange={() => setOption()}
                 />
@@ -126,6 +230,7 @@ export default function Contract() {
                   name="proposalValue"
                   placeholder="0,00"
                   value={proposalValue}
+                  disabled
                   onChange={(evt) => setProposalValue(evt.target.value)}
                 />
               </div>
@@ -162,7 +267,7 @@ export default function Contract() {
               <div id={styles.precatoryValueGroup} className={styles.inputGroup}>
                 <label htmlFor="precatoryValue">Valor de Face do Precatório</label>
                 <input
-                  type="text"
+                  type="number"
                   id="precatoryValue"
                   name="precatoryValue"
                   placeholder="Digite o valor"
@@ -173,7 +278,7 @@ export default function Contract() {
               <div id={styles.attorneyFeeGroup} className={styles.inputGroup}>
                 <label htmlFor="attorneyFee">Honorários Advocatícios %</label>
                 <input
-                  type="text"
+                  type="number"
                   id="attorneyFee"
                   name="attorneyFee"
                   placeholder="Digite o nº do Precatório"
@@ -184,7 +289,7 @@ export default function Contract() {
               <div id={styles.placeGroup} className={styles.inputGroup}>
                 <label htmlFor="place">Local</label>
                 <input
-                  type="number"
+                  type="text"
                   id="place"
                   name="place"
                   placeholder="Digite o Local"
@@ -207,7 +312,7 @@ export default function Contract() {
           </div>          
 
           <div className={styles.btnGroup}>
-            <Link to="/client" className={`${styles.btn} ${styles.btnRed}`}>Voltar</Link>
+            <Link to={`/client/${id}`} className={`${styles.btn} ${styles.btnRed}`}>Voltar</Link>
             <button
               type="button"
               className={`${styles.btn} ${styles.btnGreen}`}

@@ -5,9 +5,15 @@ import { FiEdit2, FiBriefcase, FiTrash2 } from 'react-icons/fi';
 import Container from '../../../components/Container';
 import AddressForm from '../../../components/AddressForm';
 
+import API_URL from '../../../config/api';
+
 import styles from './styles.module.css';
 
 import cancelEdit from '../../../assets/icons/cancel-edit.svg';
+import { useParams } from 'react-router-dom';
+import { useUserData } from '../../../context/UserData';
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 export default function EditAssignee() {
   const [isEditing, setIsEditing] = useState(false);
@@ -28,6 +34,7 @@ export default function EditAssignee() {
   const [district, setDistrict] = useState('');
   const [complement, setComplement] = useState('');
 
+  const [adminId, setAdminId] = useState(0);
   const [adminName, setAdminName] = useState('');
   const [adminCNPJ, setAdminCNPJ] = useState('');
 
@@ -37,6 +44,12 @@ export default function EditAssignee() {
   const [adminUF, setAdminUF] = useState('');
   const [adminDistrict, setAdminDistrict] = useState('');
   const [adminComplement, setAdminComplement] = useState('');
+
+  const { id } = useParams();
+  
+  const { headers } = useUserData();
+
+  const history = useHistory();
 
   const options = [
     { value: "AC", label: "AC" },
@@ -68,18 +81,90 @@ export default function EditAssignee() {
     { value: "TO", label: "TO" }
   ];
 
-  function handleEditSettings(evt) {
-    evt.preventDefault();
-    
-    // Fecha modal e desabilita edição
-    setShowSaveEditModal(false);
-    setIsEditing(false);
+  async function getAssignee() {
+    try {
+      const response = await API_URL.get(`/assignee/${id}`, { headers });
 
-    console.log(evt.target);
+      const { data } = response;
+      setName(data.name);
+      setCNPJ(data.cnpj);
+      setEmail(data.email);
+      setTel(data.telephone);
+
+      setCEP(data.cep);
+      setStreet(data.street);
+      setCity(data.city);
+      setUF(options.find(option => option.value === data.uf));
+      setDistrict(data.district);
+      setComplement(data.complement);
+
+      setAdminId(data.admin.id);
+      setAdminName(data.admin.name);
+      setAdminCNPJ(data.admin.cnpj);
+  
+      setAdminCEP(data.admin.cep);
+      setAdminStreet(data.admin.street);
+      setAdminCity(data.admin.city);
+      setAdminUF(options.find(option => option.value === data.admin.uf));
+      setAdminDistrict(data.admin.district);
+      setAdminComplement(data.admin.complement);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  function handleConfirmDeletion() {
-    setShowDeleteModal(false);
+  async function handleEditAssignee() {
+    const data = {
+      name,
+      cnpj,
+      email,
+      tel,
+      cep,
+      street,
+      city,
+      uf: uf.value,
+      district,
+      complement
+    }
+
+    const adminData = {
+     name: adminName,
+     cnpj: adminCNPJ,
+     cep: adminCEP,
+     street: adminStreet,
+     admin: adminCity,
+     uf: adminUF.value,
+     district: adminDistrict,
+     complement: adminComplement
+    }
+
+    try {
+      const response = await API_URL.patch(`/assignee/${id}`, data, { headers });
+      const responseAdmin = await API_URL.patch(`/admin/${adminId}`, adminData, { headers });
+
+      console.log(response);
+      console.log(responseAdmin);
+
+      setShowSaveEditModal(false);
+      setIsEditing(false);
+    } catch (error) {
+      console.log(error);
+    }    
+  }
+
+  async function handleConfirmDeletion() {    
+    try {
+      const response = await API_URL.delete(`/assignee/${id}`, { headers });
+      const responseAdmin = await API_URL.delete(`/admin/${adminId}`, { headers });
+
+      console.log(response);
+      console.log(responseAdmin);
+
+      setShowDeleteModal(false);
+      history.goBack();
+    } catch(error) {
+      console.log(error);
+    }
   }
   
   function handleConfirmEdition() {
@@ -118,9 +203,9 @@ export default function EditAssignee() {
     }
   }
 
-  function handleSearchCEP() {
-    // Chamar API de CEP
-  }
+  useEffect(() => {
+    getAssignee();
+  }, []);
 
   return (
     <>
@@ -170,7 +255,7 @@ export default function EditAssignee() {
           </div>
 
           <div className={styles.formContainer}>
-            <form id="editForm" onSubmit={handleEditSettings}>
+            <form id="editForm">
               <div className={styles.assigneeInputs}>
                 <div id={styles.name} className={styles.inputGroup}>
                   <label htmlFor="name">Nome completo</label>
@@ -246,107 +331,7 @@ export default function EditAssignee() {
                 complement={complement}
                 setComplement={setComplement}
                 disabled={!isEditing}
-              />
-
-              {/* <h3>Endereço do Cessionário</h3>
-              
-              <div className={isEditing ? styles.addressInputsEditing : styles.addressInputs}>
-                <div className={`${styles.cepGroup} ${isEditing ? null : styles.hide}`}>
-                  <div id={styles.cepSearch} className={styles.inputGroup}>
-                    <label htmlFor="cep">CEP</label>
-                    <input
-                      type="text"
-                      name="cep"
-                      value={cep}
-                      onChange={(evt) => setCEP(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite o CEP"
-                    />
-                  </div>
-
-                  <button
-                    type="button"
-                    className={styles.cepBtn}
-                    onClick={() => handleSearchCEP()}
-                  >
-                    Buscar pelo CEP
-                  </button>
-                </div>
-
-                <div className={styles.addressGroup}>
-                  <div id={styles.cep} className={`${styles.inputGroup} ${isEditing ? styles.hide : null}`}>
-                    <label htmlFor="cep">CEP</label>
-                    <input
-                      type="text"
-                      name="cep"
-                      value={cep}
-                      onChange={(evt) => setCEP(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite o CEP"
-                    />
-                  </div>
-                  
-                  <div id={styles.street} className={styles.inputGroup}>
-                    <label htmlFor="street">Logradouro</label>
-                    <input
-                      type="text"
-                      name="street"
-                      value={street}
-                      onChange={(evt) => setStreet(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite o Logradouro"
-                    />
-                  </div>
-
-                  <div id={styles.city} className={styles.inputGroup}>
-                    <label htmlFor="city">Cidade</label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={city}
-                      onChange={(evt) => setCity(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite a cidade"
-                    />
-                  </div>
-
-                  <div id={styles.uf} className={styles.inputGroup}>
-                    <label htmlFor="uf">UF</label>
-                    <Select
-                      options={options}
-                      id="uf"
-                      name="uf"
-                      disabled={!isEditing}
-                      placeholder="--"
-                      onChange={(evt) => setUF(evt.value)}
-                    />
-                  </div>
-
-                  <div id={styles.district} className={styles.inputGroup}>
-                    <label htmlFor="district">Bairro</label>
-                    <input
-                      type="text"
-                      name="district"
-                      value={district}
-                      onChange={(evt) => setDistrict(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite o bairro"
-                    />
-                  </div>
-
-                  <div id={styles.complement} className={styles.inputGroup}>
-                    <label htmlFor="complement">Complemento</label>
-                    <input
-                      type="text"
-                      name="complement"
-                      value={complement}
-                      onChange={(evt) => setComplement(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite o complemento"
-                    />
-                  </div>
-                </div>
-              </div> */}
+              />              
 
               <h2>Dados da Instituição Administradora do Cessionário</h2>
 
@@ -397,107 +382,7 @@ export default function EditAssignee() {
                 complement={adminComplement}
                 setComplement={setAdminComplement}
                 disabled={!isEditing}
-              />
-
-              {/* <h3>Endereço da Instituição Administradora</h3>
-
-              <div className={isEditing ? styles.addressInputsEditing : styles.addressInputs}>
-                <div className={`${styles.cepGroup} ${isEditing ? null : styles.hide}`}>
-                  <div id={styles.cepAdminSearch} className={styles.inputGroup}>
-                    <label htmlFor="adminCEP">CEP</label>
-                    <input
-                      type="text"
-                      name="adminCEP"
-                      value={adminCEP}
-                      onChange={(evt) => setAdminCEP(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite o CEP"
-                    />
-                  </div>
-
-                  <button
-                    type="button"
-                    className={styles.cepBtn}
-                    onClick={() => handleSearchCEP()}
-                  >
-                    Buscar pelo CEP
-                  </button>
-                </div>
-
-                <div className={styles.addressGroup}>
-                  <div id={styles.adminCEP} className={`${styles.inputGroup} ${isEditing ? styles.hide : null}`}>
-                    <label htmlFor="adminCEP">CEP</label>
-                    <input
-                      type="text"
-                      name="adminCEP"
-                      value={adminCEP}
-                      onChange={(evt) => setAdminCEP(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite o CEP"
-                    />
-                  </div>
-
-                  <div id={styles.adminStreet} className={styles.inputGroup}>
-                    <label htmlFor="adminStreet">Logradouro</label>
-                    <input
-                      type="text"
-                      name="adminStreet"
-                      value={adminStreet}
-                      onChange={(evt) => setAdminStreet(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite o Logradouro"
-                    />
-                  </div>
-
-                  <div id={styles.adminCity} className={styles.inputGroup}>
-                    <label htmlFor="adminCity">Cidade</label>
-                    <input
-                      type="text"
-                      name="adminCity"
-                      value={adminCity}
-                      onChange={(evt) => setAdminCity(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite a cidade"
-                    />
-                  </div>
-
-                  <div id={styles.adminUF} className={styles.inputGroup}>
-                    <label htmlFor="adminUF">UF</label>
-                    <Select
-                      options={options}
-                      id="adminUF"
-                      name="adminUF"
-                      disabled={!isEditing}
-                      placeholder="--"
-                      onChange={(evt) => setAdminUF(evt.value)}
-                    />
-                  </div>
-
-                  <div id={styles.adminDistrict} className={styles.inputGroup}>
-                    <label htmlFor="adminDistrict">Bairro</label>
-                    <input
-                      type="text"
-                      name="adminDistrict"
-                      value={adminDistrict}
-                      onChange={(evt) => setAdminDistrict(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite o bairro"
-                    />
-                  </div>
-
-                  <div id={styles.adminComplement} className={styles.inputGroup}>
-                    <label htmlFor="adminComplement">Complemento</label>
-                    <input
-                      type="text"
-                      name="adminComplement"
-                      value={adminComplement}
-                      onChange={(evt) => setAdminComplement(evt.target.value)}
-                      disabled={!isEditing}
-                      placeholder="Digite o complemento"
-                    />
-                  </div>
-                </div>
-              </div> */}
+              />              
               
               <div className={`${styles.btnGroup} ${isEditing ? null : styles.hide}`}>
                 <button
@@ -515,8 +400,6 @@ export default function EditAssignee() {
                 >
                   Salvar alterações
                 </button>
-
-                <input type="submit" value="submit" id="submitBtn" className={styles.submitInput} />
               </div>
             </form>
           </div>
@@ -530,7 +413,7 @@ export default function EditAssignee() {
           <div className={styles.modalContent}>
             <span>Tem certeza que deseja excluir o registro?</span>
             <br />
-            <span>Ao confirmar, todos os dados do cessionário Cessionário 01 serão removidos do sistema.</span>
+            <span>Ao confirmar, todos os dados do cessionário { name } serão removidos do sistema.</span>
           </div>
 
           <div className={styles.modalGroupBtn}>
@@ -558,7 +441,7 @@ export default function EditAssignee() {
           <h2>Deseja editar o registro?</h2>
 
           <div className={styles.modalContent}>
-            <span>Prossiga para editar as informações do cessionário Cessionário 01.</span>
+            <span>Prossiga para editar as informações do cessionário { name }.</span>
           </div>
 
           <div className={styles.modalGroupBtn}>
@@ -586,7 +469,7 @@ export default function EditAssignee() {
           <h2>Sair do modo de edição</h2>
 
           <div className={styles.modalContent}>
-            <span>Ao confirmar, você sairá do modo de edição para dos dados do cessionário Cessionário 01.</span>
+            <span>Ao confirmar, você sairá do modo de edição para dos dados do cessionário { name }.</span>
           </div>
 
           <div className={styles.modalGroupBtn}>
@@ -614,7 +497,7 @@ export default function EditAssignee() {
           <h2>Confirmar alteração</h2>
 
           <div className={styles.modalContent}>
-            <span>Ao confirmar, os dados do cessionário Cessionário 01 serão atualizados no sistema.</span>
+            <span>Ao confirmar, os dados do cessionário { name } serão atualizados no sistema.</span>
           </div>
 
           <div className={styles.modalGroupBtn}>
@@ -626,9 +509,13 @@ export default function EditAssignee() {
               Cancelar
             </button>
 
-            <label htmlFor="submitBtn" className={styles.submitLabel}>
+            <button
+              type="button"
+              className={styles.submitBtn}
+              onClick={() => handleEditAssignee()}
+            >
               Confirmar
-            </label>
+            </button>
           </div>
         </div>
       </div>

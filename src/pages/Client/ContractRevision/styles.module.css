@@ -175,9 +175,9 @@
   display: grid;
   grid-template-areas: 
     'entity entity entity entity farmCourt farmCourt farmCourt farmCourt precatoryValue precatoryValue precatoryValue precatoryValue'
-    'fund fund fund fund court court court court option option option option'
-    'process process process process precatory precatory precatory precatory place place place place'
-    'percentage percentage percentage proposalValue proposalValue proposalValue attorneyFee attorneyFee attorneyFee date date date';
+    'precatory precatory precatory precatory process process process process court court court court'
+    'option option option option place place place place date date date date'
+    'percentage percentage percentage percentage proposalValue proposalValue proposalValue proposalValue attorneyFee attorneyFee attorneyFee attorneyFee';
   gap: 1rem;
   grid-template-columns: repeat(12, 1fr);
 }

@@ -1,5 +1,7 @@
 .select {
   border-radius: 0.5rem;
+
+  position: relative;
 }
 
 .select > div:first-of-type {

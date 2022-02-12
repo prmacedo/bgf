@@ -130,3 +130,7 @@
 .cancelBtn:hover {
   background-color: var(--red-dark);
 }
+
+.emptyList {
+  padding: 1rem 1.25rem;
+}

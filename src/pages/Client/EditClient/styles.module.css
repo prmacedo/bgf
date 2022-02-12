@@ -317,6 +317,10 @@
   outline-offset: 2px;
 }
 
+.outlineBtn.btn {
+  width: 20rem;
+}
+
 .outlineBtn, a.outlineBtn {
   color: var(--green);
   font-weight: 600;
@@ -386,6 +390,8 @@ a.outlineBtn {
 }
 
 .modal {
+  position: relative;
+
   background-color: var(--white);
   padding: 2rem 3rem;
   border-radius: 0.5rem;
@@ -398,9 +404,35 @@ a.outlineBtn {
 .modal .modalGroupBtn {
   display: flex;
   gap: 1rem;
+
+  margin-top: 1rem;
+}
+
+.modal > span {
+  position: absolute;
+
+  top: 2rem;
+  right: 2rem;
 }
 
 /* Gerais */
 .hide {
   display: none!important;
+}
+
+#partnerGroup h3 {
+  margin-bottom: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#partnerGroup h3 svg {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#partnerGroup h3 svg:hover {
+  color: var(--green);
 }

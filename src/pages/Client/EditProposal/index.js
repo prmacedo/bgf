@@ -14,16 +14,13 @@ import styles from './styles.module.css';
 
 export default function Proposal() {
   
-  const client = JSON.parse(localStorage.getItem("client"));
+  const [ client, setClient ] = useState();
 
   const { headers } = useUserData();
 
-  const { id } = useParams();
+  const { id, proposalId } = useParams();
 
   const [assigneeList, setAssigneeList] = useState([]);
-  const [isNew, setIsNew] = useState(true);
-
-  const [ documentId, setDocumentId ] = useState(0);
 
   const [ type, setType ] = useState('');
   const [ assignee, setAssignee ] = useState('');
@@ -72,37 +69,6 @@ export default function Proposal() {
     }
   }
 
-  async function saveDocument() {
-    const data = {
-      type: type.value,
-      precatory,
-      process,
-      court,
-      value,
-      correction,
-      fee,
-      preference,
-      taxes,
-      percentage,
-      updatedValue,
-      liquidValue,
-      proposalValue,
-      proposalDate: new Date(date),
-      clientId: client.id,
-      assigneeId: assignee.value
-    }
-    
-    try {
-      const response = await API_URL.post('/document', data, { headers });
-      console.log(response);
-
-      setDocumentId(response.data.id);
-      setIsNew(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   async function updateDocument() {
     const data = {
       type: type.value,
@@ -124,27 +90,53 @@ export default function Proposal() {
     }
 
     try {
-      const response = await API_URL.patch(`/document/${documentId}`, data, { headers });
+      const response = await API_URL.patch(`/document/${proposalId}`, data, { headers });
       console.log(response);      
     } catch (error) {
       console.log(error);
     }
   }
 
-  function updateOrSaveDocument() {
-    if (!isNew) {
-      updateDocument();
-    } else {
-      saveDocument();
-    }
-  }
-
   function generatePDF() {
-    updateOrSaveDocument();
+    updateDocument();
   }
 
   function generateDOC() {
-    updateOrSaveDocument();
+    updateDocument();
+  }
+
+  async function getProposal() {
+    try {
+      const response = await API_URL.get(`/document/${proposalId}`, { headers });
+      const { data } = response;
+
+      const assigneeObj = {
+        value: data.assignee.id,
+        label: data.assignee.name
+      }
+
+      console.log(data);
+
+      setClient(data.client.name);
+      setType(types.find(type => type.value === data.type));
+      setAssignee(assigneeObj);
+      setDate(data.proposalDate.split('T')[0]);
+      setPrecatory(data.precatory);
+      setProcess(data.process);
+      setCourt(data.court);
+
+      setValue(data.value);
+      setCorrection(data.correction);
+      setFee(data.fee);
+      setPreference(data.preference);
+      setTaxes(data.taxes);
+      setPercentage(data.percentage);
+      setUpdatedValue(data.updatedValue);
+      setLiquidValue(data.liquidValue);
+      setProposalValue(data.proposalValue);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -164,6 +156,7 @@ export default function Proposal() {
 
   useEffect(() => {
     getAssignee();
+    getProposal();
   }, []);  
 
   return (
@@ -187,7 +180,7 @@ export default function Proposal() {
                   type="text"
                   id="client"
                   name="client"
-                  value={client.name}
+                  value={client}
                   disabled
                 />
               </div>

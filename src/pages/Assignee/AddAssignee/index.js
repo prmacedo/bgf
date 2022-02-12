@@ -6,7 +6,10 @@ import { Link } from 'react-router-dom';
 import Container from '../../../components/Container';
 import AddressForm from '../../../components/AddressForm';
 
+import API_URL from '../../../config/api';
+
 import styles from './styles.module.css';
+import { useUserData } from '../../../context/UserData';
 
 export default function AddAssignee() {
   const [name, setName] = useState('');
@@ -31,28 +34,79 @@ export default function AddAssignee() {
   const [adminDistrict, setAdminDistrict] = useState('');
   const [adminComplement, setAdminComplement] = useState('');
 
-  function handleSearchCEP() {
-    // Chamar API de CEP
+  const { headers } = useUserData();
+
+  function resetFields() {
+    setName('');
+    setCNPJ('');
+    setEmail('');
+    setTel('');
+
+    setCEP('');
+    setStreet('');
+    setCity('');
+    setUF('');
+    setDistrict('');
+    setComplement('');
+
+    setAdminName('');
+    setAdminCNPJ('');
+
+    setAdminCEP('');
+    setAdminStreet('');
+    setAdminCity('');
+    setAdminUF('');
+    setAdminDistrict('');
+    setAdminComplement('');
   }
 
-  function handleSearchAdminCEP() {
-    // Chamar APi de CEP
-  }
-
-  function handleAddManagerSubmit(evt) {
+  async function handleAddManagerSubmit(evt) {
     evt.preventDefault();
-    console.log(cep)
-    console.log(street)
-    console.log(city)
-    console.log(uf)
-    console.log(district)
-    console.log(complement)
-    console.log(adminCEP)
-    console.log(adminStreet)
-    console.log(adminCity)
-    console.log(adminUF)
-    console.log(adminDistrict)
-    console.log(adminComplement)
+
+    let adminId;
+
+    const adminData = {
+      name: adminName,
+      cnpj: adminCNPJ,
+      cep: adminCEP,
+      street: adminStreet,
+      city: adminCity,
+      uf: adminUF.value,
+      district: adminDistrict,
+      complement: adminComplement
+    }
+
+    try {
+      const response = await API_URL.post('/admin', adminData, { headers });
+
+      adminId = response.data.id;
+    } catch (error) {
+      console.log(error);
+    }
+
+    const data = {
+      name,
+      cnpj,
+      email,
+      telephone: tel,
+      cep,
+      street,
+      city,
+      uf: uf.value,
+      district,
+      complement,
+      adminId
+    }
+
+    try {
+      const response = await API_URL.post('/assignee', data, { headers });
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+
+    resetFields();
   }
 
   const options = [

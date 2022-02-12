@@ -1,18 +1,48 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 
 import { FiSearch, FiBriefcase, FiUserPlus, FiEye } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import Container from '../../../components/Container';
 
+import API_URL from '../../../config/api';
+import { useUserData } from '../../../context/UserData';
+
 import styles from './styles.module.css';
 
 export default function AssigneeList() {
   const [search, setSearch] = useState('');
+  const [assigneeList, setAssigneeList] = useState([]);
 
-  function handleSearch(evt) {
+  const { headers } = useUserData();
+
+  async function handleSearch(evt) {
     evt.preventDefault();
+
+    try {
+      const response = await API_URL.get(`/assignees/${search}`, { headers });
+
+      setAssigneeList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  async function getAssignees() {
+    try {
+      const response = await API_URL.get('/assignees', { headers });
+
+      console.log(response);
+      setAssigneeList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getAssignees();
+  }, []);
 
   return (
     <Container>
@@ -56,21 +86,21 @@ export default function AssigneeList() {
             </thead>
 
             <tbody>
-              <tr>
-                <td>Cessionário 01</td>
-                <td>98.599.748/0001-57</td>
-                <td>cessionario@gmail.com</td>
-                <td>(71) 99999-9999</td>
-                <td className={styles.eyeLink}><Link to="/assignee" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
-
-              <tr>
-                <td>Flávia Carneiro</td>
-                <td>29.585.533/0001-64</td>
-                <td>contato@gmail.com</td>
-                <td>(71) 99111-1111</td>
-                <td className={styles.eyeLink}><Link to="/assignee" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
+              {
+                assigneeList.length ?
+                assigneeList.map(assignee => (                  
+                  <tr key={assignee.id}>
+                    <td>{assignee.name}</td>
+                    <td>{assignee.cnpj}</td>
+                    <td>{assignee.email}</td>
+                    <td>{assignee.telephone}</td>
+                    <td className={styles.eyeLink}><Link to={`/assignee/${assignee.id}`} title="Clique para visualizar"><FiEye /></Link></td>
+                  </tr>
+                )) :
+                <div className={styles.emptyList}>
+                  Não há registros
+                </div>
+              }
             </tbody>
           </table>
         </div>

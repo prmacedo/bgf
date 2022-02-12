@@ -1,5 +1,6 @@
 #sidebarId {
   position: fixed;
+  z-index: 10;
   
   background-color: var(--green);
   color: var(--white);

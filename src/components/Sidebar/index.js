@@ -8,9 +8,15 @@ import styles from './styles.module.css';
 
 import logo from '../../assets/BGF2.png';
 import { useHiddenSidebar } from '../../context/HiddenSidebar';
+import { useUserData } from '../../context/UserData';
 
 export default function Sidebar() {
   const { isHidden, setIsHidden } = useHiddenSidebar();
+  const { user } = useUserData();
+
+  function handleLogout() {
+    localStorage.removeItem("user");
+  }
 
   return(
     <aside id={styles.sidebarId} className={isHidden ? styles.hidden : (styles.sidebar)}>
@@ -26,7 +32,7 @@ export default function Sidebar() {
 
       <div className={styles.title}>
         Olá,<br />
-        <span>Fulano de tal</span>
+        <span>{user.user.name}</span>
       </div>
 
       <div className={styles.menu}>
@@ -50,7 +56,9 @@ export default function Sidebar() {
           <span>Configurações</span>
         </Link>
         
-        <Link to="/" className={styles.menuItem}>
+        <Link to="/" className={styles.menuItem}
+          onClick={() => handleLogout()}
+        >
           <FiLogOut />
           <span>Sair</span>
         </Link>

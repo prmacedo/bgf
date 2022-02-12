@@ -1,18 +1,55 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 
 import { FiSearch, FiClipboard, FiUserPlus, FiEye } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import Container from '../../../components/Container';
+import API_URL from '../../../config/api';
+import { useUserData } from '../../../context/UserData';
 
 import styles from './styles.module.css';
 
 export default function ManagerList() {
   const [search, setSearch] = useState('');
+  const [managerList, setManagerList] = useState([]);
 
-  function handleSearch(evt) {
+  const { headers, user } = useUserData();
+
+  const { id } = user.user;
+
+  const options = [
+    { value: "admin", label: "Administrador" },
+    { value: "manager", label: "Gerente" }
+  ];
+
+  async function handleSearch(evt) {
     evt.preventDefault();
+    // const filter = options.find(option => option.label.toLowerCase().includes(search.toLowerCase())).value
+    const filter = options.find(option => option.label.toLowerCase() === search.toLowerCase())?.value || search
+
+    try {
+      const response = await API_URL.get(`/users/${id}/${filter}`, { headers });
+      setManagerList(response.data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
+  
+  async function getManagers() {
+    try {
+      const response = await API_URL.get(`/users/${id}`, { headers });
+      setManagerList(response.data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getManagers();
+  }, []);
 
   return (
     <Container>
@@ -33,7 +70,10 @@ export default function ManagerList() {
               placeholder="Digite o nome ou cargo"
             />
 
-            <button className={styles.btn}>
+            <button 
+              type='submit'
+              className={styles.btn}
+            >
               <FiSearch />
             </button>
           </form>
@@ -55,19 +95,20 @@ export default function ManagerList() {
             </thead>
 
             <tbody>
-              <tr>
-                <td>Manoel Augusto</td>
-                <td>Gerente</td>
-                <td>Ativo</td>
-                <td className={styles.eyeLink}><Link to="/manager" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
-
-              <tr>
-                <td>Flávia Carneiro</td>
-                <td>Administrador</td>
-                <td>Inativo</td>
-                <td className={styles.eyeLink}><Link to="/manager" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
+              {
+                managerList.length ?
+                managerList.map(manager => (
+                  <tr key={manager.id}>
+                    <td>{manager.name}</td>
+                    <td>{manager.type === "admin" ? "Administrador" : "Gerente"}</td>
+                    <td>{manager.active ? "Ativo" : "Inativo"}</td>
+                    <td className={styles.eyeLink}><Link to={`/manager/${manager.id}`} title="Clique para visualizar"><FiEye /></Link></td>
+                  </tr>                  
+                )) :
+                <div className={styles.emptyList}>
+                  Não há registros
+                </div>
+              }
             </tbody>
           </table>
         </div>

@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 
 import { FiPlus, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
 
 import styles from './styles.module.css';
 import AddressForm from '../../../components/AddressForm';
+import API_URL from '../../../config/api';
+import { useUserData } from '../../../context/UserData';
+import { useEffect } from 'react';
 
 export default function AddClient() {
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -52,35 +54,7 @@ export default function AddClient() {
   const [partnerDistrict, setPartnerDistrict] = useState('');
   const [partnerComplement, setPartnerComplement] = useState('');
 
-  const ufs = [
-    { value: "AC", label: "AC" },
-    { value: "AL", label: "AL" },
-    { value: "AP", label: "AP" },
-    { value: "AM", label: "AM" },
-    { value: "BA", label: "BA" },
-    { value: "CE", label: "CE" },
-    { value: "DF", label: "DF" },
-    { value: "ES", label: "ES" },
-    { value: "GO", label: "GO" },
-    { value: "MA", label: "MA" },
-    { value: "MT", label: "MT" },
-    { value: "MS", label: "MS" },
-    { value: "MG", label: "MG" },
-    { value: "PA", label: "PA" },
-    { value: "PB", label: "PB" },
-    { value: "PR", label: "PR" },
-    { value: "PE", label: "PE" },
-    { value: "PI", label: "PI" },
-    { value: "RJ", label: "RJ" },
-    { value: "RN", label: "RN" },
-    { value: "RS", label: "RS" },
-    { value: "RO", label: "RO" },
-    { value: "RR", label: "RR" },
-    { value: "SC", label: "SC" },
-    { value: "SP", label: "SP" },
-    { value: "SE", label: "SE" },
-    { value: "TO", label: "TO" }
-  ];
+  const { headers } = useUserData();
 
   const maritalStates = [
     { value: 'single', label: 'Solteiro(a)' },
@@ -96,59 +70,157 @@ export default function AddClient() {
   ];
 
   const marriageRegimes = [
-    { value: 'Separação de bens', label: 'Separação de bens' },
-    { value: 'Comunhão Parcial', label: 'Comunhão Parcial' },
-    { value: 'Comunhão Total', label: 'Comunhão Total' }
+    { value: 'separation', label: 'Separação de bens' },
+    { value: 'partial', label: 'Comunhão Parcial' },
+    { value: 'total', label: 'Comunhão Total' }
   ]
 
-  async function handleSearchCEP() {
-    // Chamar API de CEP
-    const formatedCEP = cep.replace('.', '').replace('-', '');
+  function resetFields() {
+    setProject('');
 
-    if (formatedCEP.length === 8) {
-      const response = await axios.get(`https://viacep.com.br/ws/${formatedCEP}/json/`);
-  
-      if (response.data.erro) {
-        console.log(response);      
-      }
-  
-      const { data } = response;
-  
-      setCity(data.localidade);
-      setUF(data.uf);
-      setDistrict(data.bairro);
-      setStreet(data.logradouro);
-      setComplement(data.complemento);      
-    } else {
-      console.log("CEP inválido");
-    }
+    setName('');
+    setNacionality('');
+    setGender('');
+    setMaritalState('');
+    setProfession('');
+    setCPF('');
+    setRG('');
+    setEmail('');
+    setTel('');
 
+    setCEP('');
+    setStreet('');
+    setCity('');
+    setUF('');
+    setDistrict('');
+    setComplement('');
+
+    setPartnerName('');
+    setPartnerNacionality('');
+    setPartnerGender('');
+    setMarriageRegime('');
+    setPartnerProfession('');
+    setPartnerCPF('');
+    setPartnerRG('');
+    setPartnerEmail('');
+    setPartnerTel('');
+
+    setPartnerCEP('');
+    setPartnerStreet('');
+    setPartnerCity('');
+    setPartnerUF('');
+    setPartnerDistrict('');
+    setPartnerComplement('');
   }
 
   function handleShowPartnerInputs() {
     setShowPartnerInputs(true);
   }
 
-  function handleAddClientSubmit(evt) {
-    evt.preventDefault();    
-    console.log(cep)
-    console.log(street)
-    console.log(city)
-    console.log(uf)
-    console.log(district)
-    console.log(complement)
-    console.log(partnerCEP)
-    console.log(partnerStreet)
-    console.log(partnerCity)
-    console.log(partnerUF)
-    console.log(partnerDistrict)
-    console.log(partnerComplement)
+  async function handleAddClient() {
+    let partnerId;
+    
+    if (maritalState.value === 'married') {
+      const partnerData = {
+        name: partnerName,
+        nationality: partnerNacionality,
+        gender: partnerGender.value,
+        marriageRegime: marriageRegime.value,
+        profession: partnerProfession,
+        cpf: partnerCPF,
+        rg: partnerRG,
+        email: partnerEmail,
+        telephone: partnerTel,
+        cep: partnerCEP,
+        street: partnerStreet,
+        uf: partnerUF.value,
+        city: partnerCity,
+        district: partnerDistrict,
+        complement: partnerComplement
+      }
+
+      try {
+        const response = await API_URL.post('/partner', partnerData, { headers });
+
+        partnerId = response.data.id;
+        setShowPartnerInputs(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    const data = {
+      projectId: project.value,
+      name,
+      nationality: nacionality,
+      gender: gender.value,
+      maritalStatus: maritalState.value,
+      profession,
+      cpf,
+      rg,
+      email,
+      telephone: tel,
+      cep,
+      street,
+      city,
+      uf: uf.value,
+      district,
+      complement,
+      partnerId
+    }
+
+    try {
+      const response = await API_URL.post('/client', data, { headers });
+      
+      resetFields();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
   
-  function handleAddNewProject(evt) {
-    evt.preventDefault();
+  async function handleAddNewProject() {
+    const data = {
+      name: newProject
+    }
+    
+    try {
+      const response = await API_URL.post('/project', data, { headers });
+
+      const projectItem = {
+        value: response.data.id,
+        label: response.data.name,
+      }
+
+      const projectsList = [...projects, projectItem].sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
+      
+      setProjects(projectsList);
+      setProject(projectItem);
+
+      setNewProject('');
+    } catch (error) {
+      console.log(error);
+    }
     setShowProjectModal(false);
   }
+
+  async function getProjectsList() {
+    try {
+      const response = await API_URL.get('/projects', { headers });
+      const projectList = response.data.map(project => ({
+        value: project.id,
+        label: project.name
+      }));
+
+      setProjects(projectList);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getProjectsList();
+  }, []);
 
   return (
     <>
@@ -164,7 +236,7 @@ export default function AddClient() {
           <div className={styles.formContainer}>
             {!showPartnerInputs 
             ?
-            <form onSubmit={handleAddClientSubmit}>
+            <form>
               <h3>Detalhes do cliente</h3>
               <div className={styles.detailsInputs}>
                 <div id={styles.project} className={styles.inputGroup}>
@@ -175,7 +247,7 @@ export default function AddClient() {
                     name="project"
                     value={project}
                     placeholder="Selecione o projeto"                    
-                    onChange={(evt) => setProject(evt.value)}
+                    onChange={(evt) => setProject(projects.find(project => project.value === evt.value))}
                   />
                 </div>
 
@@ -223,21 +295,9 @@ export default function AddClient() {
                     name="gender"
                     placeholder="Selecione o sexo"
                     value={gender}
-                    onChange={(evt) => setGender(evt.value)}
+                    onChange={(evt) => setGender(genders.find(gender => gender.value === evt.value))}
                   />
-                </div>
-
-                <div id={styles.maritalState} className={styles.inputGroup}>
-                  <label htmlFor="maritalState">Estado Civil</label>
-                  <Select
-                    options={maritalStates}
-                    id="maritalState"
-                    name="maritalState"
-                    placeholder="Selecione o estado civil"
-                    value={maritalState}
-                    onChange={(evt) => setMaritalState(evt.value)}
-                  />
-                </div>
+                </div>                
 
                 <div id={styles.profession} className={styles.inputGroup}>
                   <label htmlFor="profession">Profissão</label>
@@ -272,6 +332,18 @@ export default function AddClient() {
                     onChange={(evt) => setCPF(evt.target.value)}
                     placeholder="Digite o CPF"
                     required
+                  />
+                </div>
+
+                <div id={styles.maritalState} className={styles.inputGroup}>
+                  <label htmlFor="maritalState">Estado Civil</label>
+                  <Select
+                    options={maritalStates}
+                    id="maritalState"
+                    name="maritalState"
+                    placeholder="Selecione o estado civil"
+                    value={maritalState}
+                    onChange={(evt) => setMaritalState(maritalStates.find(maritalState => maritalState.value === evt.value))}
                   />
                 </div>
               </div>
@@ -320,93 +392,9 @@ export default function AddClient() {
                 setComplement={setComplement}
               />
 
-              {/* <h3>Endereço</h3>
-
-              <div className={styles.addressInputs}>
-                <div className={styles.cepGroup}>
-                  <div id={styles.cep} className={styles.inputGroup}>
-                    <label htmlFor="cep">CEP</label>
-                    <input
-                      type="text"
-                      name="cep"
-                      value={cep}
-                      onChange={(evt) => setCEP(evt.target.value)}
-                      placeholder="Digite o CEP"
-                    />
-                  </div>
-
-                  <button
-                    type="button"
-                    className={styles.outlineBtn}
-                    onClick={() => handleSearchCEP()}
-                  >
-                    Buscar pelo CEP
-                  </button>
-                </div>
-
-                <div className={styles.addressGroup}>
-                  <div id={styles.street} className={styles.inputGroup}>
-                    <label htmlFor="street">Logradouro</label>
-                    <input
-                      type="text"
-                      name="street"
-                      value={street}
-                      onChange={(evt) => setStreet(evt.target.value)}
-                      placeholder="Digite o Logradouro"
-                    />
-                  </div>
-
-                  <div id={styles.city} className={styles.inputGroup}>
-                    <label htmlFor="city">Cidade</label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={city}
-                      onChange={(evt) => setCity(evt.target.value)}
-                      placeholder="Digite a cidade"
-                    />
-                  </div>
-
-                  <div id={styles.uf} className={styles.inputGroup}>
-                    <label htmlFor="uf">UF</label>
-                    <Select
-                      options={ufs}
-                      id="uf"
-                      name="uf"
-                      placeholder="--"
-                      value={uf}
-                      onChange={(evt) => setUF(evt.value)}
-                      type="cep"
-                    />
-                  </div>
-
-                  <div id={styles.district} className={styles.inputGroup}>
-                    <label htmlFor="district">Bairro</label>
-                    <input
-                      type="text"
-                      name="district"
-                      value={district}
-                      onChange={(evt) => setDistrict(evt.target.value)}
-                      placeholder="Digite o bairro"
-                    />
-                  </div>
-
-                  <div id={styles.complement} className={styles.inputGroup}>
-                    <label htmlFor="complement">Complemento</label>
-                    <input
-                      type="text"
-                      name="complement"
-                      value={complement}
-                      onChange={(evt) => setComplement(evt.target.value)}
-                      placeholder="Digite o complemento"
-                    />
-                  </div>
-                </div>
-              </div> */}
-
               <div className={styles.btnGroup}>
                 <Link to="/clients" className={styles.cancelBtn}>Cancelar</Link>
-                {(maritalState === 'married')
+                {(maritalState.value === 'married')
                 ?
                 <button 
                   type="button" 
@@ -416,14 +404,14 @@ export default function AddClient() {
                   Prosseguir
                 </button>
                 :
-                <button type="submit" className={styles.submitBtn}>
+                <button type="button" className={styles.submitBtn} onClick={() => handleAddClient()}>
                   Salvar cadastro
                 </button>
                 }
               </div>
             </form>
             :
-            <form onSubmit={handleAddClientSubmit}>
+            <form>
               <h3>Dados pessoais do cônjuge</h3>
 
               <div className={styles.clientInputs}>
@@ -459,21 +447,9 @@ export default function AddClient() {
                     name="partnerGender"
                     placeholder="Selecione o sexo"
                     value={partnerGender}
-                    onChange={(evt) => setPartnerGender(evt.value)}
+                    onChange={(evt) => setPartnerGender(genders.find(gender => gender.value === evt.value))}
                   />
-                </div>
-
-                <div id={styles.marriageRegime} className={styles.inputGroup}>
-                  <label htmlFor="marriageRegime">Regime de Casamento</label>
-                  <Select
-                    options={marriageRegimes}
-                    id="marriageRegime"
-                    name="marriageRegime"
-                    placeholder="Selecione o regime de casamento"
-                    value={marriageRegime}
-                    onChange={(evt) => setMarriageRegime(evt.value)}
-                  />
-                </div>
+                </div>                
 
                 <div id={styles.partnerProfession} className={styles.inputGroup}>
                   <label htmlFor="partnerProfession">Profissão</label>
@@ -508,6 +484,18 @@ export default function AddClient() {
                     onChange={(evt) => setPartnerCPF(evt.target.value)}
                     placeholder="Digite o CPF"
                     required
+                  />
+                </div>
+
+                <div id={styles.marriageRegime} className={styles.inputGroup}>
+                  <label htmlFor="marriageRegime">Regime de Casamento</label>
+                  <Select
+                    options={marriageRegimes}
+                    id="marriageRegime"
+                    name="marriageRegime"
+                    placeholder="Selecione o regime de casamento"
+                    value={marriageRegime}
+                    onChange={(evt) => setMarriageRegime(marriageRegimes.find(marriageRegime => marriageRegime.value === evt.value))}
                   />
                 </div>
               </div>
@@ -556,88 +544,6 @@ export default function AddClient() {
                 setComplement={setPartnerComplement}
               />
 
-              {/* <h3>Endereço</h3>
-
-              <div className={styles.addressInputs}>
-                <div className={styles.cepGroup}>
-                  <div id={styles.partnerCEP} className={styles.inputGroup}>
-                    <label htmlFor="partnerCEP">CEP</label>
-                    <input
-                      type="text"
-                      name="partnerCEP"
-                      value={partnerCEP}
-                      onChange={(evt) => setPartnerCEP(evt.target.value)}
-                      placeholder="Digite o CEP"
-                    />
-                  </div>
-
-                  <button
-                    type="button"
-                    className={styles.outlineBtn}
-                    onClick={() => handleSearchCEP()}
-                  >
-                    Buscar pelo CEP
-                  </button>
-                </div>
-
-                <div className={styles.addressGroup}>
-                  <div id={styles.partnerStreet} className={styles.inputGroup}>
-                    <label htmlFor="partnerStreet">Logradouro</label>
-                    <input
-                      type="text"
-                      name="partnerStreet"
-                      value={partnerStreet}
-                      onChange={(evt) => setPartnerStreet(evt.target.value)}
-                      placeholder="Digite o Logradouro"
-                    />
-                  </div>
-
-                  <div id={styles.partnerCity} className={styles.inputGroup}>
-                    <label htmlFor="partnerCity">Cidade</label>
-                    <input
-                      type="text"
-                      name="partnerCity"
-                      value={partnerCity}
-                      onChange={(evt) => setPartnerCity(evt.target.value)}
-                      placeholder="Digite a cidade"
-                    />
-                  </div>
-
-                  <div id={styles.partnerUF} className={styles.inputGroup}>
-                    <label htmlFor="partnerUF">UF</label>
-                    <Select
-                      options={ufs}
-                      id="partnerUF"
-                      name="partnerUF"
-                      placeholder="--"
-                      onChange={(evt) => setPartnerUF(evt.value)}
-                    />
-                  </div>
-
-                  <div id={styles.partnerDistrict} className={styles.inputGroup}>
-                    <label htmlFor="partnerDistrict">Bairro</label>
-                    <input
-                      type="text"
-                      name="partnerDistrict"
-                      value={partnerDistrict}
-                      onChange={(evt) => setPartnerDistrict(evt.target.value)}
-                      placeholder="Digite o bairro"
-                    />
-                  </div>
-
-                  <div id={styles.partnerComplement} className={styles.inputGroup}>
-                    <label htmlFor="partnerComplement">Complemento</label>
-                    <input
-                      type="text"
-                      name="partnerComplement"
-                      value={partnerComplement}
-                      onChange={(evt) => setPartnerComplement(evt.target.value)}
-                      placeholder="Digite o complemento"
-                    />
-                  </div>
-                </div>
-              </div> */}
-
               <div className={styles.btnGroup}>
                 <button
                   type="button"
@@ -647,14 +553,12 @@ export default function AddClient() {
                   Voltar
                 </button>
                 
-                <button type="submit" className={styles.submitBtn}>
+                <button type="button" className={styles.submitBtn} onClick={() => handleAddClient()}>
                   Salvar cadastro
                 </button>                
               </div>
             </form>
             }
-
-
           </div>
         </main>
       </Container>
@@ -664,9 +568,7 @@ export default function AddClient() {
           <h2>Cadastrar novo projeto</h2>
 
           <div className={styles.modalContent}>
-            <form action=""
-              onSubmit={handleAddNewProject}
-            >
+            <form>
               <div id={styles.newProject} className={styles.inputGroup}>
                 <label htmlFor="newProject">Projeto</label>
                 <input
@@ -689,8 +591,9 @@ export default function AddClient() {
                 </button>
 
                 <button
-                  type="submit"
+                  type="button"
                   className={styles.submitBtn}
+                  onClick={() => handleAddNewProject()}
                 >
                   Confirmar
                 </button>

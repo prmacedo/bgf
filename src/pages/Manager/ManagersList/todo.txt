@@ -1,0 +1,1 @@
+[ ] Na tela de Manager trocar botão de pesquisa para retirar a pesquisa

@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 import { FiFilter, FiSearch, FiUpload, FiUser, FiUserPlus, FiEye } from 'react-icons/fi';
 
 import Container from '../../../components/Container';
+import Select from '../../../components/Select';
+
+import { useUserData } from '../../../context/UserData';
+
+import API_URL from '../../../config/api';
 
 import styles from './styles.module.css';
 
@@ -18,9 +23,44 @@ export default function ClientsList() {
   const [project, setProject] = useState('');
   const [status, setStatus] = useState('');
 
+  const [clientList, setClientList] = useState([]);
+  const [projectList, setProjectList] = useState([]);
+
+  const { headers } = useUserData();
+
+  function formatName(name) {
+    const nameArray = name.split(' ');
+  
+    return `${nameArray[0]} ${nameArray[nameArray.length - 1]}`;
+  }
+
   function handleSearch(evt) {
     evt.preventDefault();
   }
+
+  async function getClientList() {
+    try {
+      const response = await API_URL.get('/clients', { headers });
+      setClientList(response.data);
+      // console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getProjects() {
+    try {
+      const response = await API_URL.get('/projects', { headers });
+      setProjectList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getClientList();
+    getProjects();
+  }, []);
 
   return (
     <Container>
@@ -76,15 +116,15 @@ export default function ClientsList() {
                 />
               </div>
 
-              {/* Transformar em Select depois */}
               <div className={styles.inputGroup}>
                 <label htmlFor="project">Projeto</label>
-                <input
-                  type="text"
+                <Select
+                  options={projectList}
+                  id="project"
                   name="project"
                   value={project}
-                  onChange={(evt) => setProject(evt.target.value)}
-                  placeholder="Escolha o projeto"
+                  placeholder="Selecione o projeto"
+                  onChange={(evt) => setProject(projectList.find(project => project.value === evt.value))}
                 />
               </div>
 
@@ -123,77 +163,21 @@ export default function ClientsList() {
             </thead>
 
             <tbody>
-              <tr>
-                <td>José Freitas</td>
-                <td>Projeto 01</td>
-                <td>Prospecção/Precificação</td>
-                <td>5</td>
-                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
-
-              <tr>
-                <td>José Freitas</td>
-                <td>Projeto 01</td>
-                <td>Prospecção/Precificação</td>
-                <td>5</td>
-                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
-
-              <tr>
-                <td>José Freitas</td>
-                <td>Projeto 01</td>
-                <td>Prospecção/Precificação</td>
-                <td>5</td>
-                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
-
-              <tr>
-                <td>José Freitas</td>
-                <td>Projeto 01</td>
-                <td>Prospecção/Precificação</td>
-                <td>5</td>
-                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
-
-              <tr>
-                <td>José Freitas</td>
-                <td>Projeto 01</td>
-                <td>Prospecção/Precificação</td>
-                <td>5</td>
-                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
-
-              <tr>
-                <td>José Freitas</td>
-                <td>Projeto 01</td>
-                <td>Prospecção/Precificação</td>
-                <td>5</td>
-                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
-
-              <tr>
-                <td>José Freitas</td>
-                <td>Projeto 01</td>
-                <td>Prospecção/Precificação</td>
-                <td>5</td>
-                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
-
-              <tr>
-                <td>José Freitas</td>
-                <td>Projeto 01</td>
-                <td>Prospecção/Precificação</td>
-                <td>5</td>
-                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
-
-              <tr>
-                <td>José Freitas</td>
-                <td>Projeto 01</td>
-                <td>Prospecção/Precificação</td>
-                <td>5</td>
-                <td className={styles.eyeLink}><Link to="/client" title="Clique para visualizar"><FiEye /></Link></td>
-              </tr>
+              {
+                clientList.length ?
+                clientList.map(client => (
+                  <tr key={ client.id }>
+                    <td>{ formatName(client.name) }</td>
+                    <td>{ client.project.name }</td>
+                    <td>Prospecção/Precificação</td>
+                    <td>5</td>
+                    <td className={styles.eyeLink}><Link to={`/client/${ client.id }`} title="Clique para visualizar"><FiEye /></Link></td>
+                  </tr>
+                )) :
+                  <tr className={styles.emptyList}>
+                    Não há registros
+                  </tr>
+              }
             </tbody>
           </table>
 
