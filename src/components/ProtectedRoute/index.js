@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 
 export default function ProtectedRoute({ component, path }) {
-  const isAuthenticated = JSON.parse(localStorage.getItem('user'))?.token;
+  const isAuthenticated = JSON.parse(localStorage.getItem('user'))?.token || false;
 
   return (
     <>
