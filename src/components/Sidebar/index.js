@@ -32,7 +32,7 @@ export default function Sidebar() {
 
       <div className={styles.title}>
         Olá,<br />
-        <span>{user.user?.name}</span>
+        <span>{user?.user?.name}</span>
       </div>
 
       <div className={styles.menu}>
