@@ -1,24 +1,14 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 
 const UserDataContext = createContext();
 
 export default function UserDataContextProvider({ children }) {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-  const [headers, setHeaders] = useState({});
-  
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData) {
-      setUser(userData);
-      setHeaders({ authorization: `Bearer ${userData?.token}` });
-    }
-  }, []);
 
   return (
     <UserDataContext.Provider
       value={{
-        user,
-        headers
+        user: JSON.parse(localStorage.getItem("user")),
+        headers: { authorization: `Bearer ${JSON.parse(localStorage.getItem("user"))?.token}` }
       }}
     >
       {children}
