@@ -12,6 +12,7 @@ import cancelEdit from '../../../assets/icons/cancel-edit.svg';
 import { useEffect } from 'react';
 import API_URL from '../../../config/api';
 import { useUserData } from '../../../context/UserData';
+import { cpfMask, rgMask, telephoneMask } from '../../../utils/masks';
 
 export default function EditClient() {
   const [isEditing, setIsEditing] = useState(false);
@@ -643,7 +644,7 @@ export default function EditClient() {
                     name="rg"
                     id="rg"
                     value={rg}
-                    onChange={(evt) => setRG(evt.target.value)}
+                    onChange={(evt) => setRG(rgMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="Digite o RG"
                     required
@@ -657,7 +658,7 @@ export default function EditClient() {
                     name="cpf"
                     id="cpf"
                     value={cpf}
-                    onChange={(evt) => setCPF(evt.target.value)}
+                    onChange={(evt) => setCPF(cpfMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="Digite o CPF"
                     required
@@ -702,7 +703,7 @@ export default function EditClient() {
                     name="tel"
                     id="tel"
                     value={tel}
-                    onChange={(evt) => setTel(evt.target.value)}
+                    onChange={(evt) => setTel(telephoneMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="(99) 99999-9999"
                     required
@@ -795,7 +796,7 @@ export default function EditClient() {
                           type="text"
                           name="partnerRG"
                           value={partnerRG}
-                          onChange={(evt) => setPartnerRG(evt.target.value)}
+                          onChange={(evt) => setPartnerRG(rgMask(evt.target.value))}
                           placeholder="Digite o RG"
                           disabled={!isEditing}
                           required
@@ -808,7 +809,7 @@ export default function EditClient() {
                           type="text"
                           name="partnerCPF"
                           value={partnerCPF}
-                          onChange={(evt) => setPartnerCPF(evt.target.value)}
+                          onChange={(evt) => setPartnerCPF(cpfMask(evt.target.value))}
                           placeholder="Digite o CPF"
                           disabled={!isEditing}
                           required
@@ -851,7 +852,7 @@ export default function EditClient() {
                           type="text"
                           name="partnerTel"
                           value={partnerTel}
-                          onChange={(evt) => setPartnerTel(evt.target.value)}
+                          onChange={(evt) => setPartnerTel(telephoneMask(evt.target.value))}
                           placeholder="(99) 99999-9999"
                           disabled={!isEditing}
                           required

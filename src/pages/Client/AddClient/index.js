@@ -11,6 +11,7 @@ import AddressForm from '../../../components/AddressForm';
 import API_URL from '../../../config/api';
 import { useUserData } from '../../../context/UserData';
 import { useEffect } from 'react';
+import { cpfMask, rgMask, telephoneMask } from '../../../utils/masks';
 
 export default function AddClient() {
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -317,7 +318,7 @@ export default function AddClient() {
                     type="text"
                     name="rg"
                     value={rg}
-                    onChange={(evt) => setRG(evt.target.value)}
+                    onChange={(evt) => setRG(rgMask(evt.target.value))}
                     placeholder="Digite o RG"
                     required
                   />
@@ -329,7 +330,7 @@ export default function AddClient() {
                     type="text"
                     name="cpf"
                     value={cpf}
-                    onChange={(evt) => setCPF(evt.target.value)}
+                    onChange={(evt) => setCPF(cpfMask(evt.target.value))}
                     placeholder="Digite o CPF"
                     required
                   />
@@ -369,7 +370,7 @@ export default function AddClient() {
                     type="text"
                     name="tel"
                     value={tel}
-                    onChange={(evt) => setTel(evt.target.value)}
+                    onChange={(evt) => setTel(telephoneMask(evt.target.value))}
                     placeholder="(99) 99999-9999"
                     required
                   />
@@ -469,7 +470,7 @@ export default function AddClient() {
                     type="text"
                     name="partnerRG"
                     value={partnerRG}
-                    onChange={(evt) => setPartnerRG(evt.target.value)}
+                    onChange={(evt) => setPartnerRG(rgMask(evt.target.value))}
                     placeholder="Digite o RG"
                     required
                   />
@@ -481,7 +482,7 @@ export default function AddClient() {
                     type="text"
                     name="partnerCPF"
                     value={partnerCPF}
-                    onChange={(evt) => setPartnerCPF(evt.target.value)}
+                    onChange={(evt) => setPartnerCPF(cpfMask(evt.target.value))}
                     placeholder="Digite o CPF"
                     required
                   />

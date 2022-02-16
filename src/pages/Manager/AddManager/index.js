@@ -10,6 +10,7 @@ import Select from '../../../components/Select';
 
 import styles from './styles.module.css';
 import { useUserData } from '../../../context/UserData';
+import { telephoneMask } from '../../../utils/masks';
 
 export default function AddManager() {
   const [name, setName] = useState('');
@@ -106,7 +107,7 @@ export default function AddManager() {
                 type="text"
                 name="tel"
                 value={tel}
-                onChange={(evt) => setTel(evt.target.value)}                
+                onChange={(evt) => setTel(telephoneMask(evt.target.value))}                
                 placeholder="(99) 99999-9999"
               />
             </div>

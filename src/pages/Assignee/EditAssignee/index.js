@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import { useUserData } from '../../../context/UserData';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { cnpjMask, telephoneMask } from '../../../utils/masks';
 
 export default function EditAssignee() {
   const [isEditing, setIsEditing] = useState(false);
@@ -279,7 +280,7 @@ export default function EditAssignee() {
                     name="cnpj"
                     id="cnpj"
                     value={cnpj}
-                    onChange={(evt) => setCNPJ(evt.target.value)}
+                    onChange={(evt) => setCNPJ(cnpjMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="00.000.000/0001-00"
                     required
@@ -309,7 +310,7 @@ export default function EditAssignee() {
                     name="tel"
                     id="tel"
                     value={tel}
-                    onChange={(evt) => setTel(evt.target.value)}
+                    onChange={(evt) => setTel(telephoneMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="(99) 99999-9999"
                   />
@@ -358,7 +359,7 @@ export default function EditAssignee() {
                     name="adminCNPJ"
                     id="adminCNPJ"
                     value={adminCNPJ}
-                    onChange={(evt) => setAdminCNPJ(evt.target.value)}
+                    onChange={(evt) => setAdminCNPJ(cnpjMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="00.000.000/0001-00"
                     required

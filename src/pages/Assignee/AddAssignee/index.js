@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import Container from '../../../components/Container';
 import AddressForm from '../../../components/AddressForm';
 
+import { cnpjMask, telephoneMask } from '../../../utils/masks';
+
 import API_URL from '../../../config/api';
 
 import styles from './styles.module.css';
@@ -109,36 +111,6 @@ export default function AddAssignee() {
     resetFields();
   }
 
-  const options = [
-    { value: "AC", label: "AC" },
-    { value: "AL", label: "AL" },
-    { value: "AP", label: "AP" },
-    { value: "AM", label: "AM" },
-    { value: "BA", label: "BA" },
-    { value: "CE", label: "CE" },
-    { value: "DF", label: "DF" },
-    { value: "ES", label: "ES" },
-    { value: "GO", label: "GO" },
-    { value: "MA", label: "MA" },
-    { value: "MT", label: "MT" },
-    { value: "MS", label: "MS" },
-    { value: "MG", label: "MG" },
-    { value: "PA", label: "PA" },
-    { value: "PB", label: "PB" },
-    { value: "PR", label: "PR" },
-    { value: "PE", label: "PE" },
-    { value: "PI", label: "PI" },
-    { value: "RJ", label: "RJ" },
-    { value: "RN", label: "RN" },
-    { value: "RS", label: "RS" },
-    { value: "RO", label: "RO" },
-    { value: "RR", label: "RR" },
-    { value: "SC", label: "SC" },
-    { value: "SP", label: "SP" },
-    { value: "SE", label: "SE" },
-    { value: "TO", label: "TO" }
-  ];
-
   return (
     <Container>
       <header className={styles.header}>
@@ -171,7 +143,7 @@ export default function AddAssignee() {
                   type="text"
                   name="cnpj"
                   value={cnpj}
-                  onChange={(evt) => setCNPJ(evt.target.value)}
+                  onChange={(evt) => setCNPJ(cnpjMask(evt.target.value))}
                   placeholder="00.000.000/0001-00"
                   required
                 />
@@ -195,7 +167,7 @@ export default function AddAssignee() {
                   type="text"
                   name="tel"
                   value={tel}
-                  onChange={(evt) => setTel(evt.target.value)}
+                  onChange={(evt) => setTel(telephoneMask(evt.target.value))}
                   placeholder="(99) 99999-9999"
                   required
                 />
@@ -216,89 +188,7 @@ export default function AddAssignee() {
               setDistrict={setDistrict}
               complement={complement}
               setComplement={setComplement}
-            />
-
-            {/* <h3>Endereço do Cessionário</h3>
-
-            <div className={styles.addressInputs}>
-              <div className={styles.cepGroup}>
-                <div id={styles.cep} className={styles.inputGroup}>
-                  <label htmlFor="cep">CEP</label>
-                  <input
-                    type="text"
-                    name="cep"
-                    value={cep}
-                    onChange={(evt) => setCEP(evt.target.value)}
-                    placeholder="Digite o CEP"
-                  />
-                </div>
-
-                <button 
-                  type="button"
-                  className={styles.cepBtn}
-                  onClick={() => handleSearchCEP()}  
-                >
-                  Buscar pelo CEP
-                </button>
-              </div>
-
-              <div className={styles.addressGroup}>
-                <div id={styles.street} className={styles.inputGroup}>
-                  <label htmlFor="street">Logradouro</label>
-                  <input
-                    type="text"
-                    name="street"
-                    value={street}
-                    onChange={(evt) => setStreet(evt.target.value)}
-                    placeholder="Digite o Logradouro"
-                  />
-                </div>
-
-                <div id={styles.city} className={styles.inputGroup}>
-                  <label htmlFor="city">Cidade</label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={city}
-                    onChange={(evt) => setCity(evt.target.value)}
-                    placeholder="Digite a cidade"
-                  />
-                </div>
-
-                <div id={styles.uf} className={styles.inputGroup}>
-                  <label htmlFor="uf">UF</label>
-                  <Select
-                    options={options}
-                    id="uf"
-                    name="uf"
-                    placeholder="--"
-                    onChange={(evt) => setUF(evt.value)}
-                  />
-                </div>
-
-                <div id={styles.district} className={styles.inputGroup}>
-                  <label htmlFor="district">Bairro</label>
-                  <input
-                    type="text"
-                    name="district"
-                    value={district}
-                    onChange={(evt) => setDistrict(evt.target.value)}
-                    placeholder="Digite o bairro"
-                  />
-                </div>
-
-                <div id={styles.complement} className={styles.inputGroup}>
-                  <label htmlFor="complement">Complemento</label>
-                  <input
-                    type="text"
-                    name="complement"
-                    value={complement}
-                    onChange={(evt) => setComplement(evt.target.value)}
-                    placeholder="Digite o complemento"
-                  />
-                </div>
-              </div>
-            </div> */}
+            />            
 
             <h2>Dados da Instituição Administradora do Cessionário</h2>
 
@@ -321,7 +211,7 @@ export default function AddAssignee() {
                   type="text"
                   name="adminCNPJ"
                   value={adminCNPJ}
-                  onChange={(evt) => setAdminCNPJ(evt.target.value)}
+                  onChange={(evt) => setAdminCNPJ(cnpjMask(evt.target.value))}
                   placeholder="00.000.000/0001-00"
                   required
                 />
@@ -343,88 +233,6 @@ export default function AddAssignee() {
               complement={adminComplement}
               setComplement={setAdminComplement}
             />
-
-            {/* <h3>Endereço da Instituição Administradora</h3>
-
-            <div className={styles.addressInputs}>
-              <div className={styles.cepGroup}>
-                <div id={styles.adminCEP} className={styles.inputGroup}>
-                  <label htmlFor="adminCEP">CEP</label>
-                  <input
-                    type="text"
-                    name="adminCEP"
-                    value={adminCEP}
-                    onChange={(evt) => setAdminCEP(evt.target.value)}
-                    placeholder="Digite o CEP"
-                  />
-                </div>
-
-                <button 
-                  type="button"
-                  className={styles.cepBtn}
-                  onClick={() => handleSearchAdminCEP()}  
-                >
-                  Buscar pelo CEP
-                </button>
-              </div>
-
-              <div className={styles.addressGroup}>
-                <div id={styles.adminStreet} className={styles.inputGroup}>
-                  <label htmlFor="adminStreet">Logradouro</label>
-                  <input
-                    type="text"
-                    name="adminStreet"
-                    value={adminStreet}
-                    onChange={(evt) => setAdminStreet(evt.target.value)}
-                    placeholder="Digite o Logradouro"
-                  />
-                </div>
-
-                <div id={styles.adminCity} className={styles.inputGroup}>
-                  <label htmlFor="adminCity">Cidade</label>
-                  <input
-                    type="text"
-                    name="adminCity"
-                    value={adminCity}
-                    onChange={(evt) => setAdminCity(evt.target.value)}
-                    placeholder="Digite a cidade"
-                  />
-                </div>
-
-                <div id={styles.adminUF} className={styles.inputGroup}>
-                  <label htmlFor="adminUF">UF</label>
-                  <Select
-                    options={options}
-                    id="adminUF"
-                    name="adminUF"
-                    placeholder="--"
-                    onChange={(evt) => setAdminUF(evt.value)}
-                  />
-                </div>
-
-                <div id={styles.adminDistrict} className={styles.inputGroup}>
-                  <label htmlFor="adminDistrict">Bairro</label>
-                  <input
-                    type="text"
-                    name="adminDistrict"
-                    value={adminDistrict}
-                    onChange={(evt) => setAdminDistrict(evt.target.value)}
-                    placeholder="Digite o bairro"
-                  />
-                </div>
-
-                <div id={styles.adminComplement} className={styles.inputGroup}>
-                  <label htmlFor="adminComplement">Complemento</label>
-                  <input
-                    type="text"
-                    name="adminComplement"
-                    value={adminComplement}
-                    onChange={(evt) => setAdminComplement(evt.target.value)}
-                    placeholder="Digite o complemento"
-                  />
-                </div>
-              </div>
-            </div> */}
                     
             <div className={styles.btnGroup}>
               <Link to="/managers" className={styles.cancelBtn}>Cancelar</Link>

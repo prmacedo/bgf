@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
-import Select from '../Select';
 import axios from 'axios';
+
+import Select from '../Select';
+
+import { cepMask } from '../../utils/masks';
 
 import styles from './styles.module.css';
 
@@ -70,7 +73,7 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
               name="cep"
               id="cep"
               value={cep}
-              onChange={(evt) => setCEP(evt.target.value)}
+              onChange={(evt) => setCEP(cepMask(evt.target.value))}
               disabled={disabled}
               placeholder="Digite o CEP"
             />
@@ -93,7 +96,7 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
               name="cep"
               id="cep"
               value={cep}
-              onChange={(evt) => setCEP(evt.target.value)}
+              onChange={(evt) => setCEP(cepMask(evt.target.value))}
               disabled={disabled}
               placeholder="Digite o CEP"
             />

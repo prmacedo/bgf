@@ -72,9 +72,9 @@ export default function Login() {
             </div>
 
             <button type="submit" className={styles.loginBtn}>Entrar</button>
-            <div className={styles.forgotPassword}>
+            {/* <div className={styles.forgotPassword}>
               <Link to="/forgotPassword">Esqueci minha senha</Link>
-            </div>
+            </div> */}
           </form>
         </div>
       </main>

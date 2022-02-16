@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 import { FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
+import { useHistory } from 'react-router-dom';
 import { Link, useParams } from 'react-router-dom';
 
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
 import API_URL from '../../../config/api';
 import { useUserData } from '../../../context/UserData';
+
+import { cepMask, cnpjMask, cpfMask, rgMask, telephoneMask } from '../../../utils/masks';
 
 import styles from './styles.module.css';
 
@@ -15,6 +18,8 @@ export default function ContractRevision() {
 
   const { documentId } = useParams();
   const { headers } = useUserData();
+
+  const history = useHistory();
 
   // Client
   const [clientId, setClientId] = useState(0);
@@ -152,6 +157,11 @@ export default function ContractRevision() {
     { value: 'F', label: 'Feminino' },
     { value: 'M', label: 'Masculino' }
   ];
+
+  function stringToNumber(value) {
+    let stringValue = String(value);
+    return Number(stringValue.replace(',', '.'));
+  }
 
   function handleHideData(id) {
     document.querySelector(`#${id} > div`).classList.toggle(`${styles.hide}`);
@@ -343,7 +353,6 @@ export default function ContractRevision() {
     setPrecatoryValue(contract.precatoryValue);
     setAttorneyFee(contract.attorneyFee);
     setPlace(contract.place);
-    setDate(contract.contractDate.split("T")[0]);
     setCourt(contract.court);
     setOption(options.find(option => option.value === contract.type));
     setProcess(contract.process);
@@ -351,6 +360,7 @@ export default function ContractRevision() {
     setPercentage(contract.percentage);
     setLiquidValue(contract.liquidValue);
     setProposalValue(contract.proposalValue);
+    setDate(contract.contractDate.split("T")[0]);
   }
 
   function setAdminData(admin) {
@@ -394,7 +404,8 @@ export default function ContractRevision() {
   }
 
   useEffect(() => {
-    setProposalValue(liquidValue * percentage / 100);
+    const proposalValue = stringToNumber(liquidValue) * stringToNumber(percentage) / 100;
+    setProposalValue(proposalValue);
   }, [percentage]);
 
   useEffect(() => {
@@ -524,7 +535,7 @@ export default function ContractRevision() {
                     type="text"
                     name="rg"
                     value={rg}
-                    onChange={(evt) => setRG(evt.target.value)}
+                    onChange={(evt) => setRG(rgMask(evt.target.value))}
                     placeholder="Digite o RG"
                     disabled={!isEditing}
                     required
@@ -537,7 +548,7 @@ export default function ContractRevision() {
                     type="text"
                     name="cpf"
                     value={cpf}
-                    onChange={(evt) => setCPF(evt.target.value)}
+                    onChange={(evt) => setCPF(cpfMask(evt.target.value))}
                     placeholder="Digite o CPF"
                     disabled={!isEditing}
                     required
@@ -563,7 +574,7 @@ export default function ContractRevision() {
                     type="text"
                     name="tel"
                     value={tel}
-                    onChange={(evt) => setTel(evt.target.value)}
+                    onChange={(evt) => setTel(telephoneMask(evt.target.value))}
                     placeholder="(99) 99999-9999"
                     disabled={!isEditing}
                     required
@@ -576,7 +587,7 @@ export default function ContractRevision() {
                     type="text"
                     name="cep"
                     value={cep}
-                    onChange={(evt) => setCEP(evt.target.value)}
+                    onChange={(evt) => setCEP(cepMask(evt.target.value))}
                     placeholder="Digite o CEP"
                     disabled={!isEditing}
                   />
@@ -727,7 +738,7 @@ export default function ContractRevision() {
                         type="text"
                         name="partnerRG"
                         value={partnerRG}
-                        onChange={(evt) => setPartnerRG(evt.target.value)}
+                        onChange={(evt) => setPartnerRG(rgMask(evt.target.value))}
                         placeholder="Digite o RG"
                         disabled={!isEditing}
                         required
@@ -740,7 +751,7 @@ export default function ContractRevision() {
                         type="text"
                         name="partnerCPF"
                         value={partnerCPF}
-                        onChange={(evt) => setPartnerCPF(evt.target.value)}
+                        onChange={(evt) => setPartnerCPF(cpfMask(evt.target.value))}
                         placeholder="Digite o CPF"
                         disabled={!isEditing}
                         required
@@ -766,7 +777,7 @@ export default function ContractRevision() {
                         type="text"
                         name="partnerTel"
                         value={partnerTel}
-                        onChange={(evt) => setPartnerTel(evt.target.value)}
+                        onChange={(evt) => setPartnerTel(telephoneMask(evt.target.value))}
                         placeholder="(99) 99999-9999"
                         disabled={!isEditing}
                         required
@@ -779,7 +790,7 @@ export default function ContractRevision() {
                         type="text"
                         name="partnerCEP"
                         value={partnerCEP}
-                        onChange={(evt) => setPartnerCEP(evt.target.value)}
+                        onChange={(evt) => setPartnerCEP(cepMask(evt.target.value))}
                         placeholder="Digite o CEP"
                         disabled={!isEditing}
                       />
@@ -879,7 +890,7 @@ export default function ContractRevision() {
                     name="assigneeCNPJ"
                     id="assigneeCNPJ"
                     value={assigneeCNPJ}
-                    onChange={(evt) => setAssigneeCNPJ(evt.target.value)}
+                    onChange={(evt) => setAssigneeCNPJ(cnpjMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="00.000.000/0001-00"
                     required
@@ -907,7 +918,7 @@ export default function ContractRevision() {
                     name="assigneeTel"
                     id="assigneeTel"
                     value={assigneeTel}
-                    onChange={(evt) => setAssigneeTel(evt.target.value)}
+                    onChange={(evt) => setAssigneeTel(telephoneMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="(99) 99999-9999"
                   />
@@ -919,7 +930,7 @@ export default function ContractRevision() {
                     type="text"
                     name="assigneeCEP"
                     value={assigneeCEP}
-                    onChange={(evt) => setAssigneeCEP(evt.target.value)}
+                    onChange={(evt) => setAssigneeCEP(cepMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="Digite o CEP"
                   />
@@ -1017,7 +1028,7 @@ export default function ContractRevision() {
                     name="adminCNPJ"
                     id="adminCNPJ"
                     value={adminCNPJ}
-                    onChange={(evt) => setAdminCNPJ(evt.target.value)}
+                    onChange={(evt) => setAdminCNPJ(cnpjMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="00.000.000/0001-00"
                     required
@@ -1030,7 +1041,7 @@ export default function ContractRevision() {
                     type="text"
                     name="adminCEP"
                     value={adminCEP}
-                    onChange={(evt) => setAdminCEP(evt.target.value)}
+                    onChange={(evt) => setAdminCEP(cepMask(evt.target.value))}
                     disabled={!isEditing}
                     placeholder="Digite o CEP"
                   />
@@ -1163,6 +1174,7 @@ export default function ContractRevision() {
                   <label htmlFor="percentage">Proposta %</label>
                   <input
                     type="number"
+                    step="0.01"
                     id="percentage"
                     min="0"
                     name="percentage"
@@ -1177,6 +1189,7 @@ export default function ContractRevision() {
                   <label htmlFor="proposalValue">Proposta R$</label>
                   <input
                     type="number"
+                    step="0.01"
                     id="proposalValue"
                     min="0"
                     name="proposalValue"
@@ -1216,7 +1229,8 @@ export default function ContractRevision() {
                 <div id={styles.precatoryValueID} className={styles.inputGroup}>
                   <label htmlFor="precatoryValue">Valor de Face do Precatório</label>
                   <input
-                    type="text"
+                    type="number"
+                    step="0.01"
                     id="precatoryValue"
                     name="precatoryValue"
                     placeholder="Digite o valor"
@@ -1229,10 +1243,11 @@ export default function ContractRevision() {
                 <div id={styles.attorneyFeeID} className={styles.inputGroup}>
                   <label htmlFor="attorneyFee">Honorários Advocatícios %</label>
                   <input
-                    type="text"
+                    type="number"
+                    step="0.01"
                     id="attorneyFee"
                     name="attorneyFee"
-                    placeholder="Digite o nº do Precatório"
+                    placeholder="Digite o valor"
                     value={attorneyFee}
                     onChange={(evt) => setAttorneyFee(evt.target.value)}
                     disabled={!isEditing}
@@ -1242,7 +1257,7 @@ export default function ContractRevision() {
                 <div id={styles.placeID} className={styles.inputGroup}>
                   <label htmlFor="place">Local</label>
                   <input
-                    type="number"
+                    type="text"
                     id="place"
                     name="place"
                     placeholder="Digite o Local"
@@ -1268,12 +1283,12 @@ export default function ContractRevision() {
             </div>
 
             <div className={styles.btnGroup}>
-              <Link 
-                to="/contract"
+              <p 
+                onClick={() => history.goBack()}
                 className={`${styles.btn} ${styles.btnRed} ${isEditing ? styles.disabled : null}`}
               >
                 Voltar
-              </Link>
+              </p>
 
               <button 
                 type="button"

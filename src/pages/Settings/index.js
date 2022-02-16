@@ -8,6 +8,8 @@ import Select from '../../components/Select';
 import API_URL from '../../config/api';
 import { useUserData } from '../../context/UserData';
 
+import { telephoneMask } from '../../utils/masks';
+
 import styles from './styles.module.css';
 
 export default function Settings() {
@@ -203,7 +205,7 @@ export default function Settings() {
                   type="text"
                   name="tel"
                   value={tel}
-                  onChange={(evt) => setTel(evt.target.value)}
+                  onChange={(evt) => setTel(telephoneMask(evt.target.value))}
                   disabled={!isEditing}
                   placeholder="(99) 99999-9999"
                 />

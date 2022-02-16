@@ -24,7 +24,7 @@ export default function Contract() {
   const [liquidValue, setLiquidValue] = useState(0);
   const [entity, setEntity] = useState('');
   const [farmCourt, setFarmCourt] = useState('');
-  const [precatoryValue, setPrecatoryValue] = useState('');
+  const [precatoryValue, setPrecatoryValue] = useState(0);
   const [attorneyFee, setAttorneyFee] = useState(0);
   const [place, setPlace] = useState('');
   const [date, setDate] = useState();
@@ -75,7 +75,7 @@ export default function Contract() {
       precatoryValue: Number(precatoryValue),
       attorneyFee: Number(attorneyFee),
       place,
-      date: new Date(date)
+      contractDate: new Date(date)
     }
 
     console.log(data);
@@ -213,6 +213,7 @@ export default function Contract() {
                 <label htmlFor="percentage">Proposta %</label>
                 <input
                   type="number"
+                  step="0.01"
                   id="percentage"
                   min="0"
                   name="percentage"
@@ -225,6 +226,7 @@ export default function Contract() {
                 <label htmlFor="proposalValue">Proposta R$</label>
                 <input
                   type="number"
+                  step="0.01"
                   id="proposalValue"
                   min="0"
                   name="proposalValue"
@@ -268,6 +270,7 @@ export default function Contract() {
                 <label htmlFor="precatoryValue">Valor de Face do Precatório</label>
                 <input
                   type="number"
+                  step="0.01"
                   id="precatoryValue"
                   name="precatoryValue"
                   placeholder="Digite o valor"
@@ -279,9 +282,10 @@ export default function Contract() {
                 <label htmlFor="attorneyFee">Honorários Advocatícios %</label>
                 <input
                   type="number"
+                  step="0.01"
                   id="attorneyFee"
                   name="attorneyFee"
-                  placeholder="Digite o nº do Precatório"
+                  placeholder="Digite o valor"
                   value={attorneyFee}
                   onChange={(evt) => setAttorneyFee(evt.target.value)}
                 />

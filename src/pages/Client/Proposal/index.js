@@ -32,15 +32,15 @@ export default function Proposal() {
   const [ process, setProcess ] = useState('');
   const [ court, setCourt ] = useState('');
 
-  const [ value, setValue ] = useState(0);
-  const [ correction, setCorrection ] = useState(0);
-  const [ fee, setFee ] = useState(0);
-  const [ preference, setPreference] = useState(0);
-  const [ taxes, setTaxes ] = useState(0);
-  const [ percentage, setPercentage ] = useState(0);
-  const [ updatedValue, setUpdatedValue ] = useState(0);
-  const [ liquidValue, setLiquidValue ] = useState(0);
-  const [ proposalValue, setProposalValue ] = useState(0);
+  const [ value, setValue ] = useState();
+  const [ correction, setCorrection ] = useState();
+  const [ fee, setFee ] = useState();
+  const [ preference, setPreference] = useState();
+  const [ taxes, setTaxes ] = useState();
+  const [ percentage, setPercentage ] = useState();
+  const [ updatedValue, setUpdatedValue ] = useState();
+  const [ liquidValue, setLiquidValue ] = useState();
+  const [ proposalValue, setProposalValue ] = useState();
 
   const types = [
     { value: 'BRV', label: 'BRV' },
@@ -48,8 +48,10 @@ export default function Proposal() {
   ];
 
   function formatMoney(value) {
-    const formatedValue = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
-    return formatedValue;
+    if (value) 
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);        
+    
+    return 'R$ 0,00';
   }
 
   async function getAssignee() {
@@ -267,6 +269,7 @@ export default function Proposal() {
                 <label htmlFor="value">Valor Histórico - Bruto</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="value"
                   name="value"
@@ -279,6 +282,7 @@ export default function Proposal() {
                 <label htmlFor="correction">Correção</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="correction"
                   name="correction"
@@ -291,6 +295,7 @@ export default function Proposal() {
                 <label htmlFor="fee">Juros</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="fee"
                   name="fee"
@@ -303,6 +308,7 @@ export default function Proposal() {
                 <label htmlFor="preference">Dedução - Preferência</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="preference"
                   name="preference"
@@ -315,6 +321,7 @@ export default function Proposal() {
                 <label htmlFor="taxes">Retenção - Tributos</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="taxes"
                   name="taxes"
@@ -327,6 +334,7 @@ export default function Proposal() {
                 <label htmlFor="percentage">Proposta %</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="percentage"
                   name="percentage"
@@ -381,7 +389,7 @@ export default function Proposal() {
                   <tr>
                     <td>H</td>
                     <td>Proposta %</td>
-                    <td className={styles.tableNumber}>{percentage}%</td>
+                    <td className={styles.tableNumber}>{percentage || 0}%</td>
                   </tr>
                   <tr>
                     <td>I</td>

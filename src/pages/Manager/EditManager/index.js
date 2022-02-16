@@ -5,6 +5,8 @@ import { FiEdit2, FiClipboard, FiTrash2 } from 'react-icons/fi';
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
 
+import { telephoneMask } from '../../../utils/masks';
+
 import styles from './styles.module.css';
 
 import cancelEdit from '../../../assets/icons/cancel-edit.svg';
@@ -267,7 +269,7 @@ export default function EditManager() {
                   name="tel"
                   id="tel"
                   value={tel}
-                  onChange={(evt) => setTel(evt.target.value)}
+                  onChange={(evt) => setTel(telephoneMask(evt.target.value))}
                   disabled={!isEditing}
                   placeholder="(99) 99999-9999"
                 />

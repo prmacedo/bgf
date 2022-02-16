@@ -30,8 +30,11 @@ export default function ClientsList() {
 
   function formatName(name) {
     const nameArray = name.split(' ');
-  
-    return `${nameArray[0]} ${nameArray[nameArray.length - 1]}`;
+
+    if (nameArray.length > 1)
+      return `${nameArray[0]} ${nameArray[nameArray.length - 1]}`;
+    
+    return nameArray[0];
   }
 
   function handleSearch(evt) {

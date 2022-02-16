@@ -45,8 +45,7 @@ export default function Proposal() {
   ];
 
   function formatMoney(value) {
-    const formatedValue = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
-    return formatedValue;
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
   }
 
   async function getAssignee() {
@@ -260,6 +259,7 @@ export default function Proposal() {
                 <label htmlFor="value">Valor Histórico - Bruto</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="value"
                   name="value"
@@ -272,6 +272,7 @@ export default function Proposal() {
                 <label htmlFor="correction">Correção</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="correction"
                   name="correction"
@@ -284,6 +285,7 @@ export default function Proposal() {
                 <label htmlFor="fee">Juros</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="fee"
                   name="fee"
@@ -296,6 +298,7 @@ export default function Proposal() {
                 <label htmlFor="preference">Dedução - Preferência</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="preference"
                   name="preference"
@@ -308,6 +311,7 @@ export default function Proposal() {
                 <label htmlFor="taxes">Retenção - Tributos</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="taxes"
                   name="taxes"
@@ -320,6 +324,7 @@ export default function Proposal() {
                 <label htmlFor="percentage">Proposta %</label>
                 <input
                   type="number"
+                  step="0.01"
                   min="0"
                   id="percentage"
                   name="percentage"
