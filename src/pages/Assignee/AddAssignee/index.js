@@ -116,7 +116,7 @@ export default function AddAssignee() {
       <header className={styles.header}>
         <h1>
           <FiBriefcase />
-          Cadastrar Gerentes
+          Cadastrar Cessionários
         </h1>
       </header>
 
