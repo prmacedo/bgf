@@ -192,8 +192,12 @@ export default function AddClient() {
         value: response.data.id,
         label: response.data.name,
       }
-
+      
+      console.log(response);
+      
       const projectsList = [...projects, projectItem].sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
+      console.log(projects);
+      console.log(projectsList);
       
       setProjects(projectsList);
       setProject(projectItem);
