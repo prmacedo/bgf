@@ -563,7 +563,7 @@ export default function EditClient() {
                     id="project"
                     name="project"
                     placeholder="Selecione o projeto"
-                    onChange={(evt) => setProject(projects.find(project => project.value === evt.value))}
+                    onChange={(evt) => setProject(projects.find(project => project.value === evt.target.value))}
                     disabled={!isEditing}
                   />
                 </div>
@@ -618,7 +618,7 @@ export default function EditClient() {
                     name="gender"
                     value={gender}
                     placeholder="Selecione o sexo"
-                    onChange={(evt) => setGender(evt.value)}
+                    onChange={(evt) => setGender(evt.target.value)}
                     disabled={!isEditing}
                   />
                 </div>                
@@ -673,7 +673,7 @@ export default function EditClient() {
                     name="maritalState"
                     value={maritalState}
                     placeholder="Selecione o estado civil"
-                    onChange={(evt) => setMaritalState(evt.value)}
+                    onChange={(evt) => setMaritalState(evt.target.value)}
                     disabled={!isEditing}
                   />
                 </div>             
@@ -773,7 +773,7 @@ export default function EditClient() {
                           placeholder="Selecione o sexo"
                           value={partnerGender}
                           disabled={!isEditing}
-                          onChange={(evt) => setPartnerGender(genders.find(gender => gender.value === evt.value))}
+                          onChange={(evt) => setPartnerGender(genders.find(gender => gender.value === evt.target.value))}
                         />
                       </div>
 
@@ -825,7 +825,7 @@ export default function EditClient() {
                           placeholder="Selecione o regime de casamento"
                           value={marriageRegime}
                           disabled={!isEditing}
-                          onChange={(evt) => setMarriageRegime(marriageRegimes.find(marriageRegime => marriageRegime.value === evt.value))}
+                          onChange={(evt) => setMarriageRegime(marriageRegimes.find(marriageRegime => marriageRegime.value === evt.target.value))}
                         />
                       </div>
                     </div>
@@ -1149,7 +1149,7 @@ export default function EditClient() {
                   id="proposal"
                   name="proposal"
                   placeholder="Selecione a proposta"
-                  onChange={(evt) => setProposal(proposalList.find(proposal => proposal.value === evt.value))}
+                  onChange={(evt) => setProposal(proposalList.find(proposal => proposal.value === evt.target.value))}
                 />
               </div>
 
@@ -1197,7 +1197,7 @@ export default function EditClient() {
                   id="editContract"
                   name="editContract"
                   placeholder="Selecione o precatório do contrato"
-                  onChange={(evt) => setContract(contractList.find(proposal => proposal.value === evt.value))}
+                  onChange={(evt) => setContract(contractList.find(proposal => proposal.value === evt.target.value))}
                 />
               </div>
 
@@ -1245,7 +1245,7 @@ export default function EditClient() {
                   id="newContract"
                   name="newContract"
                   placeholder="Selecione o precatório do contrato"
-                  onChange={(evt) => setContract(proposalList.find(contract => contract.value === evt.value))}
+                  onChange={(evt) => setContract(proposalList.find(contract => contract.value === evt.target.value))}
                 />
               </div>
 

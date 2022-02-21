@@ -161,7 +161,7 @@ export default function Contract() {
                   name="assignee"
                   placeholder="Escolha o Cessionário"
                   value={assignee}
-                  onChange={(evt) => setAssignee(assigneeList.find(assignee => assignee.value === evt.value))}
+                  onChange={(evt) => setAssignee(assigneeList.find(assignee => assignee.value === evt.target.value))}
                 />
               </div>
               <div id={styles.optionGroup} className={styles.inputGroup}>

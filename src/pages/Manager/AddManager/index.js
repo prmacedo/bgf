@@ -83,7 +83,7 @@ export default function AddManager() {
                 id="type"
                 name="type"
                 placeholder="Escolha o cargo"
-                onChange={(evt) => setType(options.find(option => option.value === evt.value))}
+                onChange={(evt) => setType(options.find(option => option.value === evt.target.value))}
                 value={type}
               />
               

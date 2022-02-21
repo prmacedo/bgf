@@ -127,7 +127,7 @@ export default function ClientsList() {
                   name="project"
                   value={project}
                   placeholder="Selecione o projeto"
-                  onChange={(evt) => setProject(projectList.find(project => project.value === evt.value))}
+                  onChange={(evt) => setProject(projectList.find(project => project.value === evt.target.value))}
                 />
               </div>
 
