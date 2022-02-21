@@ -31,6 +31,7 @@ export default function Proposal() {
   const [ precatory, setPrecatory ] = useState('');
   const [ process, setProcess ] = useState('');
   const [ court, setCourt ] = useState('');
+  const [ place, setPlace ] = useState('');
 
   const [ value, setValue ] = useState();
   const [ correction, setCorrection ] = useState();
@@ -89,6 +90,7 @@ export default function Proposal() {
       updatedValue,
       liquidValue,
       proposalValue,
+      place,
       proposalDate: new Date(date),
       clientId: client.id,
       assigneeId: assignee.value
@@ -100,6 +102,7 @@ export default function Proposal() {
 
       setDocumentId(response.data.id);
       setIsNew(false);
+      return response
     } catch (error) {
       console.log(error);
     }
@@ -120,6 +123,7 @@ export default function Proposal() {
       updatedValue,
       liquidValue,
       proposalValue,
+      place,
       proposalDate: new Date(date),
       clientId: client.id,
       assigneeId: assignee.value
@@ -128,6 +132,7 @@ export default function Proposal() {
     try {
       const response = await API_URL.patch(`/document/${documentId}`, data, { headers });
       console.log(response);      
+      return response
     } catch (error) {
       console.log(error);
     }
@@ -135,14 +140,30 @@ export default function Proposal() {
 
   function updateOrSaveDocument() {
     if (!isNew) {
-      updateDocument();
+      return updateDocument();
     } else {
-      saveDocument();
+      return saveDocument();
     }
   }
 
-  function generatePDF() {
-    updateOrSaveDocument();
+  async function generatePDF() {
+    const proposalId = (await updateOrSaveDocument()).data.id;
+
+    try {
+      const response = await API_URL.get(`/download/proposal/pdf/${proposalId}`, { headers, responseType: 'blob' })
+        .then((response) => {
+          // console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${date}-Proposta-${client}.pdf`); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+        });
+      // console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function generateDOC() {
@@ -257,6 +278,17 @@ export default function Proposal() {
                   placeholder="Digite o nome do respectivo Tribunal"
                   value={court}
                   onChange={(evt) => setCourt(evt.target.value)}
+                />
+              </div>
+              <div id={styles.placeGroup} className={styles.inputGroup}>
+                <label htmlFor="place">Local</label>
+                <input
+                  type="text"
+                  id="place"
+                  name="place"
+                  placeholder="Digite o Local"
+                  value={place}
+                  onChange={(evt) => setPlace(evt.target.value)}
                 />
               </div>
             </div>

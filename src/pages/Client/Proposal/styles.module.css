@@ -30,12 +30,13 @@
 #processGroup {grid-area: process;}
 #courtGroup {grid-area: court;}
 #dateGroup {grid-area: date;}
+#placeGroup {grid-area: place;}
 
 #proposalInputs {
   display: grid;
   grid-template-areas: 
     'client client client client option option option fund fund fund date date'
-    'precatory precatory precatory precatory process process process process court court court court';
+    'precatory precatory precatory process process process court court court place place place';
   gap: 1rem;
   grid-template-columns: repeat(12, 1fr);
 }
