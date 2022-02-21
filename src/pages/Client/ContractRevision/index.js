@@ -498,7 +498,7 @@ export default function ContractRevision() {
                     name="gender"
                     value={gender}
                     placeholder="Selecione o sexo"
-                    onChange={(evt) => setGender(genders.find(gender => gender.value === evt.target.value))}
+                    onChange={(evt) => setGender(genders.find(gender => gender.value === evt.value))}
                     disabled={!isEditing}
                   />
                 </div>
@@ -511,7 +511,7 @@ export default function ContractRevision() {
                     name="maritalState"
                     value={maritalState}
                     placeholder="Selecione o estado civil"
-                    onChange={(evt) => setMaritalState(maritalStates.find(maritalState => maritalState.value === evt.target.value))}
+                    onChange={(evt) => setMaritalState(maritalStates.find(maritalState => maritalState.value === evt.value))}
                     disabled={!isEditing}
                   />
                 </div>
@@ -625,7 +625,7 @@ export default function ContractRevision() {
                     name="uf"
                     placeholder="--"
                     value={uf}
-                    onChange={(evt) => setUF(ufs.find(uf => uf.value === evt.target.value))}
+                    onChange={(evt) => setUF(ufs.find(uf => uf.value === evt.value))}
                     disabled={!isEditing}
                   />
                 </div>
@@ -702,7 +702,7 @@ export default function ContractRevision() {
                         placeholder="Selecione o sexo"
                         value={partnerGender}
                         disabled={!isEditing}
-                        onChange={(evt) => setPartnerGender(genders.find(gender => gender.value === evt.target.value))}
+                        onChange={(evt) => setPartnerGender(genders.find(gender => gender.value === evt.value))}
                       />
                     </div>
 
@@ -715,7 +715,7 @@ export default function ContractRevision() {
                         placeholder="Selecione o regime"
                         disabled={!isEditing}
                         value={partnerMaritalState}
-                        onChange={(evt) => setPartnerMaritalState(marriageRegimes.find(marriageRegime => marriageRegime.value === evt.target.value))}
+                        onChange={(evt) => setPartnerMaritalState(marriageRegimes.find(marriageRegime => marriageRegime.value === evt.value))}
                       />
                     </div>
 
@@ -829,7 +829,7 @@ export default function ContractRevision() {
                         placeholder="--"
                         disabled={!isEditing}
                         value={partnerUF}
-                        onChange={(evt) => setPartnerUF(ufs.find(uf => uf.value === evt.target.value))}
+                        onChange={(evt) => setPartnerUF(ufs.find(uf => uf.value === evt.value))}
                       />
                     </div>
 
@@ -969,7 +969,7 @@ export default function ContractRevision() {
                     disabled={!isEditing}
                     placeholder="--"
                     value={assigneeUF}
-                    onChange={(evt) => setAssigneeUF(ufs.find(uf => uf.value === evt.target.value))}
+                    onChange={(evt) => setAssigneeUF(ufs.find(uf => uf.value === evt.value))}
                   />
                 </div>
 
@@ -1080,7 +1080,7 @@ export default function ContractRevision() {
                     disabled={!isEditing}
                     placeholder="--"
                     value={adminUF}
-                    onChange={(evt) => setAdminUF(ufs.find(uf => uf.value === evt.target.value))}
+                    onChange={(evt) => setAdminUF(ufs.find(uf => uf.value === evt.value))}
                   />
                 </div>
 
@@ -1125,7 +1125,7 @@ export default function ContractRevision() {
                     name="option"
                     options={options}
                     placeholder="Selecione uma opção"
-                    onChange={(evt) => setOption(options.find(option => option.value === evt.target.value))}
+                    onChange={(evt) => setOption(options.find(option => option.value === evt.value))}
                     value={option}
                     disabled={!isEditing}
                   />

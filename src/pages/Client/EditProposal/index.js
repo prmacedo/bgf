@@ -209,7 +209,7 @@ export default function Proposal() {
                   options={types}
                   value={type}
                   placeholder="Selecione uma opção"                  
-                  onChange={(evt) => setType(types.find(type => type.value === evt.target.value))}
+                  onChange={(evt) => setType(types.find(type => type.value === evt.value))}
                 />
               </div>
               <div id={styles.fundGroup} className={styles.inputGroup}>
@@ -220,7 +220,7 @@ export default function Proposal() {
                   name="assignee"
                   placeholder="Escolha o Cessionário"
                   value={assignee}
-                  onChange={(evt) => setAssignee(assigneeList.find(assignee => assignee.value === evt.target.value))}  
+                  onChange={(evt) => setAssignee(assigneeList.find(assignee => assignee.value === evt.value))}  
                 />
               </div>
               <div id={styles.dateGroup} className={styles.inputGroup}>

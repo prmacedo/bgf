@@ -134,7 +134,7 @@ export default function AddressForm({ title, cep, setCEP, street, setStreet, cit
               name="uf"
               placeholder="--"
               value={uf}
-              onChange={(evt) => setUF(ufs.find(uf => uf.value === evt.target.value))}
+              onChange={(evt) => setUF(ufs.find(uf => uf.value === evt.value))}
               type="cep"
               disabled={disabled}
             />

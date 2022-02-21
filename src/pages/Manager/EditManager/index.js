@@ -239,7 +239,7 @@ export default function EditManager() {
                   options={options}
                   name="type"
                   id="type"
-                  onChange={(evt) => setType(options.find(option => option.value === evt.target.value))}
+                  onChange={(evt) => setType(options.find(option => option.value === evt.value))}
                   placeholder="Escolha o cargo"
                   disabled={!isEditing}
                   value={type}
