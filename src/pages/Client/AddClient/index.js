@@ -19,7 +19,7 @@ export default function AddClient() {
   const [newProject, setNewProject] = useState('');
 
   const [project, setProject] = useState('');
-  const [projects, setProjects] = useState({});
+  const [projects, setProjects] = useState([]);
 
   const [name, setName] = useState('');
   const [nacionality, setNacionality] = useState('');
