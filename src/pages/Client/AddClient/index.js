@@ -208,11 +208,16 @@ export default function AddClient() {
   async function getProjectsList() {
     try {
       const response = await API_URL.get('/projects', { headers });
-      const projectList = response.data.map(project => ({
-        value: project.id,
-        label: project.name
-      }));
 
+      let projectList = [];
+
+      if (response.data.length) {
+        projectList = response.data.map(project => ({
+          value: project.id,
+          label: project.name
+        }));
+      }
+      
       setProjects(projectList);
     } catch (error) {
       console.log(error);
