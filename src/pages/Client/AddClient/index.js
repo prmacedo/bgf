@@ -184,7 +184,7 @@ export default function AddClient() {
     const data = {
       name: newProject
     }
-    
+    console.log(data);
     try {
       const response = await API_URL.post('/project', data, { headers });
 
