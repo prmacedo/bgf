@@ -172,7 +172,7 @@ export default function Contract() {
                   options={options}
                   value={option}
                   placeholder="Selecione uma opção"
-                  onChange={() => setOption(options.find(option => option.value === evt.value))}
+                  onChange={(evt) => setOption(options.find(option => option.value === evt.value))}
                 />
               </div>
               <div id={styles.courtGroup} className={styles.inputGroup}>
