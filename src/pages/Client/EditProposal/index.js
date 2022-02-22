@@ -102,7 +102,7 @@ export default function Proposal() {
     updateDocument();
 
     try {
-      const response = await API_URL.get(`/download/proposal/pdf/${proposalId}`, { headers, responseType: 'blob' })
+      const response = await API_URL.get(`/download/proposal/pdf/${proposalId}`, { responseType: 'blob' })
         .then((response) => {
           // console.log(response);
           const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -141,6 +141,7 @@ export default function Proposal() {
       setPrecatory(data.precatory);
       setProcess(data.process);
       setCourt(data.court);
+      setPlace(data.place)
 
       setValue(data.value);
       setCorrection(data.correction);
