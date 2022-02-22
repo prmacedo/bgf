@@ -195,7 +195,7 @@ export default function AddClient() {
       
       console.log(response);
       
-      const projectsList = [...projects, projectItem].sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
+      const projectsList = [...projects, projectItem].sort((a, b) => (a.label.toUpperCase() > b.label.toUpperCase()) ? 1 : ((b.label.toUpperCase() > a.label.toUpperCase()) ? -1 : 0));
       console.log(projects);
       console.log(projectsList);
       
