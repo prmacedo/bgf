@@ -102,7 +102,7 @@ export default function Proposal() {
     updateDocument();
 
     try {
-      const response = await API_URL.get(`/download/proposal/pdf/${proposalId}`, { responseType: 'blob' })
+      const response = await API_URL.get(`/download/proposal/pdf/${proposalId}`, { headers, responseType: 'blob' })
         .then((response) => {
           // console.log(response);
           const url = window.URL.createObjectURL(new Blob([response.data]));
