@@ -54,10 +54,73 @@ export default function ClientsList() {
   async function getProjects() {
     try {
       const response = await API_URL.get('/projects', { headers });
-      setProjectList(response.data);
+     
+      let projectList = [];
+
+      if (response.data.length) {
+        projectList = response.data.map(project => ({
+          value: project.id,
+          label: project.name
+        }));
+      }
+
+      setProjectList(projectList);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async function exportCSV() {
+    try{
+      await API_URL.get('/export/csv', { headers })
+        .then((response) => {
+          console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `Clientes.csv`); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+        });
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function simpleFilter() {
+    try {
+      const response = await API_URL.get(`/clients/${search}`, { headers });
+      
+      console.log(response);
+      setClientList(response.data);
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function advancedFilter() {
+    const filterName = name || undefined;
+    const filterProject = project.value || undefined;
+    const filterStatus = status || undefined;
+
+    console.log(filterName);
+    console.log(filterProject);
+    console.log(filterStatus);
+    try {
+      const response = await API_URL.get(`/clients/${filterName}/${filterProject}/${filterStatus}`, { headers });
+      setClientList(response.data);
+      console.log(response);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function resetAdvancedSearch(){
+    setName('');
+    setProject('');
+    setStatus('');
   }
 
   useEffect(() => {
@@ -84,7 +147,10 @@ export default function ClientsList() {
               placeholder="Digite o nome do cliente ou projeto"
             />
 
-            <button className={styles.btn}>
+            <button 
+              className={styles.btn}
+              onClick={() => simpleFilter()}
+            >
               <FiSearch />
             </button>
           </form>
@@ -97,7 +163,7 @@ export default function ClientsList() {
             >
               <FiFilter />
             </button>
-            <button type="button" className={styles.btn}><FiUpload /></button>
+            <button type="button" className={styles.btn} onClick={() => exportCSV()}><FiUpload /></button>
             <Link to="/addClient" className={styles.btn}><FiUserPlus /></Link>
           </div>
         </div>
@@ -145,8 +211,18 @@ export default function ClientsList() {
             </div>
 
             <div className={styles.btnGroup}>
-              <button type="submit" className={styles.btn}><FiSearch /></button>
-              <button type="button" className={`${styles.btn} ${styles.cancelBtn}`}>
+              <button 
+                type="button" 
+                className={styles.btn}
+                onClick={() => advancedFilter()}
+              >
+                <FiSearch />
+              </button>
+              <button
+                type="button" 
+                className={`${styles.btn} ${styles.cancelBtn}`}
+                onClick={() => resetAdvancedSearch()}
+              >
                 <img src={cancelFilter} alt="Cancelar filtros" />
               </button>
             </div>
