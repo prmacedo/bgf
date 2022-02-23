@@ -78,14 +78,6 @@ export default function AddAssignee() {
       complement: adminComplement
     }
 
-    try {
-      const response = await API_URL.post('/admin', adminData, { headers });
-
-      adminId = response.data.id;
-    } catch (error) {
-      console.log(error);
-    }
-
     const data = {
       name,
       cnpj,
@@ -101,14 +93,16 @@ export default function AddAssignee() {
     }
 
     try {
-      const response = await API_URL.post('/assignee', data, { headers });
+      const response = await API_URL.post('/admin', adminData, { headers });
 
-      console.log(response);
+      data.adminId = response.data.id;
+
+      const responseAssignee = await API_URL.post('/assignee', data, { headers });
+      
+      resetFields();
     } catch (error) {
       console.log(error);
     }
-
-    resetFields();
   }
 
   return (
