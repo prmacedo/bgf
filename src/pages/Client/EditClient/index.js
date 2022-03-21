@@ -161,6 +161,7 @@ export default function EditClient() {
       }).then(response => {
         awaitMessage.classList.add(styles.hide)
         getAttachmentList()
+        setNumberOfAttachments(numberOfAttachments + 1)
         noData?.classList.add(styles.hide);
         console.log(response);
       })
@@ -321,6 +322,7 @@ export default function EditClient() {
       const attachment = await API_URL.delete(`/attachment/${id}`, { headers }).then(response => {
         awaitMessage.classList.add(styles.hide)
         getAttachmentList()
+        setNumberOfAttachments(numberOfAttachments - 1)
         noData?.classList.remove(styles.hide);
         console.log(response);
       });
