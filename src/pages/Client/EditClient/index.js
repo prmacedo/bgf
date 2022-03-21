@@ -37,6 +37,7 @@ export default function EditClient() {
   const [rg, setRG] = useState('');
   const [email, setEmail] = useState('');
   const [tel, setTel] = useState('');
+  const [numberOfAttachments, setNumberOfAttachments] = useState(0);
 
   const [cep, setCEP] = useState('');
   const [street, setStreet] = useState('');
@@ -67,6 +68,8 @@ export default function EditClient() {
   const [proposal, setProposal] = useState(0);
   const [contractList, setContractList] = useState([]);
   const [contract, setContract] = useState(0);
+
+  const [attachmentList, setAttachmentList] = useState([]);
 
   const { id } = useParams();
 
@@ -125,6 +128,45 @@ export default function EditClient() {
 
   function toggleHiddenModal(id) {
     document.querySelector(`#${id}`).classList.toggle(styles.hide);
+  }
+
+  async function getAttachmentList() {
+    try {
+      const response = await API_URL.get(`/attachment/${id}`, { headers });
+
+      setAttachmentList(response.data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleUploadAttachment() {
+    const awaitMessage = document.querySelector("#await-message");
+    awaitMessage.classList.remove(styles.hide)
+
+    const noData = document.querySelector("#no-data")
+    noData?.classList.add(styles.hide);
+
+    try {
+      const formData = new FormData();
+      const file = document.querySelector('#file');
+      formData.append("file", file.files[0])
+
+      const response = await API_URL.post(`/attachment/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          ...headers
+        }
+      }).then(response => {
+        awaitMessage.classList.add(styles.hide)
+        getAttachmentList()
+        noData?.classList.add(styles.hide);
+        console.log(response);
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function handleEditClient() {
@@ -267,8 +309,25 @@ export default function EditClient() {
     // Implementar lógica
   }
 
-  function deleteAttachment(attachment) {
-    // Implementar lógica
+  async function deleteAttachment(id) {
+    const awaitMessage = document.querySelector("#await-message");
+    const noData = document.querySelector("#no-data")
+    noData?.classList.add(styles.hide);
+    awaitMessage.classList.remove(styles.hide)
+    try {
+      const aux = attachmentList;
+      aux.splice(aux.map(attachment => attachment.id).indexOf(id), 1);
+      
+      const attachment = await API_URL.delete(`/attachment/${id}`, { headers }).then(response => {
+        awaitMessage.classList.add(styles.hide)
+        getAttachmentList()
+        noData?.classList.remove(styles.hide);
+        console.log(response);
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function getClient() {
@@ -296,6 +355,7 @@ export default function EditClient() {
       setUF(ufs.find(uf => uf.value === data.uf));
       setDistrict(data.district);
       setComplement(data.complement);
+      setNumberOfAttachments(data._count.attachments);
 
       const { partner } = data;
 
@@ -432,6 +492,7 @@ export default function EditClient() {
     getProjects();
     getClientsDocuments();
     getClient();
+    getAttachmentList();
   }, []);
 
   return (
@@ -475,7 +536,10 @@ export default function EditClient() {
 
                 <div id="attachmentModal" className={`${styles.attachmentContent} ${styles.hide}`}>
                   <div className={styles.attachmentHeader}>
-                    <h3>Anexos</h3>
+                    <h3>
+                      Anexos
+                      <small className={styles.numberOfAttachments}>({numberOfAttachments}/20)</small>
+                    </h3>
                     <span
                       className={styles.closeBtn}
                       onClick={() => toggleHiddenModal('attachmentModal')}
@@ -485,32 +549,51 @@ export default function EditClient() {
                   </div>
 
                   <div className={styles.attachmentList}>
-                    <div className={styles.attachmentItem}>
-                      <span>Nome do anexo</span>
+                    <span className={styles.hide} id="await-message">Aguarde um momento...</span>
+                    {attachmentList.length ? 
+                    attachmentList.map(attachment => (
+                      <div key={attachment.id} className={styles.attachmentItem}>                        
+                        <span title={attachment.name}>{attachment.name}</span>
 
-                      <div className={styles.attachmentBtns}>
-                        <button
-                          type="button"
-                          className={styles.btn}
-                          onClick={() => downloadAttachment('id')}
-                        >
-                          <FiDownload/>
-                        </button>
-                        <button
-                          type="button"
-                          className={`${styles.btn} ${styles.redBtn}`}
-                          onClick={() => deleteAttachment('id')}
-                        >
-                          <FiTrash2/>
-                        </button>
-                      </div>
-                    </div>
+                        <div className={styles.attachmentBtns}>
+                          <a
+                            href={attachment.url}
+                            target="_blank"
+                            // type="button"
+                            className={styles.btn}
+                            // onClick={() => downloadAttachment(`${attachment.id}`)}
+                          >
+                            <FiDownload/>
+                          </a>
+                          <button
+                            type="button"
+                            className={`${styles.btn} ${styles.redBtn}`}
+                            onClick={() => deleteAttachment(`${attachment.id}`)}
+                          >
+                            <FiTrash2/>
+                          </button>
+                        </div>
+                      </div>                      
+                    ))
+                    :
+                    <div id="no-data">
+                      Não há anexos.
+                    </div>                  
+                  }
+                    
                   </div>  
 
                   <div className={styles.newAttachmentBtn}>
-                    <form action="">
-                      <input type="file" name="file" id="file" className={styles.hide} />
-                      <label htmlFor="file" className={styles.outlineLabel}>
+                    <form action="" encType="multipart/form-data">
+                      <input 
+                        type="file" 
+                        name="file" 
+                        id="file" 
+                        className={styles.hide} 
+                        disabled={numberOfAttachments === 20}
+                        onChange={() => handleUploadAttachment()}
+                      />
+                      <label htmlFor="file" className={`${styles.outlineLabel} ${(numberOfAttachments === 20) ? styles.disabled : null}`}>
                         Anexar novo arquivo
                       </label>
 

@@ -78,9 +78,11 @@ export default function ManagerList() {
             </button>
           </form>
 
+          { user.user.type === 'admin' &&
           <div className={styles.btnGroup}>            
             <Link to="/addManager" className={styles.btn}><FiUserPlus /></Link>
           </div>
+          }
         </div>
         
         <div className={styles.tableContainer}>

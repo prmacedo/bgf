@@ -28,6 +28,11 @@
 }
 
 /* Anexos */
+.numberOfAttachments {
+  margin-left: 0.5rem;
+  color: var(--text-input);
+}
+
 .attachmentContainer {
   position: relative;  
 }
@@ -435,4 +440,11 @@ a.outlineBtn {
 
 #partnerGroup h3 svg:hover {
   color: var(--green);
+}
+
+.disabled, .disabled:hover {
+  color: var(--disabled);
+  border: 2px solid var(--disabled);
+  background: var(--white);
+  cursor: default;
 }

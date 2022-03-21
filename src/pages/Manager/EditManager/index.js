@@ -30,7 +30,7 @@ export default function EditManager() {
   const [active, setActive] = useState('');
 
   const { id } = useParams();
-  const { headers } = useUserData();
+  const { headers, user } = useUserData();
 
   const history = useHistory();
 
@@ -175,7 +175,7 @@ export default function EditManager() {
               <button
                 type="button"
                 className={styles.passwordBtn}
-                disabled={isEditing}
+                disabled={isEditing || user.user.type === 'manager'}
                 onClick={() => setShowToggleActiveModal(true)}              
               >
                 {active ? 'Inativar' : 'Ativar'} usuário
@@ -183,37 +183,39 @@ export default function EditManager() {
               {/* <input type="submit" value="submit" id="toggleActiveBtn" className={styles.submitInput} /> */}
             </form>
 
-            <div className={styles.btnGroup}>
-              {isEditing 
-              ?
-                <>
-                  <button
-                    type="button"
-                    className={`${styles.btn} ${styles.redBtn}`}
-                    onClick={() => setShowCancelEditModal(true)}
-                  >
-                    <img src={cancelEdit} alt="Cancelar edição" />
-                  </button>
-                </>
-              :
-                <>
-                  <button 
-                    type="button" 
-                    className={styles.btn}
-                    onClick={() => setShowEditModal(true)}
-                  >
-                    <FiEdit2 />
-                  </button>
-                  <button
-                    type="button"
-                    className={`${styles.btn} ${styles.redBtn}`}
-                    onClick={() => setShowDeleteModal(true)}
-                  >
-                    <FiTrash2 />
-                  </button>
-                </>
-              }
-            </div>
+            {user.user.type === 'admin' &&
+              <div className={styles.btnGroup}>
+                {isEditing 
+                ?
+                  <>
+                    <button
+                      type="button"
+                      className={`${styles.btn} ${styles.redBtn}`}
+                      onClick={() => setShowCancelEditModal(true)}
+                    >
+                      <img src={cancelEdit} alt="Cancelar edição" />
+                    </button>
+                  </>
+                :
+                  <>
+                    <button 
+                      type="button" 
+                      className={styles.btn}
+                      onClick={() => setShowEditModal(true)}
+                    >
+                      <FiEdit2 />
+                    </button>
+                    <button
+                      type="button"
+                      className={`${styles.btn} ${styles.redBtn}`}
+                      onClick={() => setShowDeleteModal(true)}
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </>
+                }
+              </div>
+            }
           </div>
 
           <div className={styles.formContainer}>

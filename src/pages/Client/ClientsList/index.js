@@ -249,7 +249,7 @@ export default function ClientsList() {
                     <td>{ formatName(client.name) }</td>
                     <td>{ client.project.name }</td>
                     <td>Prospecção/Precificação</td>
-                    <td>5</td>
+                    <td>{client._count.attachments}</td>
                     <td className={styles.eyeLink}><Link to={`/client/${ client.id }`} title="Clique para visualizar"><FiEye /></Link></td>
                   </tr>
                 )) :

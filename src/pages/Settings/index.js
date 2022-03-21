@@ -181,7 +181,7 @@ export default function Settings() {
                   id="type"
                   onChange={(evt) => setType(options.find(option => option.value === evt.value))}
                   placeholder="Escolha o cargo"
-                  disabled={!isEditing}
+                  disabled={!isEditing || user.user.type === 'manager'}
                   value={type}
                 />
               </div>
