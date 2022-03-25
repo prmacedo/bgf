@@ -43,7 +43,7 @@ export default function ClientsList() {
 
   async function getClientList() {
     try {
-      const response = await API_URL.get('/clients', { headers });
+      const response = await API_URL.get('/clients');
       setClientList(response.data);
       // console.log(response);
     } catch (error) {
@@ -53,7 +53,7 @@ export default function ClientsList() {
 
   async function getProjects() {
     try {
-      const response = await API_URL.get('/projects', { headers });
+      const response = await API_URL.get('/projects');
      
       let projectList = [];
 
@@ -72,7 +72,7 @@ export default function ClientsList() {
 
   async function exportCSV() {
     try{
-      await API_URL.get('/export/csv', { headers })
+      await API_URL.get('/export/csv')
         .then((response) => {
           console.log(response);
           const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -90,7 +90,7 @@ export default function ClientsList() {
 
   async function simpleFilter() {
     try {
-      const response = await API_URL.get(`/clients/${search}`, { headers });
+      const response = await API_URL.get(`/clients/${search}`);
       
       console.log(response);
       setClientList(response.data);
@@ -109,7 +109,7 @@ export default function ClientsList() {
     console.log(filterProject);
     console.log(filterStatus);
     try {
-      const response = await API_URL.get(`/clients/${filterName}/${filterProject}/${filterStatus}`, { headers });
+      const response = await API_URL.get(`/clients/${filterName}/${filterProject}/${filterStatus}`);
       setClientList(response.data);
       console.log(response);
     } catch (error) {
@@ -230,6 +230,9 @@ export default function ClientsList() {
         </div>
 
         <div className={styles.tableContainer}>
+
+        {
+          clientList.length ?
           <table>
             <thead>
               <tr>
@@ -240,25 +243,23 @@ export default function ClientsList() {
                 <th></th>
               </tr>
             </thead>
-
             <tbody>
-              {
-                clientList.length ?
-                clientList.map(client => (
-                  <tr key={ client.id }>
-                    <td>{ formatName(client.name) }</td>
-                    <td>{ client.project.name }</td>
-                    <td>Prospecção/Precificação</td>
-                    <td>{client._count.attachments}</td>
-                    <td className={styles.eyeLink}><Link to={`/client/${ client.id }`} title="Clique para visualizar"><FiEye /></Link></td>
-                  </tr>
-                )) :
-                  <tr className={styles.emptyList}>
-                    Não há registros
-                  </tr>
-              }
-            </tbody>
-          </table>
+              {clientList.map(client => (
+                <tr key={ client.id }>
+                  <td>{ formatName(client.name) }</td>
+                  <td>{ client.project.name }</td>
+                  <td>Prospecção/Precificação</td>
+                  <td>{client._count.attachments}</td>
+                  <td className={styles.eyeLink}><Link to={`/client/${ client.id }`} title="Clique para visualizar"><FiEye /></Link></td>
+                </tr>
+              )) }
+            </tbody> 
+          </table>            
+          :
+          <div className={styles.emptyList}>
+            Não há registros
+          </div>
+        }
 
         </div>
       </main>

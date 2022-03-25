@@ -3,6 +3,8 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 
+import { useUserData  } from '../../context/UserData';
+
 import API_URL from '../../config/api';
 
 import styles from './styles.module.css';
@@ -16,6 +18,8 @@ export default function Login() {
   
   const history = useHistory();
 
+  const { login } = useUserData();
+
   async function handleLogin(evt) {
     evt.preventDefault();
 
@@ -26,6 +30,7 @@ export default function Login() {
       });
 
       localStorage.setItem("user", JSON.stringify(response.data));
+      login();
       history.push('/clients');
     } catch (error) {
       console.log(error);

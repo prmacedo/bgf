@@ -12,10 +12,10 @@ import { useUserData } from '../../context/UserData';
 
 export default function Sidebar() {
   const { isHidden, setIsHidden } = useHiddenSidebar();
-  const { user } = useUserData();
+  const { user, logout } = useUserData();
 
   function handleLogout() {
-    localStorage.removeItem("user");
+    logout();    
   }
 
   return(
