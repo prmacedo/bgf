@@ -531,7 +531,7 @@ export default function AddClient() {
                     type="text"
                     name="partnerTel"
                     value={partnerTel}
-                    onChange={(evt) => setPartnerTel(evt.target.value)}
+                    onChange={(evt) => setPartnerTel(telephoneMask(evt.target.value))}
                     placeholder="(99) 99999-9999"
                     required
                   />
