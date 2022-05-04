@@ -395,8 +395,22 @@ export default function ContractRevision() {
     }
   }
 
-  function generatePDF() {
-    alert('pdf');
+  async function generatePDF() {
+    try {
+      const response = await API_URL.get(`/download/contract/pdf/${documentId}`, { headers, responseType: 'blob' })
+        .then((response) => {
+          // console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${date}-Contrato-${name}.pdf`); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+        });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function generateDOC() {
