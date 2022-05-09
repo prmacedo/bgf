@@ -3,6 +3,9 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 
+import Alert from '../../components/CustomAlert';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import { useUserData  } from '../../context/UserData';
 
 import API_URL from '../../config/api';
@@ -15,13 +18,18 @@ import BGF2 from '../../assets/BGF2.png';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false)
+
   const history = useHistory();
 
   const { login } = useUserData();
 
   async function handleLogin(evt) {
     evt.preventDefault();
+
+    setLoading(true);
 
     try {
       const response = await API_URL.post('/authenticate', {
@@ -33,8 +41,25 @@ export default function Login() {
       login();
       history.push('/clients');
     } catch (error) {
-      console.log(error);
-    }      
+      switch (error.response.status) {
+        case 422:
+          setMessage("Usuário não encontrado, ou dados inválidos!")
+          break;
+
+        case 403:
+          setMessage("Acesso do usuário bloqueado. Fale com um administrador!")
+          break;
+      
+        default:
+          setMessage("Erro ao executar o login!")
+          break;
+      }
+      
+      setOpen(true)
+      console.log(error.response);
+    } finally {
+      setLoading(false)
+    }
   }
 
   return(
@@ -75,11 +100,22 @@ export default function Login() {
                 onChange={(evt) => setPassword(evt.target.value)}
               />
             </div>
+            
+            <button type="submit" className={styles.loginBtn} disabled={loading}>
+              {
+                loading &&
+                <CircularProgress color="inherit" size={16} />
+              }
+              Entrar
+            </button>
 
-            <button type="submit" className={styles.loginBtn}>Entrar</button>
-            {/* <div className={styles.forgotPassword}>
-              <Link to="/forgotPassword">Esqueci minha senha</Link>
-            </div> */}
+            <Alert
+              severity="error"
+              message={message}
+              variant="filled"
+              open={open}
+              setOpen={setOpen}
+            />
           </form>
         </div>
       </main>
