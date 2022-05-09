@@ -56,6 +56,13 @@
 }
 
 /* Tabela */
+.circularProgress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+
 .tableContainer {
   margin-top: 1.5rem;
 }
@@ -161,4 +168,7 @@
 
 .emptyList {
   padding: 1rem 1.25rem;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  box-shadow: 0px 50px 70px -20px rgba(0, 0, 0, 0.15);
 }

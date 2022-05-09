@@ -5,6 +5,8 @@ import { FiFilter, FiSearch, FiUpload, FiUser, FiUserPlus, FiEye } from 'react-i
 
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 import { useUserData } from '../../../context/UserData';
 
@@ -16,6 +18,7 @@ import cancelFilter from '../../../assets/icons/filter-cancel.svg';
 
 export default function ClientsList() {
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const [advancedSearch, setAdvancedSearch] = useState(false);
 
@@ -48,6 +51,8 @@ export default function ClientsList() {
       // console.log(response);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -89,6 +94,7 @@ export default function ClientsList() {
   }
 
   async function simpleFilter() {
+    setLoading(true)
     try {
       const response = await API_URL.get(`/clients/${search}`);
       
@@ -97,6 +103,8 @@ export default function ClientsList() {
 
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -104,6 +112,8 @@ export default function ClientsList() {
     const filterName = name || undefined;
     const filterProject = project.value || undefined;
     const filterStatus = status || undefined;
+
+    setLoading(true)
 
     console.log(filterName);
     console.log(filterProject);
@@ -114,6 +124,8 @@ export default function ClientsList() {
       console.log(response);
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -126,6 +138,8 @@ export default function ClientsList() {
   useEffect(() => {
     getClientList();
     getProjects();
+
+    
   }, []);
 
   return (
@@ -150,6 +164,7 @@ export default function ClientsList() {
             <button 
               className={styles.btn}
               onClick={() => simpleFilter()}
+              disabled={loading}
             >
               <FiSearch />
             </button>
@@ -215,6 +230,7 @@ export default function ClientsList() {
                 type="button" 
                 className={styles.btn}
                 onClick={() => advancedFilter()}
+                disabled={loading}
               >
                 <FiSearch />
               </button>
@@ -232,6 +248,11 @@ export default function ClientsList() {
         <div className={styles.tableContainer}>
 
         {
+          loading ?          
+          <div className={styles.circularProgress}>
+            <CircularProgress color="inherit" size={96} />
+          </div>
+          :
           clientList.length ?
           <table>
             <thead>
@@ -255,7 +276,7 @@ export default function ClientsList() {
               )) }
             </tbody> 
           </table>            
-          :
+          : 
           <div className={styles.emptyList}>
             Não há registros
           </div>
