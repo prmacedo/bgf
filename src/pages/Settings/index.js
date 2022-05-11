@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { FiEdit2, FiSettings } from 'react-icons/fi';
 import cancelEdit from '../../assets/icons/cancel-edit.svg';
 
+import Alert from '../../components/CustomAlert';
 import Container from '../../components/Container';
 import Select from '../../components/Select';
 import API_URL from '../../config/api';
@@ -14,6 +15,9 @@ import styles from './styles.module.css';
 
 export default function Settings() {
   const [isEditing, setIsEditing] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
 
   const { user, headers } = useUserData();
 
@@ -62,19 +66,34 @@ export default function Settings() {
     toggleCancelModal();
   }
 
-  function validatePassword() {
-    if (password.length === 0 || newPassword.length === 0)
-      alert('Os campos devem ser preenchidos');
+  function isPasswordValid() {
+    if (password.length === 0 || newPassword.length === 0) {
+      setMessage('Os campos devem ser preenchidos!')
+      setSeverity('error')
+      setOpen(true)
 
-    else if (password.length <= 8 || newPassword.length <= 8)
-      alert('A senha deve possuir mais de 8 caracteres');
+      return false;
+    }
+    else if (password.length < 8 || newPassword.length < 8) {
+      setMessage('A nova senha deve possuir ao menos 8 caracteres!')
+      setSeverity('error')
+      setOpen(true)
 
-    else if (password !== newPassword)
-      alert('Preencha os campos com o mesmo valor');
+      return false;
+    }      
+    else if (password !== newPassword) {
+      setMessage('Preencha os campos com o mesmo valor!')
+      setSeverity('error')
+      setOpen(true)
+
+      return false;
+    }
+
+    return true;
   }
 
   async function handleChangePassword() {
-    validatePassword();
+    if(!isPasswordValid()) return;
 
     const data = {
       password
@@ -84,12 +103,18 @@ export default function Settings() {
       const response = await API_URL.patch(`/user/password/${id}`, data, { headers });
       togglePasswordModal();
       console.log(response);
+      setMessage('Senha alterada com sucesso!')
+      setSeverity('success')
+      setOpen(true)
     } catch (error) {
       console.log(error);
+      setMessage('Erro ao alterar a senha!')
+      setSeverity('error')
+      setOpen(true)
     }
   }
 
-  async function handleEditSettings() {
+  async function handleEditSettings() {    
     const data = {
       name,
       type: type.value,
@@ -110,10 +135,17 @@ export default function Settings() {
       localStorage.setItem("user", JSON.stringify(localUser));
       
       setIsEditing(false);
+
+      setMessage('Alterações salvas com sucesso.')
+      setSeverity('success')
+      setOpen(true)
       
       console.log(response);
     } catch (error) {
       console.log(error);
+      setMessage('Erro ao salvar alterações.')
+      setSeverity('error')
+      setOpen(true)
     }
 
     // console.log(data)
@@ -337,6 +369,15 @@ export default function Settings() {
           </div>
         </div>
       </div>
+
+      <Alert
+        severity={severity}
+        message={message}
+        variant="filled"
+        open={open}
+        setOpen={setOpen}
+        vertical={"bottom"}
+      />
     </>
   );
 }

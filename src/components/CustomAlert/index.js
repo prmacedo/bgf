@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function CustomAlert(props) {
-  const { message, severity, variant, open, setOpen } = props;
+  const { message, severity, variant, open, setOpen, vertical="top", horizontal="center" } = props;
 
   const handleClick = () => {
     setOpen(true);
@@ -39,7 +39,7 @@ export default function CustomAlert(props) {
       autoHideDuration={6000}
       onClose={handleClose}
       action={action}
-      anchorOrigin={{ vertical:"top", horizontal:"center" }}
+      anchorOrigin={{ vertical, horizontal }}
     >
       <Alert onClose={handleClose} severity={severity} variant={variant} sx={{ width: '100%' }}>
         {message}
