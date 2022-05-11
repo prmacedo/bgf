@@ -4,6 +4,7 @@ import API_URL from '../../../config/api';
 
 import { FiClipboard } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import Alert from '../../../components/CustomAlert';
 
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
@@ -17,6 +18,9 @@ export default function AddManager() {
   const [type, setType] = useState('');
   const [email, setEmail] = useState('');
   const [tel, setTel] = useState('');
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
 
   const { headers } = useUserData();
 
@@ -35,6 +39,14 @@ export default function AddManager() {
   async function handleAddManagerSubmit(evt) {
     evt.preventDefault();
 
+    if (!type) {
+      setMessage('Informe o cargo!');
+      setSeverity('warning');
+      setOpen(true)
+
+      return
+    }
+
     const data = {
       name,
       type: type.value,
@@ -44,10 +56,23 @@ export default function AddManager() {
 
     try {
       const response = await API_URL.post('/user', data, { headers });
-
+      
       resetFields();
+
+      setMessage('Criado com sucesso!');
+      setSeverity('success');
+      setOpen(true)
     } catch(error) {
       console.log(error);
+
+      if (error.response.status === 409) {
+        setMessage('Usuário já existe!');
+        setSeverity('error');        
+      } else {
+        setMessage('Erro ao cadastrar usuário!');
+        setSeverity('error');        
+      }
+      setOpen(true);
     }
 
   }
@@ -119,6 +144,14 @@ export default function AddManager() {
           </form>
         </div>
       </main>
+
+      <Alert
+        severity={severity}
+        message={message}
+        variant="filled"
+        open={open}
+        setOpen={setOpen}
+      />
     </Container>
   );
 }

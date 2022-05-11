@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 import { FiSearch, FiClipboard, FiUserPlus, FiEye } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Container from '../../../components/Container';
 import API_URL from '../../../config/api';
@@ -13,6 +14,7 @@ import styles from './styles.module.css';
 export default function ManagerList() {
   const [search, setSearch] = useState('');
   const [managerList, setManagerList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { headers, user } = useUserData();
 
@@ -25,6 +27,8 @@ export default function ManagerList() {
 
   async function handleSearch(evt) {
     evt.preventDefault();
+    setLoading(true);
+
     // const filter = options.find(option => option.label.toLowerCase().includes(search.toLowerCase())).value
     const filter = options.find(option => option.label.toLowerCase() === search.toLowerCase())?.value || search
 
@@ -34,6 +38,8 @@ export default function ManagerList() {
       console.log(response);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
   
@@ -44,6 +50,8 @@ export default function ManagerList() {
       console.log(response);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -86,6 +94,13 @@ export default function ManagerList() {
         </div>
         
         <div className={styles.tableContainer}>
+
+        {
+          loading ?
+          <div className={styles.circularProgress}>
+            <CircularProgress color="inherit" size={96} />
+          </div>
+          :          
           <table>
             <thead>
               <tr>
@@ -113,6 +128,7 @@ export default function ManagerList() {
               }
             </tbody>
           </table>
+        }
         </div>
       </main>
     </Container>

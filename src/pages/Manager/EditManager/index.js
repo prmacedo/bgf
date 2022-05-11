@@ -5,6 +5,7 @@ import { FiEdit2, FiClipboard, FiTrash2 } from 'react-icons/fi';
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
 
+import Alert from '../../../components/CustomAlert';
 import { telephoneMask } from '../../../utils/masks';
 
 import styles from './styles.module.css';
@@ -22,6 +23,9 @@ export default function EditManager() {
   const [showCancelEditModal, setShowCancelEditModal] = useState(false);
   const [showSaveEditModal, setShowSaveEditModal] = useState(false);
   const [showToggleActiveModal, setShowToggleActiveModal] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
 
   const [name, setName] = useState('');
   const [type, setType] = useState('');
@@ -105,8 +109,22 @@ export default function EditManager() {
 
       setShowSaveEditModal(false);
       setIsEditing(false);      
+
+      setMessage('Atualizado com sucesso!');
+      setSeverity('success');
+      setOpen(true)
     } catch (error) {
       console.log(error);
+
+      if(error.response.status === 409) {
+        setMessage('E-mail já vinculado a outro gerente!');
+        setSeverity('error');
+        setOpen(true)
+      } else {
+        setMessage('Erro ao atualizar gerente!');
+        setSeverity('error');
+        setOpen(true)
+      }
     }
   }
 
@@ -120,20 +138,30 @@ export default function EditManager() {
 
       setShowToggleActiveModal(false);
       setActive(!active);
+
+      setMessage(`${active ? "Ativado" : "Inativado"} com sucesso!`);
+      setSeverity('success');
+      setOpen(true)
     } catch (error) {
       console.log(error);
+      setMessage(`Erro ao ${!active ? "ativar" : "inativar"}!`);
+      setSeverity('error');
+      setOpen(true)
     }
   }
 
-  async function handleConfirmDeletion() {
+  async function handleConfirmDeletion() {    
     try {
       const response = await API_URL.delete(`/user/${id}`, { headers });
 
       setShowDeleteModal(false);
-
+      
       history.goBack();
     } catch (error) {
       console.log(error);
+      setMessage('Erro ao excluir!');
+      setSeverity('error');
+      setOpen(true)
     }
   }
 
@@ -440,6 +468,14 @@ export default function EditManager() {
           </div>
         </div>
       </div>
+
+      <Alert
+        severity={severity}
+        message={message}
+        variant="filled"
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 }
