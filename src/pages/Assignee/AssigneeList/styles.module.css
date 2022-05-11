@@ -81,6 +81,13 @@
   border-bottom: 0;
 }
 
+.circularProgress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+
 /* Uso geral */
 .inputGroup {
   display: flex;

@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 import { FiSearch, FiBriefcase, FiUserPlus, FiEye } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Container from '../../../components/Container';
 
@@ -14,11 +15,13 @@ import styles from './styles.module.css';
 export default function AssigneeList() {
   const [search, setSearch] = useState('');
   const [assigneeList, setAssigneeList] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   const { headers } = useUserData();
 
   async function handleSearch(evt) {
     evt.preventDefault();
+    setLoading(true)
 
     try {
       const response = await API_URL.get(`/assignees/${search}`, { headers });
@@ -26,6 +29,8 @@ export default function AssigneeList() {
       setAssigneeList(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -37,6 +42,8 @@ export default function AssigneeList() {
       setAssigneeList(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -74,6 +81,12 @@ export default function AssigneeList() {
         </div>
 
         <div className={styles.tableContainer}>
+          {
+          loading ?
+          <div className={styles.circularProgress}>
+            <CircularProgress color="inherit" size={96} />
+          </div>
+          :          
           <table>
             <thead>
               <tr>
@@ -103,6 +116,7 @@ export default function AssigneeList() {
               }
             </tbody>
           </table>
+          }
         </div>
       </main>
     </Container>

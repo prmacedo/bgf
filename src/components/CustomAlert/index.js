@@ -36,7 +36,7 @@ export default function CustomAlert(props) {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={3000}
       onClose={handleClose}
       action={action}
       anchorOrigin={{ vertical, horizontal }}

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import Container from '../../../components/Container';
 import AddressForm from '../../../components/AddressForm';
+import Alert from '../../../components/CustomAlert';
 
 import { cnpjMask, telephoneMask } from '../../../utils/masks';
 
@@ -35,6 +36,10 @@ export default function AddAssignee() {
   const [adminUF, setAdminUF] = useState('');
   const [adminDistrict, setAdminDistrict] = useState('');
   const [adminComplement, setAdminComplement] = useState('');
+  
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
 
   const { headers } = useUserData();
 
@@ -99,8 +104,24 @@ export default function AddAssignee() {
 
       const responseAssignee = await API_URL.post('/assignee', data, { headers });
       
+      setMessage('Cadastrado com sucesso!');
+      setSeverity('success');              
+      setOpen(true)
+
       resetFields();
     } catch (error) {
+      if (error.response.status === 422) {
+        setMessage('CNPJ inválido!');
+        setSeverity('error');        
+      } else if (error.response.status === 409) {
+        setMessage('E-mail já cadastrado!');
+        setSeverity('error');        
+      } else {
+        setMessage('Erro ao cadastrar cessionário!');
+        setSeverity('error');        
+      }
+      setOpen(true);
+    
       console.log(error);
     }
   }
@@ -235,6 +256,14 @@ export default function AddAssignee() {
           </form>
         </div>
       </main>
+
+      <Alert
+        severity={severity}
+        message={message}
+        variant="filled"
+        open={open}
+        setOpen={setOpen}
+      />
     </Container>
   );
 }

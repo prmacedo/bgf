@@ -4,6 +4,7 @@ import { FiEdit2, FiBriefcase, FiTrash2 } from 'react-icons/fi';
 
 import Container from '../../../components/Container';
 import AddressForm from '../../../components/AddressForm';
+import Alert from '../../../components/CustomAlert';
 
 import API_URL from '../../../config/api';
 
@@ -45,6 +46,10 @@ export default function EditAssignee() {
   const [adminUF, setAdminUF] = useState('');
   const [adminDistrict, setAdminDistrict] = useState('');
   const [adminComplement, setAdminComplement] = useState('');
+
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
 
   const { id } = useParams();
   
@@ -148,8 +153,22 @@ export default function EditAssignee() {
 
       setShowSaveEditModal(false);
       setIsEditing(false);
+
+      setMessage("Atualizado com sucesso!")
+      setSeverity("success")
+      setOpen(true)
     } catch (error) {
       console.log(error);
+
+      if (error.response.status === 422) {
+        setMessage("CNPJ inválido!")
+        setSeverity("error")
+        setOpen(true)
+      } else {
+        setMessage("Erro ao atualizar!")
+        setSeverity("error")
+        setOpen(true)
+      }
     }    
   }
 
@@ -165,6 +184,10 @@ export default function EditAssignee() {
       history.goBack();
     } catch(error) {
       console.log(error);
+
+      setMessage("Erro ao excluir!")
+      setSeverity("error")
+      setOpen(true)
     }
   }
   
@@ -520,6 +543,14 @@ export default function EditAssignee() {
           </div>
         </div>
       </div>
+
+      <Alert
+        severity={severity}
+        message={message}
+        variant="filled"
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 }
