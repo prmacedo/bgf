@@ -71,3 +71,16 @@
   flex-direction: column;
   gap: 0.5rem;
 }
+
+@media (max-width: 767.98px) {
+  .addressInputsEditing .addressGroup,
+  .addressInputs .addressGroup {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .addressInputsEditing .cepGroup {
+    grid-template-columns: 35% 60%;
+  }
+}
