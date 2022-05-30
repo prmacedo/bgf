@@ -6,6 +6,7 @@
 
 .header h1 {
   font-weight: 500;
+  width: 90%;
 }
 
 .header h1 svg {
