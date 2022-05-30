@@ -16,3 +16,8 @@
 .hidden {
   margin-left: 3.25rem;
 }
+
+@media (max-width: 768px) {
+  #contentId {padding: 1rem;}
+  .content, .hidden {margin-left: 0;}
+}

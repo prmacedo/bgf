@@ -19,6 +19,14 @@ export default function Sidebar() {
   }
 
   return(
+    <>
+    <div
+      className={`${styles.mobileBtn} ${styles.mobileBtnHidden}`}
+      onClick={() => { setIsHidden(!isHidden) }}  
+    >
+      <FiMenu />
+      <span className={styles.menuBtnHelpText}>Clique para {isHidden?"exibir":"esconder"} o menu</span>
+    </div>
     <aside id={styles.sidebarId} className={isHidden ? styles.hidden : (styles.sidebar)}>
       <div
         className={styles.menuBtn}
@@ -36,25 +44,33 @@ export default function Sidebar() {
       </div>
 
       <div className={styles.menu}>
-        <Link to="/clients" className={styles.menuItem}>
-          <FiUser />
-          <span>Clientes</span>
-        </Link>
+        <div onClick={() => { setIsHidden(!isHidden) }}>
+          <Link to="/clients" className={styles.menuItem}>
+            <FiUser />
+            <span>Clientes</span>
+          </Link>
+        </div>
         
-        <Link to="/assignees" className={styles.menuItem}>
-          <FiBriefcase />
-          <span>Cessionários</span>
-        </Link>
+        <div onClick={() => { setIsHidden(!isHidden) }}>
+          <Link to="/assignees" className={styles.menuItem}>
+            <FiBriefcase />
+            <span>Cessionários</span>
+          </Link>
+        </div>
         
-        <Link to="/managers" className={styles.menuItem}>
-          <FiClipboard />
-          <span>Gerentes</span>
-        </Link>
+        <div onClick={() => { setIsHidden(!isHidden) }}>
+          <Link to="/managers" className={styles.menuItem}>
+            <FiClipboard />
+            <span>Gerentes</span>
+          </Link>
+        </div>
         
-        <Link to="/settings" className={styles.menuItem}>
-          <FiSettings />
-          <span>Configurações</span>
-        </Link>
+        <div onClick={() => { setIsHidden(!isHidden) }}>
+          <Link to="/settings" className={styles.menuItem}>
+            <FiSettings />
+            <span>Configurações</span>
+          </Link>
+        </div>
         
         <Link to="/" className={styles.menuItem}
           onClick={() => handleLogout()}
@@ -64,5 +80,6 @@ export default function Sidebar() {
         </Link>
       </div>
     </aside>
+    </>
   );
 }

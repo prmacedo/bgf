@@ -130,3 +130,32 @@
   background-color: var(--green-dark);
 }
 
+
+.mobileBtn {display: none;}
+
+@media (max-width: 768px) {
+  .mobileBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+
+    color: var(--white);
+    cursor: pointer;
+
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--green);
+  }
+
+  .menuBtn, #sidebarId.hidden {display: none;}
+
+  #sidebarId {
+    width: 100vw;
+    height: 100vh;
+  }
+}
