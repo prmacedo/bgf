@@ -213,3 +213,27 @@
   display: flex;
   gap: 1rem;
 }
+
+@media (max-width: 767.98px) {
+  .formContainer form .assigneeAdminInputs,
+  .formContainer form .assigneeInputs {
+    display: flex;
+    flex-direction: column;
+  }
+  .btnGroup {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+  .formContainer .btnGroup > * {
+    width: 100%;
+  }
+  .toolsRow .btnGroup {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+  .modal {
+    max-width: 100%;
+  }
+}
