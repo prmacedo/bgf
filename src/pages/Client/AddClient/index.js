@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
+import Alert from '../../../components/CustomAlert';
 
 import styles from './styles.module.css';
 import AddressForm from '../../../components/AddressForm';
@@ -54,6 +55,10 @@ export default function AddClient() {
   const [partnerUF, setPartnerUF] = useState('');
   const [partnerDistrict, setPartnerDistrict] = useState('');
   const [partnerComplement, setPartnerComplement] = useState('');
+
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
 
   const { headers } = useUserData();
 
@@ -172,10 +177,19 @@ export default function AddClient() {
 
     try {
       const response = await API_URL.post('/client', data, { headers });
-      
+      setMessage('Cadastrado com sucesso!');
+      setSeverity('success');              
+      setOpen(true)
       resetFields();
       console.log(response);
     } catch (error) {
+      if (error.response.status === 422) {
+        setMessage('CPF inválido!');
+      } else {
+        setMessage('Erro ao cadastrar!');
+      }
+      setSeverity('error');        
+      setOpen(true);
       console.log(error);
     }
   }
@@ -613,6 +627,13 @@ export default function AddClient() {
 
         </div>
       </div>
+      <Alert
+        severity={severity}
+        message={message}
+        variant="filled"
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 }

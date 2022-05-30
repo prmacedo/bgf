@@ -5,6 +5,7 @@ import { FiEdit2, FiUser, FiPlus, FiTrash2, FiDownload, FiXCircle, FiEye, FiEyeO
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
 import AddressForm from '../../../components/AddressForm';
+import Alert from '../../../components/CustomAlert';
 
 import styles from './styles.module.css';
 
@@ -70,6 +71,10 @@ export default function EditClient() {
   const [contract, setContract] = useState(0);
 
   const [attachmentList, setAttachmentList] = useState([]);
+
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
 
   const { id } = useParams();
 
@@ -219,8 +224,18 @@ export default function EditClient() {
 
     try {
       const response = await API_URL.patch(`/client/${id}`, data, { headers });
+      setMessage('Atualizado com sucesso!');
+      setSeverity('success');              
+      setOpen(true)
       console.log(response);
     } catch (error) {
+      if (error.response.status === 422) {
+        setMessage('CPF inválido!');
+      } else {
+        setMessage('Erro ao atualizar!');
+      }
+      setSeverity('error');        
+      setOpen(true);
       console.log(error);
     }
 
@@ -238,6 +253,9 @@ export default function EditClient() {
       console.log(responsePartner);
       setShowDeleteModal(false);
     } catch (error) {
+      setMessage("Erro ao excluir!")
+      setSeverity("error")
+      setOpen(true)
       console.log(error);
     }
     
@@ -1360,6 +1378,13 @@ export default function EditClient() {
 
         </div>
       </div>
+      <Alert
+        severity={severity}
+        message={message}
+        variant="filled"
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 }

@@ -4,6 +4,9 @@ import { FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom';
 import { Link, useParams } from 'react-router-dom';
 
+import Alert from '../../../components/CustomAlert';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
 import API_URL from '../../../config/api';
@@ -103,6 +106,11 @@ export default function ContractRevision() {
   const [percentage, setPercentage] = useState(0);
   const [liquidValue, setLiquidValue] = useState(0);
   const [proposalValue, setProposalValue] = useState(0);
+  
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
+  const [loading, setLoading] = useState(false)
 
   const options = [
     { value: 'BRV', label: 'BRV' },
@@ -396,6 +404,8 @@ export default function ContractRevision() {
   }
 
   async function generatePDF() {
+    setLoading(true);
+
     try {
       const response = await API_URL.get(`/download/contract/pdf/${documentId}`, { headers, responseType: 'blob' })
         .then((response) => {
@@ -409,7 +419,12 @@ export default function ContractRevision() {
         });
       console.log(response);
     } catch (error) {
+      setMessage("Erro ao gerar PDF!")
+      setSeverity("error")
+      setOpen(true)
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -1310,17 +1325,21 @@ export default function ContractRevision() {
                 disabled={isEditing}
                 onClick={() => generatePDF()}
               >
+                {
+                loading &&
+                  <CircularProgress color="inherit" size={16} />
+                }
                 Gerar PDF
               </button>
 
-              <button
+              {/* <button
                 type="button" 
                 className={`${styles.btn} ${styles.btnGreen}`}
                 disabled={isEditing}
                 onClick={() => generateDOC()}
               >
                 Gerar DOC
-              </button>
+              </button> */}
             </div>
           </form>
 

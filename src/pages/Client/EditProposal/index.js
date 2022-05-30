@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 import Container from '../../../components/Container';
 import Select from '../../../components/Select';
 
+import Alert from '../../../components/CustomAlert';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import API_URL from '../../../config/api';
 import { useUserData } from '../../../context/UserData';
 
@@ -39,6 +42,11 @@ export default function Proposal() {
   const [ updatedValue, setUpdatedValue ] = useState(0);
   const [ liquidValue, setLiquidValue ] = useState(0);
   const [ proposalValue, setProposalValue ] = useState(0);
+
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
+  const [loading, setLoading] = useState(false)
 
   const types = [
     { value: 'BRV', label: 'BRV' },
@@ -99,9 +107,10 @@ export default function Proposal() {
   }
 
   async function generatePDF() {
-    updateDocument();
-
+    setLoading(true);
+        
     try {
+      updateDocument();
       const response = await API_URL.get(`/download/proposal/pdf/${proposalId}`, { headers, responseType: 'blob' })
         .then((response) => {
           // console.log(response);
@@ -114,7 +123,12 @@ export default function Proposal() {
         });
       // console.log(response);
     } catch (error) {
+      setMessage("Erro ao gerar PDF!")
+      setSeverity("error")
+      setOpen(true)
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -428,15 +442,19 @@ export default function Proposal() {
               className={`${styles.btn} ${styles.btnGreen}`}
               onClick={() => generatePDF()}
             >
+              {
+                loading &&
+                <CircularProgress color="inherit" size={16} />
+              }
               Gerar PDF
               </button>
-            <button 
+            {/* <button 
               type="button" 
               className={`${styles.btn} ${styles.btnGreen}`}
               onClick={() => generateDOC()}
             >
               Gerar DOC
-            </button>
+            </button> */}
           </div>
 
         </form>
@@ -444,7 +462,13 @@ export default function Proposal() {
 
       </main>
 
-
+      <Alert
+        severity={severity}
+        message={message}
+        variant="filled"
+        open={open}
+        setOpen={setOpen}
+      />
     </Container>
   );
 }
