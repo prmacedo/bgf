@@ -219,3 +219,22 @@
 
   margin-top: 1rem;
 }
+
+@media (max-width: 767.98px) {
+  .formContainer form .detailsInputs {
+    display: flex;
+  }
+  .formContainer form .contactInputs,
+  .formContainer form .clientInputs {
+    display: flex;
+    flex-direction: column;
+  }
+  .formContainer form .btnGroup {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .formContainer form .btnGroup > * {
+    width: 100%;
+  }
+  .modal {max-width: 100%;}
+}
