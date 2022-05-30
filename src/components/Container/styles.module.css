@@ -20,4 +20,5 @@
 @media (max-width: 768px) {
   #contentId {padding: 1rem;}
   .content, .hidden {margin-left: 0;}
+  .container {display: block;}
 }

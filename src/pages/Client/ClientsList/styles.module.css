@@ -204,5 +204,6 @@
     overflow-x: auto;
   }
   .tableContainer table { width: 100%; }
-  .tableContainer th, .tableContainer td {padding: 0 1rem;}
+  .tableContainer th {padding: 1rem;}
+  .tableContainer td {padding: 0.5rem 1rem;}
 }

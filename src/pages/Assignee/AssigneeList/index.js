@@ -107,7 +107,11 @@ export default function AssigneeList() {
                     <td>{assignee.cnpj}</td>
                     <td>{assignee.email}</td>
                     <td>{assignee.telephone}</td>
-                    <td className={styles.eyeLink}><Link to={`/assignee/${assignee.id}`} title="Clique para visualizar"><FiEye /></Link></td>
+                    <td>
+                      <div className={styles.eyeLink}>
+                        <Link to={`/assignee/${assignee.id}`} title="Clique para visualizar"><FiEye /></Link>
+                      </div>
+                    </td>
                   </tr>
                 )) :
                 <div className={styles.emptyList}>
