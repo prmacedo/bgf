@@ -112,3 +112,14 @@
   color: var(--white);
   background-color: var(--red);
 }
+
+@media (max-width: 767.98px) {
+  #proposalInputs, #contractInputs {
+    display: flex;
+    flex-direction: column;
+  }
+  .btnGroup {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

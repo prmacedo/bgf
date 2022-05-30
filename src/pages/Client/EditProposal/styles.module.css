@@ -151,3 +151,15 @@
   color: var(--white);
   background-color: var(--red);
 }
+
+@media (max-width: 767.98px) {
+  #proposalInputs, #frameInputs {
+    display: flex;
+    flex-direction: column;
+  }
+  #frame {padding: 2rem 0;}
+  .btnGroup {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

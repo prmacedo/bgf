@@ -325,3 +325,17 @@ a.btn.disabled {
 #clientGroup, #partnerGroup, #assigneeGroup, #adminGroup, #contractGroup {
   max-width: 100%;
 }
+
+@media (max-width: 767.98px) {  
+  #clientInputs, #assigneeInputs, #assigneeAdminInputs, #contractInputs {
+    display: flex;
+    flex-direction: column;
+  }
+  .btnGroup {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .toolsRow > button {
+    width: 100%;
+  }
+}
