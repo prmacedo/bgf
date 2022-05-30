@@ -448,3 +448,38 @@ a.outlineBtn {
   background: var(--white);
   cursor: default;
 }
+
+@media (max-width: 767.98px) {
+  .toolsRow, .toolsRow .options {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .toolsRow .btnGroup {
+    margin-top: 1rem;
+  }
+  .formContainer form .detailsInputs {
+    display: flex;
+  }
+  .formContainer form .contactInputs,
+  .formContainer form .clientInputs {
+    display: flex;
+    flex-direction: column;
+  }
+  .formContainer form .btnGroup {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .formContainer form .btnGroup > * {
+    width: 100%;
+  }
+  .modal {width: 98vw;}
+  .attachmentContent {
+    max-width: 100%;
+  }
+  .modalGroupBtn {
+    display: flex;
+    flex-direction: column;
+  }
+  .modalGroupBtn * {width: 100%!important;}
+}
