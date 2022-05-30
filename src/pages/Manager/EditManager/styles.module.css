@@ -235,3 +235,10 @@
   display: flex;
   gap: 1rem;
 }
+
+@media (max-width: 767.98px) {
+  .formContainer form {
+    grid-template-areas: 
+    'name' 'type' 'email' 'tel' 'btnGroup';
+  }
+}
