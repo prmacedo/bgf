@@ -134,7 +134,7 @@ export default function EditManager() {
     };
 
     try {
-      const response = await API_URL.patch(`/user/${id}`, data, { headers });
+      const response = await API_URL.patch(`/user/active/${id}`, data, { headers });
 
       setShowToggleActiveModal(false);
       setActive(!active);
