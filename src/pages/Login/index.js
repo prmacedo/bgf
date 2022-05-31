@@ -41,6 +41,9 @@ export default function Login() {
       login();
       history.push('/clients');
     } catch (error) {
+      console.log(error);
+      console.log(error.response);
+
       switch (error.response.status) {
         case 422:
           setMessage("Usuário não encontrado, ou dados inválidos!")
@@ -56,7 +59,6 @@ export default function Login() {
       }
       
       setOpen(true)
-      console.log(error.response);
     } finally {
       setLoading(false)
     }
