@@ -56,6 +56,8 @@ export default function AddClient() {
   const [partnerDistrict, setPartnerDistrict] = useState('');
   const [partnerComplement, setPartnerComplement] = useState('');
 
+  const [status, setStatus] = useState('');
+
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('');
@@ -79,7 +81,20 @@ export default function AddClient() {
     { value: 'separation', label: 'Separação de bens' },
     { value: 'partial', label: 'Comunhão Parcial' },
     { value: 'total', label: 'Comunhão Total' }
-  ]
+  ];
+
+  const statusList = [
+    {value: '1', label: "Prospecção/Precificação"},
+    {value: '2', label: "Proposta Enviada Proposta Recebida"},
+    {value: '3', label: "Contrato Digitalizado - Enviado"},
+    {value: '4', label: "Contrato Digitalizado - Recebido"},
+    {value: '5', label: "Análise - Diligência de Certidões"},
+    {value: '6', label: "Pendência"},
+    {value: '7', label: "Procuração e Contrato em Cartório"},
+    {value: '8', label: "Escritura de Cessão"},
+    {value: '9', label: "Desembolso"},
+    {value: '10', label:"Via Física Enviada"}
+  ];
 
   function resetFields() {
     setProject('');
@@ -93,6 +108,7 @@ export default function AddClient() {
     setRG('');
     setEmail('');
     setTel('');
+    setStatus('');
 
     setCEP('');
     setStreet('');
@@ -172,7 +188,8 @@ export default function AddClient() {
       uf: uf.value,
       district,
       complement,
-      partnerId
+      partnerId,
+      status: status.value
     }
 
     try {
@@ -263,25 +280,38 @@ export default function AddClient() {
             <form>
               <h3>Detalhes do cliente</h3>
               <div className={styles.detailsInputs}>
-                <div id={styles.project} className={styles.inputGroup}>
-                  <label htmlFor="project">Projeto</label>
+                <div id={styles.status} className={styles.inputGroup}>
+                  <label htmlFor="status">Status</label>
                   <Select
-                    options={projects}
-                    id="project"
-                    name="project"
-                    value={project}
-                    placeholder="Selecione o projeto"                    
-                    onChange={(evt) => setProject(projects.find(project => project.value === evt.value))}
+                    options={statusList}
+                    value={status}
+                    id="status"
+                    name="status"
+                    placeholder="Selecione o status"
+                    onChange={(evt) => setStatus(statusList.find(status => status.value === evt.value))}
                   />
                 </div>
+                <div id={styles.projectGroup}>
+                  <div id={styles.project} className={styles.inputGroup}>
+                    <label htmlFor="project">Projeto</label>
+                    <Select
+                      options={projects}
+                      id="project"
+                      name="project"
+                      value={project}
+                      placeholder="Selecione o projeto"                    
+                      onChange={(evt) => setProject(projects.find(project => project.value === evt.value))}
+                    />
+                  </div>
 
-                <button
-                  type="button"
-                  className={styles.outlineBtn}
-                  onClick={() => setShowProjectModal(true)}
-                >
-                  <FiPlus />
-                </button>
+                  <button
+                    type="button"
+                    className={styles.outlineBtn}
+                    onClick={() => setShowProjectModal(true)}
+                  >
+                    <FiPlus />
+                  </button>
+                </div>
               </div>
 
               <h3>Dados pessoais</h3>

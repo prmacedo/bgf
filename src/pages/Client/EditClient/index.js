@@ -38,6 +38,7 @@ export default function EditClient() {
   const [rg, setRG] = useState('');
   const [email, setEmail] = useState('');
   const [tel, setTel] = useState('');
+  const [status, setStatus] = useState('');
   const [numberOfAttachments, setNumberOfAttachments] = useState(0);
 
   const [cep, setCEP] = useState('');
@@ -131,6 +132,19 @@ export default function EditClient() {
     { value: "TO", label: "TO" }
   ];
 
+  const statusList = [
+    {value: '1', label: "Prospecção/Precificação"},
+    {value: '2', label: "Proposta Enviada Proposta Recebida"},
+    {value: '3', label: "Contrato Digitalizado - Enviado"},
+    {value: '4', label: "Contrato Digitalizado - Recebido"},
+    {value: '5', label: "Análise - Diligência de Certidões"},
+    {value: '6', label: "Pendência"},
+    {value: '7', label: "Procuração e Contrato em Cartório"},
+    {value: '8', label: "Escritura de Cessão"},
+    {value: '9', label: "Desembolso"},
+    {value: '10', label:"Via Física Enviada"}
+  ];
+
   function toggleHiddenModal(id) {
     document.querySelector(`#${id}`).classList.toggle(styles.hide);
   }
@@ -219,7 +233,8 @@ export default function EditClient() {
       city,
       district,
       complement,
-      projectId: project.value
+      projectId: project.value,
+      status: status.value
     }
 
     try {
@@ -227,6 +242,9 @@ export default function EditClient() {
       setMessage('Atualizado com sucesso!');
       setSeverity('success');              
       setOpen(true)
+
+      localStorage.setItem("client", JSON.stringify(data));
+
       console.log(response);
     } catch (error) {
       if (error.response.status === 422) {
@@ -355,6 +373,8 @@ export default function EditClient() {
       const response = await API_URL.get(`/client/${id}`, { headers });
       const { data } = response;
 
+      console.log(data);
+
       localStorage.setItem("client", JSON.stringify(data));
       
       const projectObj = { value: data.project.id, label: data.project.name };
@@ -363,6 +383,7 @@ export default function EditClient() {
       setName(data.name);
       setNacionality(data.nationality);
       setGender(genders.find(gender => gender.value === data.gender));
+      setStatus(statusList.find(status => status.value === data.status));
       setMaritalState(maritalStates.find(maritalState => maritalState.value === data.maritalStatus));
       setProfession(data.profession);
       setCPF(data.cpf);
@@ -662,27 +683,41 @@ export default function EditClient() {
               <h3>Detalhes do cliente</h3>
 
               <div className={styles.detailsInputs}>
-                <div id={styles.project} className={styles.inputGroup}>
-                  <label htmlFor="project">Projeto</label>
+                <div id={styles.status} className={styles.inputGroup}>
+                  <label htmlFor="status">Status</label>
                   <Select
-                    options={projects}
-                    value={project}
-                    id="project"
-                    name="project"
-                    placeholder="Selecione o projeto"
-                    onChange={(evt) => setProject(projects.find(project => project.value === evt.value))}
+                    options={statusList}
+                    value={status}
+                    id="status"
+                    name="status"
+                    placeholder="Selecione o status"
+                    onChange={(evt) => setStatus(statusList.find(status => status.value === evt.value))}
                     disabled={!isEditing}
                   />
                 </div>
+                <div id={styles.projectGroup}>
+                  <div id={styles.project} className={styles.inputGroup}>
+                    <label htmlFor="project">Projeto</label>
+                    <Select
+                      options={projects}
+                      value={project}
+                      id="project"
+                      name="project"
+                      placeholder="Selecione o projeto"
+                      onChange={(evt) => setProject(projects.find(project => project.value === evt.value))}
+                      disabled={!isEditing}
+                    />
+                  </div>                
 
-                <button
-                  type="button"
-                  className={styles.outlineBtn}
-                  disabled={!isEditing}
-                  onClick={() => setShowProjectModal(true)}
-                >
-                  <FiPlus />
-                </button>
+                  <button
+                    type="button"
+                    className={styles.outlineBtn}
+                    disabled={!isEditing}
+                    onClick={() => setShowProjectModal(true)}
+                  >
+                    <FiPlus />
+                  </button>
+                </div>
               </div>
 
               <h3>Dados pessoais</h3>

@@ -19,11 +19,18 @@
 /* Formulário */
 .detailsInputs {
   display: grid;
-  grid-template-columns: 33.33333% 8.33333%;
+  grid-template-columns: 33.33333% 40%;
+  gap: 1rem;
+  
+  padding: 0.5rem 0 2rem;
+}
+
+#projectGroup {
+  display: grid;
   gap: 1rem;
   align-items: flex-end;
+  grid-template-columns: 1fr 3rem;
 
-  padding: 0.5rem 0 2rem;
 }
 
 #name, #partnerName {grid-area: name;}
@@ -223,6 +230,7 @@
 @media (max-width: 767.98px) {
   .formContainer form .detailsInputs {
     display: flex;
+    flex-direction: column;
   }
   .formContainer form .contactInputs,
   .formContainer form .clientInputs {

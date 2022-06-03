@@ -31,6 +31,19 @@ export default function ClientsList() {
 
   const { headers } = useUserData();
 
+  const statusList = [
+    {value: '1', label: "Prospecção/Precificação"},
+    {value: '2', label: "Proposta Enviada Proposta Recebida"},
+    {value: '3', label: "Contrato Digitalizado - Enviado"},
+    {value: '4', label: "Contrato Digitalizado - Recebido"},
+    {value: '5', label: "Análise - Diligência de Certidões"},
+    {value: '6', label: "Pendência"},
+    {value: '7', label: "Procuração e Contrato em Cartório"},
+    {value: '8', label: "Escritura de Cessão"},
+    {value: '9', label: "Desembolso"},
+    {value: '10', label:"Via Física Enviada"}
+  ];
+
   function formatName(name) {
     const nameArray = name.split(' ');
 
@@ -111,7 +124,7 @@ export default function ClientsList() {
   async function advancedFilter() {
     const filterName = name || undefined;
     const filterProject = project.value || undefined;
-    const filterStatus = status || undefined;
+    const filterStatus = status.value || undefined;
 
     setLoading(true)
 
@@ -215,13 +228,14 @@ export default function ClientsList() {
               {/* Transformar em Select depois */}
               <div className={styles.inputGroup}>
                 <label htmlFor="status">Status</label>
-                <input
-                  type="text"
-                  name="status"
-                  value={status}
-                  onChange={(evt) => setStatus(evt.target.value)}
-                  placeholder="Escolha o status"
-                />
+                <Select
+                    options={statusList}
+                    value={status}
+                    id="status"
+                    name="status"
+                    placeholder="Selecione o status"
+                    onChange={(evt) => setStatus(statusList.find(status => status.value === evt.value))}
+                  />
               </div>
             </div>
 
@@ -269,7 +283,7 @@ export default function ClientsList() {
                 <tr key={ client.id }>
                   <td>{ formatName(client.name) }</td>
                   <td>{ client.project.name }</td>
-                  <td>Prospecção/Precificação</td>
+                  <td>{ statusList.find(status => status.value === client.status).label }</td>
                   <td>{client._count.attachments}</td>
                   <td>
                     <div className={styles.eyeLink}>
