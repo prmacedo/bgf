@@ -50,6 +50,7 @@ export default function Proposal() {
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('');
   const [loading, setLoading] = useState(false)
+  const [loadingDoc, setLoadingDoc] = useState(false)
 
   const types = [
     { value: 'BRV', label: 'BRV' },
@@ -181,8 +182,30 @@ export default function Proposal() {
     }
   }
 
-  function generateDOC() {
-    updateOrSaveDocument();
+  async function generateDOC() {
+    setLoadingDoc(true);
+
+    try {
+      const proposalId = (await updateOrSaveDocument()).data.id;
+      const response = await API_URL.get(`/download/proposal/docx/${proposalId}`, { headers, responseType: 'blob' })
+        .then((response) => {
+          // console.log(response);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${date}-Proposta-${client.name}.docx`); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+        });
+      // console.log(response);
+    } catch (error) {
+      setMessage("Erro ao gerar documento!")
+      setSeverity("error")
+      setOpen(true)
+      console.log(error);
+    } finally {
+      setLoadingDoc(false);
+    }
   }
 
   useEffect(() => {
@@ -454,6 +477,7 @@ export default function Proposal() {
               type="button" 
               className={`${styles.btn} ${styles.btnGreen}`}
               onClick={() => generatePDF()}
+              disabled={loading || loadingDoc}
             >
               {
                 loading &&
@@ -461,13 +485,18 @@ export default function Proposal() {
               }
               Gerar PDF
               </button>
-            {/* <button 
+            <button 
               type="button" 
               className={`${styles.btn} ${styles.btnGreen}`}
               onClick={() => generateDOC()}
+              disabled={loadingDoc || loading}
             >
+              {
+                loadingDoc &&
+                <CircularProgress color="inherit" size={16} />
+              }
               Gerar DOC
-            </button> */}
+            </button>
           </div>
 
         </form>
