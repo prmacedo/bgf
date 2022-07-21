@@ -7,7 +7,7 @@ import Container from '../../../components/Container';
 import AddressForm from '../../../components/AddressForm';
 import Alert from '../../../components/CustomAlert';
 
-import { cnpjMask, telephoneMask } from '../../../utils/masks';
+import { cnpjMask, telephoneMask, cpfMask } from '../../../utils/masks';
 
 import API_URL from '../../../config/api';
 
@@ -17,6 +17,7 @@ import { useUserData } from '../../../context/UserData';
 export default function AddAssignee() {
   const [name, setName] = useState('');
   const [cnpj, setCNPJ] = useState('');
+  const [cpf, setCPF] = useState('');
   const [email, setEmail] = useState('');
   const [tel, setTel] = useState('');
 
@@ -40,6 +41,8 @@ export default function AddAssignee() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('');
+  
+  const [assigneeType, setAssigneeType] = useState(1);
 
   const { headers } = useUserData();
 
@@ -85,7 +88,9 @@ export default function AddAssignee() {
 
     const data = {
       name,
-      cnpj,
+      cnpj: cnpj || null,
+      cpf: cpf || null,
+      type: assigneeType,
       email,
       telephone: tel,
       cep,
@@ -98,12 +103,15 @@ export default function AddAssignee() {
     }
 
     try {
-      const response = await API_URL.post('/admin', adminData, { headers });
-
-      data.adminId = response.data.id;
+      
 
       const responseAssignee = await API_URL.post('/assignee', data, { headers });
-      
+
+      if (assigneeType == 1) {
+        adminData.assigneeId = responseAssignee.data.id;
+        const response = await API_URL.post('/admin', adminData, { headers });
+      }
+
       setMessage('Cadastrado com sucesso!');
       setSeverity('success');              
       setOpen(true)
@@ -122,7 +130,7 @@ export default function AddAssignee() {
       }
       setOpen(true);
     
-      console.log(error);
+      console.log(error.response);
     }
   }
 
@@ -139,6 +147,30 @@ export default function AddAssignee() {
         <h2>Dados do Cessionário</h2>
         <div className={styles.formContainer}>
           <form onSubmit={handleAddManagerSubmit}>
+            <div className={styles.radios}>              
+              <label className={styles.radio}>
+                <input
+                  type='radio'
+                  name='assigneeType'
+                  value={1}
+                  checked={assigneeType == 1}
+                  onChange={(evt) => setAssigneeType(evt.target.value)}
+                  />
+                Pessoa Jurídica
+              </label>
+
+              <label className={styles.radio}>
+                <input
+                  type='radio'
+                  name='assigneeType'
+                  value={2}
+                  checked={assigneeType == 2}
+                  onChange={(evt) => setAssigneeType(evt.target.value)}
+                />
+                Pessoa Física
+              </label>
+            </div>
+
             <div className={styles.assigneeInputs}>
               <div id={styles.name} className={styles.inputGroup}>
                 <label htmlFor="name">Nome completo</label>
@@ -151,7 +183,7 @@ export default function AddAssignee() {
                   required
                 />
               </div>
-
+              { assigneeType == 1 ?
               <div id={styles.cnpj} className={styles.inputGroup}>
                 <label htmlFor="cnpj">CNPJ</label>
                 <input
@@ -163,6 +195,19 @@ export default function AddAssignee() {
                   required
                 />
               </div>
+              :
+              <div id={styles.cpf} className={styles.inputGroup}>
+                <label htmlFor="cpf">CPF</label>
+                <input
+                  type="text"
+                  name="cpf"
+                  value={cpf}
+                  onChange={(evt) => setCPF(cpfMask(evt.target.value))}
+                  placeholder="000.000.000-00"
+                  required
+                />
+              </div>
+              }
 
               <div id={styles.email} className={styles.inputGroup}>
                 <label htmlFor="email">E-mail</label>
@@ -205,6 +250,8 @@ export default function AddAssignee() {
               setComplement={setComplement}
             />            
 
+            { assigneeType == 1 && 
+            <>
             <h2>Dados da Instituição Administradora do Cessionário</h2>
 
             <div className={styles.assigneeAdminInputs}>
@@ -248,11 +295,14 @@ export default function AddAssignee() {
               complement={adminComplement}
               setComplement={setAdminComplement}
             />
+
+            </>
+            }
                     
             <div className={styles.btnGroup}>
               <Link to="/managers" className={styles.cancelBtn}>Cancelar</Link>
               <button type="submit" className={styles.submitBtn}>Salvar cadastro</button>
-            </div>
+            </div>            
           </form>
         </div>
       </main>

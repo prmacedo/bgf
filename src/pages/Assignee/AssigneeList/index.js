@@ -91,7 +91,7 @@ export default function AssigneeList() {
             <thead>
               <tr>
                 <th>Nome</th>
-                <th>CNPJ</th>
+                <th>CNPJ/CPF</th>
                 <th>E-mail</th>
                 <th>Telefone</th>
                 <th></th>
@@ -104,7 +104,7 @@ export default function AssigneeList() {
                 assigneeList.map(assignee => (                  
                   <tr key={assignee.id}>
                     <td>{assignee.name}</td>
-                    <td>{assignee.cnpj}</td>
+                    <td>{assignee.type === 1 ? assignee.cnpj : assignee.cpf}</td>
                     <td>{assignee.email}</td>
                     <td>{assignee.telephone}</td>
                     <td>

@@ -17,6 +17,16 @@
 }
 
 /* Formulário */
+.formContainer .radios {
+  display: flex;
+  gap: 2rem;
+}
+
+.formContainer .radio {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
 
 .formContainer form .assigneeInputs {
   display: grid;

@@ -17,8 +17,6 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-
-  margin-bottom: 1.5rem;
 }
 
 .main h2, .formContainer h3 {
@@ -26,6 +24,16 @@
 }
 
 /* Formulário */
+.formContainer .radios {
+  display: flex;
+  gap: 2rem;
+}
+
+.formContainer .radio {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
 
 .formContainer form .assigneeInputs{
   display: grid;

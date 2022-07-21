@@ -71,6 +71,8 @@ export default function ContractRevision() {
 
   const [assigneeName, setAssigneeName] = useState('');
   const [assigneeCNPJ, setAssigneeCNPJ] = useState('');
+  const [assigneeCPF, setAssigneeCPF] = useState('');  
+  const [assigneeType, setAssigneeType] = useState(1);
   const [assigneeEmail, setAssigneeEmail] = useState('');
   const [assigneeTel, setAssigneeTel] = useState('');
   const [assigneeCEP, setAssigneeCEP] = useState('');
@@ -345,7 +347,9 @@ export default function ContractRevision() {
     setAssigneeId(assignee.id);
 
     setAssigneeName(assignee.name);
+    setAssigneeType(assignee.type);
     setAssigneeCNPJ(assignee.cnpj);
+    setAssigneeCPF(assignee.cpf);
     setAssigneeEmail(assignee.email);
     setAssigneeTel(assignee.telephone);
     setAssigneeCEP(assignee.cep);
@@ -373,15 +377,17 @@ export default function ContractRevision() {
   }
 
   function setAdminData(admin) {
-    setAdminId(admin.id);
-    setAdminName(admin.name);
-    setAdminCNPJ(admin.cnpj);
-    setAdminCEP(admin.cep);
-    setAdminCity(admin.city);
-    setAdminUF(ufs.find(uf => uf.value === admin.uf));
-    setAdminStreet(admin.street);
-    setAdminDistrict(admin.district);
-    setAdminComplement(admin.complement);
+    if (assigneeType === 1) {
+      setAdminId(admin.id);
+      setAdminName(admin.name);
+      setAdminCNPJ(admin.cnpj);
+      setAdminCEP(admin.cep);
+      setAdminCity(admin.city);
+      setAdminUF(ufs.find(uf => uf.value === admin.uf));
+      setAdminStreet(admin.street);
+      setAdminDistrict(admin.district);
+      setAdminComplement(admin.complement);      
+    }
   }
 
   async function getAllData() {
@@ -934,6 +940,9 @@ export default function ContractRevision() {
                   />
                 </div>
 
+
+                {
+                  assigneeType === 1 ?               
                 <div id={styles.assigneeCNPJID} className={styles.inputGroup}>
                   <label htmlFor="assigneeCNPJ">CNPJ</label>
                   <input
@@ -947,6 +956,21 @@ export default function ContractRevision() {
                     required
                   />
                 </div>
+                :
+                <div id={styles.assigneeCNPJID} className={styles.inputGroup}>
+                  <label htmlFor="assigneeCNPJ">CPF</label>
+                  <input
+                    type="text"
+                    name="assigneeCNPJ"
+                    id="assigneeCNPJ"
+                    value={assigneeCPF}
+                    onChange={(evt) => setAssigneeCPF(cpfMask(evt.target.value))}
+                    disabled={!isEditing}
+                    placeholder="000.000.000-00"
+                    required
+                  />
+                </div>
+                }
 
                 <div id={styles.assigneeEmailID} className={styles.inputGroup}>
                   <label htmlFor="assigneeEmailID">E-mail</label>
@@ -1049,7 +1073,9 @@ export default function ContractRevision() {
                 </div>
               </div>
             </div>
-
+            
+            {
+              assigneeType === 1 &&            
             <div id={styles.adminGroup}>
               <h2>
                 Dados da Instituição Administradora do Cessionário
@@ -1160,6 +1186,7 @@ export default function ContractRevision() {
                 </div>
               </div>
             </div>
+            }
 
             <div id={styles.contractGroup}>
               <h2>

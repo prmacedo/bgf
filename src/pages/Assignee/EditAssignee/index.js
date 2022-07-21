@@ -15,7 +15,7 @@ import { useParams } from 'react-router-dom';
 import { useUserData } from '../../../context/UserData';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { cnpjMask, telephoneMask } from '../../../utils/masks';
+import { cnpjMask, telephoneMask, cpfMask } from '../../../utils/masks';
 
 export default function EditAssignee() {
   const [isEditing, setIsEditing] = useState(false);
@@ -26,6 +26,7 @@ export default function EditAssignee() {
 
   const [name, setName] = useState('');
   const [cnpj, setCNPJ] = useState('');
+  const [cpf, setCPF] = useState('');
   const [email, setEmail] = useState('');
   const [tel, setTel] = useState('');
 
@@ -50,6 +51,7 @@ export default function EditAssignee() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('');
+  const [assigneeType, setAssigneeType] = useState(1);
 
   const { id } = useParams();
   
@@ -94,6 +96,8 @@ export default function EditAssignee() {
       const { data } = response;
       setName(data.name);
       setCNPJ(data.cnpj);
+      setCPF(data.cpf);
+      setAssigneeType(data.type)
       setEmail(data.email);
       setTel(data.telephone);
 
@@ -104,16 +108,20 @@ export default function EditAssignee() {
       setDistrict(data.district);
       setComplement(data.complement);
 
-      setAdminId(data.admin.id);
-      setAdminName(data.admin.name);
-      setAdminCNPJ(data.admin.cnpj);
-  
-      setAdminCEP(data.admin.cep);
-      setAdminStreet(data.admin.street);
-      setAdminCity(data.admin.city);
-      setAdminUF(options.find(option => option.value === data.admin.uf));
-      setAdminDistrict(data.admin.district);
-      setAdminComplement(data.admin.complement);
+      if(data.type === 1) {
+        setAdminId(data.admin.id);
+        setAdminName(data.admin.name);
+        setAdminCNPJ(data.admin.cnpj);
+        
+        setAdminCEP(data.admin.cep);
+        setAdminStreet(data.admin.street);
+        setAdminCity(data.admin.city);
+        setAdminUF(options.find(option => option.value === data.admin.uf));
+        setAdminDistrict(data.admin.district);
+        setAdminComplement(data.admin.complement);
+      }
+
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -123,6 +131,8 @@ export default function EditAssignee() {
     const data = {
       name,
       cnpj,
+      type: assigneeType,
+      cpf,
       email,
       tel,
       cep,
@@ -146,10 +156,9 @@ export default function EditAssignee() {
 
     try {
       const response = await API_URL.patch(`/assignee/${id}`, data, { headers });
-      const responseAdmin = await API_URL.patch(`/admin/${adminId}`, adminData, { headers });
-
-      console.log(response);
-      console.log(responseAdmin);
+      if (assigneeType === 1) {
+        const responseAdmin = await API_URL.patch(`/admin/${adminId}`, adminData, { headers });
+      }
 
       setShowSaveEditModal(false);
       setIsEditing(false);
@@ -201,19 +210,16 @@ export default function EditAssignee() {
     setIsEditing(false);
 
     toggleFieldError(true, 'name');
-    toggleFieldError(true, 'cnpj');
     toggleFieldError(true, 'email');
-
     // Reset inputs
   }
 
   function validateFields() {
-    if (name && cnpj && email) {
+    if (name && email) {
       setShowSaveEditModal(true);
     }
 
     toggleFieldError(name, 'name');
-    toggleFieldError(cnpj, 'cnpj');
     toggleFieldError(email, 'email');
   }
 
@@ -244,7 +250,7 @@ export default function EditAssignee() {
         <main className={styles.main}>
           <div className={styles.toolsRow}>
             <h2>Dados do Cessionário</h2>
-
+            
             <div className={styles.btnGroup}>
               {isEditing 
               ?
@@ -277,8 +283,34 @@ export default function EditAssignee() {
               }
             </div>
           </div>
-
+          
           <div className={styles.formContainer}>
+            <div className={styles.radios}>              
+              <label className={styles.radio}>
+                <input
+                  type='radio'
+                  name='assigneeType'
+                  value={1}
+                  checked={assigneeType == 1}
+                  disabled={!isEditing}
+                  onChange={(evt) => setAssigneeType(evt.target.value)}
+                  />
+                Pessoa Jurídica
+              </label>
+
+              <label className={styles.radio}>
+                <input
+                  type='radio'
+                  name='assigneeType'
+                  value={2}
+                  checked={assigneeType == 2}
+                  disabled={!isEditing}
+                  onChange={(evt) => setAssigneeType(evt.target.value)}
+                />
+                Pessoa Física
+              </label>
+            </div>
+
             <form id="editForm">
               <div className={styles.assigneeInputs}>
                 <div id={styles.name} className={styles.inputGroup}>
@@ -296,6 +328,7 @@ export default function EditAssignee() {
                   <small className={styles.hide}>O nome é obrigatório</small>
                 </div>
 
+                { assigneeType == 1 ?
                 <div id={styles.cnpj} className={styles.inputGroup}>
                   <label htmlFor="cnpj">CNPJ</label>
                   <input
@@ -310,6 +343,20 @@ export default function EditAssignee() {
                   />
                   <small className={styles.hide}>O CNPJ é obrigatório</small>
                 </div>
+                :
+                <div id={styles.cpf} className={styles.inputGroup}>
+                  <label htmlFor="cpf">CPF</label>
+                  <input
+                    type="text"
+                    name="cpf"
+                    value={cpf}
+                    disabled={!isEditing}
+                    onChange={(evt) => setCPF(cpfMask(evt.target.value))}
+                    placeholder="000.000.000-00"
+                    required
+                  />
+                </div>
+                }
 
                 <div id={styles.email} className={styles.inputGroup}>
                   <label htmlFor="email">E-mail</label>
@@ -355,8 +402,10 @@ export default function EditAssignee() {
                 complement={complement}
                 setComplement={setComplement}
                 disabled={!isEditing}
-              />              
+              />       
 
+              { assigneeType == 1 &&        
+              <>
               <h2>Dados da Instituição Administradora do Cessionário</h2>
 
               <div className={styles.assigneeAdminInputs}>
@@ -406,7 +455,9 @@ export default function EditAssignee() {
                 complement={adminComplement}
                 setComplement={setAdminComplement}
                 disabled={!isEditing}
-              />              
+              />      
+              </>
+              }
               
               <div className={`${styles.btnGroup} ${isEditing ? null : styles.hide}`}>
                 <button

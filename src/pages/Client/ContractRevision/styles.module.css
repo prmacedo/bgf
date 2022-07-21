@@ -129,8 +129,7 @@
 #assigneeInputs {
   display: grid;
   grid-template-areas: 
-    'assigneeName assigneeCNPJ assigneeEmail assigneeTel'
-    'assigneeNacionality assigneeRG assigneeCPF assigneeProfession'
+    'assigneeName assigneeCNPJ assigneeEmail assigneeTel'    
     'assigneeCEP assigneeCity assigneeDistrict assigneeUF'
     'assigneeStreet assigneeStreet assigneeComplement assigneeComplement';
   gap: 1rem;
