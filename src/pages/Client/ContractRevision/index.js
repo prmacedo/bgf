@@ -403,7 +403,11 @@ export default function ContractRevision() {
       }
 
       setAssigneeData(data.assignee);
-      setAdminData(data.assignee.admin);
+      
+      if(data.assignee.admin) {
+        setAdminData(data.assignee.admin);
+      }
+
       setContractData(data);
     } catch (error) {
       console.log(error);
